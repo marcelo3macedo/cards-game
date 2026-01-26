@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+/* Opcional: Configurações que antes ficavam no tailwind.config.js 
+   agora podem ser feitas direto no CSS usando variáveis */
+@theme {
+  --color-yugi-gold: #D4AF37;
+  --color-yugi-dark: #121212;
+}
+
+body {
+  @apply bg-zinc-950 text-white;
+}
