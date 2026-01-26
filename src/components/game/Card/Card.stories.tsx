@@ -6,7 +6,7 @@ import exemplo_magica from '@/assets/images/exemplo_magica.jpg';
 import exemplo_comum from '@/assets/images/exemplo_comum.jpg';
 
 const meta = {
-  title: 'Game/CardSystem',
+  title: 'Game/Card/Types',
   component: Card,
 } satisfies Meta<typeof Card>;
 

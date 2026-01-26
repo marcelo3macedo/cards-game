@@ -1,25 +1,36 @@
 import React from 'react';
 import { MonsterCard, BaseCard } from '../../../core/domain/Card';
 import { getAttributeIcon } from '../../../core/utils/CardIcon';
+import { renderCardInfo } from './Info';
 
 interface CardProps {
   card: BaseCard;
   size?: 'sm' | 'md' | 'lg';
 }
 
-export const Card: React.FC<CardProps> = ({ card, size = 'md' }) => {
+export const Card: React.FC<CardProps> = ({ card, size = 'lg' }) => {
   const isMonster = card instanceof MonsterCard;
   const cardStyle = card.getStyle();
+  const sizeClasses = {
+    lg: 'w-72 h-120 p-3',
+    md: 'w-60 h-96 p-2.5',
+    sm: 'w-48 h-72 p-2',
+  };
 
   return (
     <div className={`
       ${cardStyle}
-      ${size === 'md' ? 'w-72 h-120 p-3' : 'w-48 h-72 p-2'}
+      ${sizeClasses[size]}
       rounded-sm border-4 shadow-2xl flex flex-col relative
       transition-transform hover:scale-105 cursor-pointer select-none
     `}>
       <div className="flex justify-between items-center bg-white/20 px-2 py-1 rounded-sm mb-1 border border-black/10">
-        <span className="font-black uppercase italic text-xs truncate">{card.name}</span>
+        <span className={`
+          font-black uppercase italic truncate
+          ${size === 'sm' ? 'text-[11px] leading-tight max-w-[80%]' : 'text-xs'}
+        `}>
+          {card.name}
+        </span>
         <img 
           src={getAttributeIcon(card.typeIcon)} 
           alt={card.typeIcon} 
@@ -39,18 +50,7 @@ export const Card: React.FC<CardProps> = ({ card, size = 'md' }) => {
         <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
       </div>
 
-      <div className="mt-2 bg-[#D9CCB9] p-2 border border-black/30 min-h-[80px] text-zinc-900">
-        <p className="text-[9px] leading-tight font-medium italic pb-2">
-          {card.description}
-        </p>
-
-        {isMonster && (
-          <div className="mt-auto pt-1 border-t border-black/20 flex justify-end gap-3 font-mono font-bold text-[10px]">
-            <span>ATK/{(card as MonsterCard).atk}</span>
-            <span>DEF/{(card as MonsterCard).def}</span>
-          </div>
-        )}
-      </div>
+      {renderCardInfo(card, size, isMonster)}
     </div>
   );
 };
