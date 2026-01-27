@@ -64,3 +64,17 @@ export const Small: StoryObj<typeof meta> = {
     size: "sm"
   }
 };
+
+export const ExtraSmall: StoryObj<typeof meta> = {
+  args: {
+    card: new MonsterCard(
+      '2', 
+      'Guarda de Pedra', 
+      'Um soldado incansável esculpido nas montanhas antigas. Sua lealdade é tão imutável quanto a rocha de que é feito, servindo como a primeira linha de defesa contra hordas invasoras.', 
+      exemplo_comum, 
+      'earth', 
+      1200, 2000, 4, 'COMUM'
+    ),
+    size: "xs"
+  }
+};

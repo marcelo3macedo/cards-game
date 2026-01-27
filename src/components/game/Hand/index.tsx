@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card } from '../Card';
 import type { BaseCard } from '../../../core/domain/Card';
 
@@ -9,21 +9,29 @@ interface PlayerHandProps {
 }
 
 export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, onSelect, isHidden }) => {
-  const [offsetX, setOffsetX] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isHidden) return;
 
-    const { left, width } = containerRef.current.getBoundingClientRect();
-    const mouseX = (e.clientX - left) / width - 0.5;
-    
-    setOffsetX(-mouseX * 300);
-  };
+      switch (e.key) {
+        case 'ArrowLeft':
+          setSelectedIndex((prev) => (prev > 0 ? prev - 1 : cards.length - 1));
+          break;
+        case 'ArrowRight':
+          setSelectedIndex((prev) => (prev < cards.length - 1 ? prev + 1 : 0));
+          break;
+        case 'Enter':
+          if (cards[selectedIndex]) onSelect(cards[selectedIndex]);
+          break;
+      }
+    };
 
-  const handleMouseLeave = () => {
-    setOffsetX(0);
-  };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [cards, selectedIndex, isHidden, onSelect]);
 
   return (
     <div 
@@ -34,38 +42,30 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, onSelect, isHidde
     >
       <div 
         ref={containerRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{ 
-          transform: `translateX(${offsetX}px)`,
-          transition: 'transform 0.2s ease-out'
-        }}
-        className="
-          flex -space-x-24 px-32 py-10
-          hover:-space-x-12 transition-[spacing] duration-500 ease-in-out
-        "
+        className="flex -space-x-16 px-32 py-10"
       >
         {cards.map((card, i) => {
-          const midIndex = (cards.length - 1) / 2;
-          const rotation = (i - midIndex) * 4;
-          const translateY = Math.abs(i - midIndex) * 6;
+          const isSelected = i === selectedIndex;
 
           return (
             <div 
               key={card.id || i}
-              onClick={() => onSelect(card)}
-              className="
-                relative transition-all duration-300 ease-out
-                hover:z-50 hover:-translate-y-16 hover:scale-110 hover:rotate-0!
-                group
-              "
-              style={{ 
-                transform: `rotate(${rotation}deg) translateY(${translateY}px)` 
+              onClick={() => {
+                setSelectedIndex(i);
+                onSelect(card);
               }}
+              onMouseEnter={() => setSelectedIndex(i)}
+              className={`
+                relative transition-all duration-300 ease-out cursor-pointer
+                ${isSelected ? 'z-50 -translate-y-12 scale-110' : 'z-10 translate-y-0 scale-90'}
+              `}
             >
-              <div className="absolute -inset-1 bg-blue-500/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className={`
+                absolute -inset-1  transition-all duration-300
+                ${isSelected ? 'ring-4 ring-slate-500 shadow-[0_0_20px_rgba(59,130,246,0.6)]' : 'ring-0'}
+              `} />
               
-              <div className="scale-75 origin-bottom shadow-2xl">
+              <div className="shadow-2xl">
                 <Card card={card} size="sm" />
               </div>
             </div>
