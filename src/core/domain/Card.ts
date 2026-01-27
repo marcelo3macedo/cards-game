@@ -1,5 +1,10 @@
 export type CardCategory = 'COMUM' | 'RARO' | 'LEGENDARIO' | 'MAGICA' | 'ARMADILHA' | 'EQUIPAMENTO' | 'TERRENO';
 
+export interface CardProps {
+  card: BaseCard;
+  size?: 'sm' | 'md' | 'lg' | 'xs';
+}
+
 export abstract class BaseCard {
   constructor(
     public id: string,
