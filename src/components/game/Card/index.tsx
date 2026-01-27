@@ -1,12 +1,7 @@
 import React from 'react';
-import { MonsterCard, BaseCard } from '../../../core/domain/Card';
+import { MonsterCard, type CardProps } from '../../../core/domain/Card';
 import { getAttributeIcon } from '../../../core/utils/CardIcon';
 import { renderCardInfo } from './Info';
-
-interface CardProps {
-  card: BaseCard;
-  size?: 'sm' | 'md' | 'lg' | 'xs';
-}
 
 export const Card: React.FC<CardProps> = ({ card, size = 'lg' }) => {
   const isMonster = card instanceof MonsterCard;

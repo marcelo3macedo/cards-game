@@ -1,37 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { Card } from '../Card';
-import type { BaseCard } from '../../../core/domain/Card';
-
-interface PlayerHandProps {
-  cards: BaseCard[];
-  onSelect: (card: BaseCard) => void;
-  isHidden: boolean;
-}
+import type { PlayerHandProps } from '../../../core/domain/PlayerHand';
+import { useHandNavigation } from './hooks/useHandNavigation';
 
 export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, onSelect, isHidden }) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (isHidden) return;
-
-      switch (e.key) {
-        case 'ArrowLeft':
-          setSelectedIndex((prev) => (prev > 0 ? prev - 1 : cards.length - 1));
-          break;
-        case 'ArrowRight':
-          setSelectedIndex((prev) => (prev < cards.length - 1 ? prev + 1 : 0));
-          break;
-        case 'Enter':
-          if (cards[selectedIndex]) onSelect(cards[selectedIndex]);
-          break;
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [cards, selectedIndex, isHidden, onSelect]);
+  const { selectedIndex, setSelectedIndex } = useHandNavigation({ 
+    cards, 
+    isHidden, 
+    onSelect 
+  });
 
   return (
     <div 
@@ -41,7 +18,6 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, onSelect, isHidde
       `}
     >
       <div 
-        ref={containerRef}
         className="flex -space-x-16 px-32 py-10"
       >
         {cards.map((card, i) => {

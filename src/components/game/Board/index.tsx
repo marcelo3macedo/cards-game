@@ -1,13 +1,5 @@
+import type { GameBoardProps } from '../../../core/domain/GameBoard';
 import { FieldZone } from './FieldZone';
-
-interface GameBoardProps {
-  monsterZones: any[];
-  isBlur: boolean;
-  focusedZoneIndex: number;
-  isSelecting?: boolean; // Novo
-  onZoneSelect?: (index: number) => void; // Novo
-  highlightedIndex?: number; // Novo
-}
 
 export function GameBoard({ monsterZones, isBlur, focusedZoneIndex, isSelecting, onZoneSelect, highlightedIndex }: GameBoardProps) {
   return (
@@ -48,7 +40,7 @@ export function GameBoard({ monsterZones, isBlur, focusedZoneIndex, isSelecting,
                 mode={zone.mode}
                 isInteractable={isSelecting && !zone.card}
                 isSelected={highlightedIndex === i}
-                isFocused={isSelecting && focusedZoneIndex === i} // Passa o foco do teclado
+                isFocused={isSelecting && focusedZoneIndex === i}
                 onClick={() => onZoneSelect(i)}
               />
             ))}
@@ -79,7 +71,6 @@ export function GameBoard({ monsterZones, isBlur, focusedZoneIndex, isSelecting,
           </div>
         </div>
       </div>
-
     </div>
   );
 }

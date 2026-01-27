@@ -1,13 +1,5 @@
+import type { FieldZoneProps } from "../../../core/domain/FieldZone";
 import { Card } from "../Card";
-
-interface FieldZoneProps {
-  card: any | null;
-  mode?: 'atk' | 'def' | 'face-down';
-  isInteractable?: boolean;
-  isSelected?: boolean;
-  isFocused?: boolean; // Novo: foco do teclado
-  onClick?: () => void;
-}
 
 export function FieldZone({ card, mode, isInteractable, isSelected, isFocused, onClick }: FieldZoneProps) {
   return (
@@ -27,12 +19,10 @@ export function FieldZone({ card, mode, isInteractable, isSelected, isFocused, o
         ${isSelected ? 'border-yellow-400 border-4 shadow-[0_0_20px_rgba(250,204,21,0.4)] scale-105 z-10' : ''}
       `}
     >
-      {/* Efeito de pulsação apenas se estiver focado ou se for interativo */}
       {!card && isInteractable && (
         <div className={`absolute inset-0 bg-blue-400/10 ${isFocused ? 'animate-pulse' : ''} rounded-lg`} />
       )}
 
-      {/* ... restante do código (indicador visual e renderização do Card) */}
       {card && (
         <div className={`transition-transform duration-500 ${mode === 'def' ? 'rotate-90 scale-75' : 'scale-90'}`}>
           <Card card={card} size="xs" />

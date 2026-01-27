@@ -1,47 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Card } from '../Card';
-import { MonsterCard } from '../../../core/domain/Card';
 import { ActionButton } from './ActionButton';
-
-interface SummonOverlayProps {
-  card: MonsterCard;
-  onSummon: (mode: 'atk' | 'def' | 'face-down-atk' | 'face-down-def') => void;
-  onCancel: () => void;
-}
-
-type Mode = 'atk' | 'face-down-atk' | 'def' | 'face-down-def';
+import type { SummonOverlayProps } from '../../../core/domain/Summon';
+import { useSummonOverlayNavigation } from './hooks/useSummonOverlayNavigation';
 
 export const SummonOverlay: React.FC<SummonOverlayProps> = ({ card, onSummon, onCancel }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  
-  const options: { mode: Mode; label: string; subLabel: string; isVertical: boolean }[] = [
-    { mode: 'atk', label: 'Invocar', subLabel: 'Modo Ataque', isVertical: true },
-    { mode: 'face-down-atk', label: 'Oculto', subLabel: 'Modo Ataque', isVertical: true },
-    { mode: 'def', label: 'Invocar', subLabel: 'Modo Defesa', isVertical: false },
-    { mode: 'face-down-def', label: 'Oculto', subLabel: 'Defesa Oculto', isVertical: false },
-  ];
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case 'ArrowLeft':
-          setActiveIndex((prev) => (prev > 0 ? prev - 1 : options.length - 1));
-          break;
-        case 'ArrowRight':
-          setActiveIndex((prev) => (prev < options.length - 1 ? prev + 1 : 0));
-          break;
-        case 'Enter':
-          onSummon(options[activeIndex].mode);
-          break;
-        case 'Escape':
-          onCancel();
-          break;
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeIndex, onSummon, onCancel]);
+  const { options, activeIndex } = useSummonOverlayNavigation({ 
+    onSummon,
+    onCancel
+  });
 
   return (
     <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300 backdrop-blur-md bg-black/80">      
@@ -59,7 +26,6 @@ export const SummonOverlay: React.FC<SummonOverlayProps> = ({ card, onSummon, on
               <ActionButton 
                 {...opt}
                 onSummon={onSummon}
-                // Adicione uma prop isSelected no seu ActionButton para o brilho visual
                 isSelected={activeIndex === index} 
               />
             </div>

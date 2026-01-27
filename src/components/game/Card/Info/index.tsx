@@ -19,15 +19,31 @@ export const renderCardInfo = (card: BaseCard, size: string, isMonster: boolean)
       {isMonster && (
         <div className={`
           mt-auto pt-1 border-t border-black/20 flex justify-end font-mono font-bold
-          ${isExtraSmall ? "text-[7px] gap-1 border-none pt-0" : ""}
+          ${isExtraSmall ? "text-[7px] gap-1.5 border-none pt-0 items-center" : ""}
           ${isSmall ? "text-[8px] gap-1 border-none" : !isExtraSmall ? "text-[10px] gap-3" : ""}
         `}>
-          <span className={`${isSmall ? "text-[12px]" : isExtraSmall ? "text-[9px]" : ""}`}>
-            ATK/{(card as MonsterCard).atk}
-          </span>
-          <span className={`${isSmall ? "text-[12px]" : isExtraSmall ? "text-[9px]" : ""}`}>
-            DEF/{(card as MonsterCard).def}
-          </span>
+          <div className="flex items-center gap-0.5">
+            {isExtraSmall ? (
+              <span title="Ataque" className="text-[9px]">⚔️</span>
+            ) : (
+              <span>ATK/</span>
+            )}
+            <span className={`${isSmall ? "text-[10px]" : isExtraSmall ? "text-[8px]" : ""}`}>
+              {(card as MonsterCard).atk}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-0.5">
+            {isExtraSmall ? (
+              <span title="Defesa" className="text-[9px]">🛡️</span>
+            ) : (
+              <span>DEF/</span>
+            )}
+            <span className={`${isSmall ? "text-[10px]" : isExtraSmall ? "text-[8px]" : ""}`}>
+              {(card as MonsterCard).def}
+            </span>
+          </div>
+
         </div>
       )}
     </div>
