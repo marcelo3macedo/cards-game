@@ -17,7 +17,7 @@ type ScenarioType =
 
 function App() {
 	const [currentScenario, setCurrentScenario] =
-		useState<ScenarioType>("WELCOME");
+		useState<ScenarioType>("BATTLE");
 
 	const navigateTo = (scenario: ScenarioType) => setCurrentScenario(scenario);
 

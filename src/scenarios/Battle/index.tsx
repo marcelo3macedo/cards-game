@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { PlayerHand } from '../../components/game/Hand';
 import { MonsterCard } from '../../core/domain/Card';
 import { GameBoard } from '../../components/game/Board';
-import { Card } from '../../components/game/Card'; // Importe seu componente de Card
 import exemplo_legendaria from '@/assets/images/exemplo_legendaria.jpg';
 import { SummonOverlay } from '../../components/game/SummorOverlay';
 
