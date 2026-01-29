@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
-import { useBattleStore } from '../../../../store/BattleStore';
+import { useState, useEffect, useRef } from "react";
+import { useBattleStore } from "../../../../store/BattleStore";
 
-export function useLifePoints(target: 'player' | 'opponent') {
+export function useLifePoints(target: "player" | "opponent") {
   const lp = useBattleStore((state) => state[target].lp);
   const name = useBattleStore((state) => state[target].name);
-  
+
   const [displayLP, setDisplayLP] = useState(lp);
   const [damagePopup, setDamagePopup] = useState<{ id: number; amount: number } | null>(null);
   const prevValueRef = useRef(lp);
@@ -22,7 +22,7 @@ export function useLifePoints(target: 'player' | 'opponent') {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
-        
+
         const currentTickValue = Math.floor(startValue + (lp - startValue) * eased);
         setDisplayLP(currentTickValue);
 
@@ -39,6 +39,6 @@ export function useLifePoints(target: 'player' | 'opponent') {
     displayLP,
     name,
     damagePopup,
-    clearPopup: () => setDamagePopup(null)
+    clearPopup: () => setDamagePopup(null),
   };
 }
