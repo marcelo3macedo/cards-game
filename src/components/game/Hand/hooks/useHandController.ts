@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
-import { useHandStore } from '../../../../store/HandStore';
+import { useEffect } from "react";
+import { useHandStore } from "../../../../store/HandStore";
 
 export function useHandController() {
   const { isVisible, setVisible, toggleVisible } = useHandStore();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowUp') setVisible(false);
-      if (e.key === 'ArrowDown') setVisible(true);
+      if (e.key === "ArrowUp") setVisible(false);
+      if (e.key === "ArrowDown") setVisible(true);
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -16,11 +16,11 @@ export function useHandController() {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("mousemove", handleMouseMove);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, [setVisible]);
 

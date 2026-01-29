@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import type { UseHandNavigationProps } from '../../../../core/domain/Hand';
+import { useState, useEffect } from "react";
+import type { UseHandNavigationProps } from "../../../../core/domain/Hand";
 
 export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigationProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -9,13 +9,13 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
       if (isHidden || cards.length === 0) return;
 
       switch (e.key) {
-        case 'ArrowLeft':
+        case "ArrowLeft":
           setSelectedIndex((prev) => (prev > 0 ? prev - 1 : cards.length - 1));
           break;
-        case 'ArrowRight':
+        case "ArrowRight":
           setSelectedIndex((prev) => (prev < cards.length - 1 ? prev + 1 : 0));
           break;
-        case 'Enter':
+        case "Enter":
           if (cards[selectedIndex]) {
             onSelect(cards[selectedIndex]);
           }
@@ -23,12 +23,12 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [cards, selectedIndex, isHidden, onSelect]);
 
   return {
     selectedIndex,
-    setSelectedIndex
+    setSelectedIndex,
   };
 };
