@@ -1,10 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-
-interface DamagePopupProps {
-  damage: number;
-  isVisible: boolean;
-}
+import type { DamagePopupProps } from "../../../core/domain/BattleAnimation";
 
 export const DamagePopup: React.FC<DamagePopupProps> = ({ damage, isVisible }) => {
   if (!isVisible || damage === 0) return null;
