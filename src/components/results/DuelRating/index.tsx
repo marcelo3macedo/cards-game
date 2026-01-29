@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react';
+import { Star } from "lucide-react";
 
 export const DuelRating = ({ score }: { score: number }) => {
   return (
@@ -8,7 +8,9 @@ export const DuelRating = ({ score }: { score: number }) => {
           key={star}
           size={32}
           className={`${
-            star <= score ? 'text-yellow-400 fill-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.6)]' : 'text-zinc-800'
+            star <= score
+              ? "text-yellow-400 fill-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.6)]"
+              : "text-zinc-800"
           } transition-all duration-700`}
         />
       ))}
