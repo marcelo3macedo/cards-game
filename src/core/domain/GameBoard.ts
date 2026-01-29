@@ -5,4 +5,5 @@ export interface GameBoardProps {
   isSelecting?: boolean;
   onZoneSelect?: (index: number) => void;
   highlightedIndex?: number;
+  onDraw?: () => void;
 }
