@@ -54,21 +54,14 @@ export function FieldZone({
         )
       ) : (
         <div
-          className={`transition-all duration-500 relative ${mode === "def" ? "rotate-90 scale-75" : "scale-90"} ${isFaceDown ? "brightness-50" : ""}`}
+          className={`transition-all duration-500 relative ${mode === "def" ? "rotate-90 scale-75" : "scale-90"}`}
         >
-          {isFaceDown ? (
-            <div className="w-20 h-28 bg-orange-950 border-2 border-orange-700 rounded-md flex items-center justify-center shadow-2xl">
-              <span className="text-xl font-bold text-orange-400 opacity-40">?</span>
+          <Card card={card} size="xs" isFaceDown={isFaceDown} />
+
+          {mode === "def" && !isFaceDown && (
+            <div className="absolute -top-2 -right-2 bg-blue-600 rounded-full p-1 shadow-lg -rotate-90">
+              <Shield size={10} className="text-white" />
             </div>
-          ) : (
-            <>
-              <Card card={card} size="xs" />
-              {mode === "def" && (
-                <div className="absolute -top-2 -right-2 bg-blue-600 rounded-full p-1 shadow-lg -rotate-90">
-                  <Shield size={10} className="text-white" />
-                </div>
-              )}
-            </>
           )}
         </div>
       )}
