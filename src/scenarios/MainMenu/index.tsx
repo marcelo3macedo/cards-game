@@ -1,5 +1,6 @@
 import { getImageUrl } from "../../utils/imageUtils";
 import { getRankName } from "../../utils/rankUtils";
+import { VillainCard } from "./components/VillainCard";
 import { useMainMenu } from "./hooks/useMainMenu";
 
 export default function MainMenuScenario({
@@ -7,7 +8,7 @@ export default function MainMenuScenario({
   onViewDeck,
   onViewTips,
 }: any) {
-  const { user, loading, handleLogout } = useMainMenu();
+  const { user, villains, loading, handleLogout } = useMainMenu();
 
   if (loading) {
     return (
@@ -58,7 +59,7 @@ export default function MainMenuScenario({
         </div>
       </div>
 
-      <div className="flex flex-1">
+      <div className="flex flex-1 min-h-0 overflow-hidden">
         <nav className="w-64 bg-black/20 border-r border-white/5 p-6 flex flex-col gap-3">
           <label className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em] mb-2">
             Menu Principal
@@ -91,8 +92,7 @@ export default function MainMenuScenario({
             </button>
           </div>
         </nav>
-
-        <main className="flex-1 p-10 overflow-y-auto">
+        <main className="flex-1 p-10 overflow-y-auto custom-scrollbar bg-black/10">
           <div className="max-w-4xl mx-auto">
             <header className="mb-10">
               <h1 className="text-4xl font-black italic uppercase tracking-tighter">
@@ -103,31 +103,15 @@ export default function MainMenuScenario({
               </p>
             </header>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div
-                onClick={onSelectOpponent}
-                className="group relative bg-zinc-900/50 border border-white/5 rounded-2xl p-6 cursor-pointer hover:border-blue-500/50 transition-all hover:translate-y-[-4px]"
-              >
-                <div className="h-48 bg-zinc-800 rounded-xl mb-4 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 to-transparent opacity-60"></div>
-                </div>
-                <h3 className="text-2xl font-black uppercase italic group-hover:text-blue-400 transition-colors">
-                  Duelista Iniciante
-                </h3>
-                <p className="text-zinc-500 text-xs mt-3">
-                  Teste seu deck atual de nível {user?.level}.
-                </p>
-              </div>
-
-              <div className="opacity-40 grayscale bg-zinc-900/50 border border-white/5 rounded-2xl p-6 cursor-not-allowed relative overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center z-10">
-                  <span className="bg-black/80 px-4 py-2 border border-white/10 text-[10px] font-bold tracking-[0.3em] uppercase">
-                    Requer Nível 10
-                  </span>
-                </div>
-                <div className="h-48 bg-zinc-800 rounded-xl mb-4"></div>
-                <h3 className="text-2xl font-black uppercase italic">Seto Kaiba</h3>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {villains.map((villain) => (
+                <VillainCard
+                  key={villain.id}
+                  villain={villain}
+                  userLevel={user?.level || 0}
+                  onSelect={onSelectOpponent}
+                />
+              ))}
             </div>
           </div>
         </main>
