@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { MonsterCard } from '../core/domain/Card';
+import { create } from "zustand";
+import { MonsterCard } from "../core/domain/Card";
 
 interface HandState {
   cards: MonsterCard[];
@@ -15,10 +15,8 @@ export const useHandStore = create<HandState>((set) => ({
   cards: [],
   isVisible: true,
   setCards: (cards) => set({ cards }),
-  addCard: (card) => 
-    set((state) => ({ cards: [...state.cards, card] })),
-  removeCard: (cardId) => 
-    set((state) => ({ cards: state.cards.filter(c => c.id !== cardId) })),
+  addCard: (card) => set((state) => ({ cards: [...state.cards, card] })),
+  removeCard: (cardId) => set((state) => ({ cards: state.cards.filter((c) => c.id !== cardId) })),
   setVisible: (visible) => set({ isVisible: visible }),
   toggleVisible: () => set((state) => ({ isVisible: !state.isVisible })),
 }));
