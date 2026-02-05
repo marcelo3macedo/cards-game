@@ -32,7 +32,7 @@ function App() {
     MATCHMAKING: (
       <MatchmakingScenario
         onBack={() => navigateTo("MAINMENU")}
-        onSelectOpponent={() => navigateTo("BATTLE")}
+        onBattleStarted={() => navigateTo("BATTLE")}
       />
     ),
     BATTLE: <BattleScenario onEnd={handleBattleEnd} />,

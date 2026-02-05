@@ -1,3 +1,4 @@
+import type { Villain } from "../../store/VillainStore";
 import { getImageUrl } from "../../utils/imageUtils";
 import { getRankName } from "../../utils/rankUtils";
 import { VillainCard } from "./components/VillainCard";
@@ -8,7 +9,11 @@ export default function MainMenuScenario({
   onViewDeck,
   onViewTips,
 }: any) {
-  const { user, villains, loading, handleLogout } = useMainMenu();
+  const { user, villains, loading, handleLogout, setSelectedVillain } = useMainMenu();
+  const handleChooseOpponent = (villain: Villain) => {
+    setSelectedVillain(villain);
+    onSelectOpponent();
+  };
 
   if (loading) {
     return (
@@ -109,7 +114,7 @@ export default function MainMenuScenario({
                   key={villain.id}
                   villain={villain}
                   userLevel={user?.level || 0}
-                  onSelect={onSelectOpponent}
+                  onSelect={handleChooseOpponent}
                 />
               ))}
             </div>
