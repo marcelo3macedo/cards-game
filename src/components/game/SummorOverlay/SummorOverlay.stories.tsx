@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { SummonOverlay } from './index';
-import { MonsterCard } from '../../../core/domain/Card';
-import exemplo_legendaria from '@/assets/images/exemplo_legendaria.jpg';
-import exemplo_comum from '@/assets/images/exemplo_comum.jpg';
+import type { Meta, StoryObj } from "@storybook/react";
+import { SummonOverlay } from "./index";
+import { MonsterCard } from "../../../core/domain/Card";
+import exemplo_legendaria from "@/assets/images/exemplo_legendaria.jpg";
+import exemplo_comum from "@/assets/images/exemplo_comum.jpg";
 
 const meta: Meta<typeof SummonOverlay> = {
-  title: 'Game/SummonOverlay',
+  title: "Game/SummonOverlay",
   component: SummonOverlay,
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
   decorators: [
     (Story) => (
@@ -18,8 +18,8 @@ const meta: Meta<typeof SummonOverlay> = {
     ),
   ],
   argTypes: {
-    onSummon: { action: 'summoned' },
-    onCancel: { action: 'cancelled' },
+    onSummon: { action: "summoned" },
+    onCancel: { action: "cancelled" },
   },
 };
 
@@ -27,15 +27,15 @@ export default meta;
 type Story = StoryObj<typeof SummonOverlay>;
 
 const mockMonster = new MonsterCard(
-  '1',
-  'Patrulheiro Gárgula de Gelo',
-  'Emissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados.',
+  "1",
+  "Patrulheiro Gárgula de Gelo",
+  "Emissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados.",
   exemplo_legendaria,
-  'ice',
+  "ice",
   2500,
   2100,
   7,
-  'LEGENDARIO'
+  "LEGENDARIO",
 );
 
 export const Default: Story = {
@@ -47,15 +47,15 @@ export const Default: Story = {
 export const SmallTextCard: Story = {
   args: {
     card: new MonsterCard(
-      '2',
-      'Goblin Curioso',
-      'Um pequeno goblin que adora bisbilhotar baralhos alheios.',
+      "2",
+      "Goblin Curioso",
+      "Um pequeno goblin que adora bisbilhotar baralhos alheios.",
       exemplo_comum,
-      'earth',
+      "earth",
       1200,
       800,
       3,
-      'COMUM'
+      "COMUM",
     ),
   },
 };

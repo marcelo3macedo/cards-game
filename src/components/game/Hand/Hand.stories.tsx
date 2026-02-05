@@ -1,29 +1,30 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { BaseCard, MonsterCard } from '../../../core/domain/Card';
-import { PlayerHand } from '.';
-import exemplo_comum from '@/assets/images/exemplo_comum.jpg';
+import type { Meta, StoryObj } from "@storybook/react";
+import { BaseCard, MonsterCard } from "../../../core/domain/Card";
+import { PlayerHand } from ".";
+import exemplo_comum from "@/assets/images/exemplo_comum.jpg";
 
 const card = new MonsterCard(
-    '2', 
-    'Guarda de Pedra', 
-    'Um soldado incansável esculpido nas montanhas antigas. Sua lealdade é tão imutável quanto a rocha de que é feito, servindo como a primeira linha de defesa contra hordas invasoras.', 
-    exemplo_comum, 
-    'earth', 
-    1200, 2000, 4, 'COMUM'
+  "2",
+  "Guarda de Pedra",
+  "Um soldado incansável esculpido nas montanhas antigas. Sua lealdade é tão imutável quanto a rocha de que é feito, servindo como a primeira linha de defesa contra hordas invasoras.",
+  exemplo_comum,
+  "earth",
+  1200,
+  2000,
+  4,
+  "COMUM",
 );
 
-const mockCards: BaseCard[] = [
-  card, card, card, card, card
-];
+const mockCards: BaseCard[] = [card, card, card, card, card];
 
 const meta: Meta<typeof PlayerHand> = {
-  title: 'Game/PlayerHand',
+  title: "Game/PlayerHand",
   component: PlayerHand,
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
   argTypes: {
-    onSelect: { action: 'card selected' },
+    onSelect: { action: "card selected" },
   },
 };
 

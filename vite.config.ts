@@ -12,7 +12,9 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    allowedHosts: ['marginally-present-salmon.ngrok-free.app' // Adicione o seu host aqui
+    allowedHosts: [
+      "marginally-present-salmon.ngrok-free.app",
+      "card-game.professoraantenada.com.br"
     ]
   },
   test: {
