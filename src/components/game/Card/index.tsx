@@ -3,6 +3,7 @@ import { MonsterCard, type CardProps } from "../../../core/domain/Card";
 import { getAttributeIcon } from "../../../core/utils/CardIcon";
 import { renderCardInfo } from "./Info";
 import { Star } from "lucide-react";
+import { getImageUrl } from "../../../utils/imageUtils";
 
 export const Card: React.FC<CardProps> = ({ card, size = "lg", isFaceDown = false }) => {
   const isMonster = card instanceof MonsterCard;
@@ -78,7 +79,7 @@ export const Card: React.FC<CardProps> = ({ card, size = "lg", isFaceDown = fals
       )}
 
       <div className="flex-1 bg-zinc-900 border border-black/40 overflow-hidden shadow-inner">
-        <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
+        <img src={getImageUrl(card.image)} alt={card.name} className="w-full h-full object-cover" />
       </div>
 
       {renderCardInfo(card, size, isMonster)}

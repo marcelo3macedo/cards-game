@@ -16,7 +16,7 @@ interface BattleOutcome {
 }
 
 export const useNavigation = () => {
-  const [currentScenario, setCurrentScenario] = useState<ScenarioType>("MAINMENU");
+  const [currentScenario, setCurrentScenario] = useState<ScenarioType>("BATTLE");
   const [lastBattleOutcome, setLastBattleOutcome] = useState<BattleOutcome | null>({
     status: "victory",
     opponentName: "Gárgula de Gelo",

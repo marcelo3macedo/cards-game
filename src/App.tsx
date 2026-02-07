@@ -35,7 +35,9 @@ function App() {
         onBattleStarted={() => navigateTo("BATTLE")}
       />
     ),
-    BATTLE: <BattleScenario onEnd={handleBattleEnd} />,
+    BATTLE: <BattleScenario
+              onBack={() => navigateTo("MAINMENU")}
+              onEnd={handleBattleEnd} />,
     BATTLE_RESULT: lastBattleOutcome && (
       <BattleResultScenario
         {...lastBattleOutcome}

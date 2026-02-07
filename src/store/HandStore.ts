@@ -1,10 +1,10 @@
 import { create } from "zustand";
-import { MonsterCard } from "../core/domain/Card";
+import { BaseCard, MonsterCard } from "../core/domain/Card";
 
 interface HandState {
-  cards: MonsterCard[];
+  cards: BaseCard[];
   isVisible: boolean;
-  setCards: (cards: MonsterCard[]) => void;
+  setCards: (cards: BaseCard[]) => void;
   addCard: (card: MonsterCard) => void;
   removeCard: (cardId: string) => void;
   setVisible: (visible: boolean) => void;

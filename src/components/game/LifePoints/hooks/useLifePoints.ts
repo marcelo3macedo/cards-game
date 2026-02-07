@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useBattleStore } from "../../../../store/BattleStore";
 
 export function useLifePoints(target: "player" | "opponent") {
-  const lp = useBattleStore((state) => state[target].lp);
+  const lp = useBattleStore((state) => state[target].hp);
   const name = useBattleStore((state) => state[target].name);
 
   const [displayLP, setDisplayLP] = useState(lp);

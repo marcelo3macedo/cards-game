@@ -3,7 +3,7 @@ import { useLifePoints } from "./hooks/useLifePoints";
 import type { LifePointsProps } from "../../../core/domain/LifePoints";
 
 export const LifePoints = ({ target, color, align = "left" }: LifePointsProps) => {
-  const { displayLP, name, damagePopup, clearPopup } = useLifePoints(target);
+  const { name, damagePopup, clearPopup, displayLP } = useLifePoints(target);
   const isRedTheme = color === "red";
 
   return (
