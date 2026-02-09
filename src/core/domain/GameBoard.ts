@@ -17,7 +17,7 @@ export interface ExtendedGameBoardProps extends GameBoardProps {
 }
 
 export interface BoardGutterProps {
-  side: "left" | "right";
+  type: string;
   onDraw?: () => void;
   deckCount?: number;
 }

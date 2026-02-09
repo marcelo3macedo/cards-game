@@ -1,0 +1,31 @@
+export function EndTurnAction({ handleEndTurn, currentTurnOwner }:any) {
+    return (
+        <div className="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col items-center gap-4">
+            <button
+                onClick={handleEndTurn}
+                disabled={currentTurnOwner !== 'player'}
+                className={`
+                    group relative px-8 py-3 font-black italic text-xl tracking-tighter transition-all duration-300
+                    ${currentTurnOwner === 'player'
+                    ? 'bg-amber-500 hover:bg-amber-400 text-black cursor-pointer skew-x-[-12deg] hover:scale-110 shadow-[0_0_20px_rgba(245,158,11,0.4)]'
+                    : 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50 skew-x-[-12deg]'}
+                `}
+            >
+            <span className="absolute top-0 left-0 w-full h-full border-2 border-white/20 translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform"></span>
+
+            <span className="relative z-10">
+                {currentTurnOwner === 'player' ? 'ENCERRAR TURNO' : 'TURNO RIVAL'}
+            </span>
+            </button>
+
+            <div className="flex flex-col items-end gap-1">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold">Status do Duelo</p>
+                <div className={`h-1 w-32 rounded-full overflow-hidden bg-zinc-800`}>
+                    <div
+                    className={`h-full transition-all duration-700 ${currentTurnOwner === 'player' ? 'w-full bg-blue-500' : 'w-0 bg-red-500'}`}
+                    />
+                </div>
+            </div>
+        </div>
+    )
+}

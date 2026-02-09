@@ -3,6 +3,7 @@ export interface FieldZoneProps {
   mode?: "atk" | "def" | "face-down";
   isInteractable?: boolean;
   isSelected?: boolean;
+  isOpponent?: boolean;
   isFocused?: boolean;
   onClick?: () => void;
 }

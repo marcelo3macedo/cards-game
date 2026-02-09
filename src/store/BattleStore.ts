@@ -8,6 +8,8 @@ interface PlayerData {
   deckCount: number;
   hand?: any;
   handCount?: number;
+  graveyard: any[];
+  field: any[];
 }
 
 interface BattleStoreState {
@@ -16,6 +18,7 @@ interface BattleStoreState {
   turn: number;
   currentTurnOwner: "player" | "opponent";
   initBattle: (state: any) => void;
+  setBattle: (state: any) => void;
   updateHP: (playerHP: number, opponentHP: number) => void;
   clearBattle: () => void;
 }
@@ -30,8 +33,16 @@ export const useBattleStore = create<BattleStoreState>()(
 
       initBattle: (state) =>
         set({
-          player: { id: state.player.id, name: state.player.name, hp: state.player.hp, deckCount: state.player.deckCount, hand: state.player.hand },
-          opponent: { id: state.opponent.id, name: state.opponent.name, hp: state.opponent.hp, deckCount: state.player.deckCount, handCount: state.player.handCount },
+          player: state.player,
+          opponent: state.opponent,
+          turn: state.turn,
+          currentTurnOwner: state.currentTurnOwner,
+        }),
+
+      setBattle: (state) =>
+        set({
+          player: state.player,
+          opponent: state.opponent,
           turn: state.turn,
           currentTurnOwner: state.currentTurnOwner,
         }),

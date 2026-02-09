@@ -9,7 +9,7 @@ export function GameBoard(props: ExtendedGameBoardProps) {
     <div
       className={`grid grid-cols-[120px_1fr_120px] gap-8 items-center w-full max-w-7xl px-10 transition-all duration-500 ${isBlur ? "blur-xl scale-95 opacity-40" : ""}`}
     >
-      <BoardGutter side="left" />
+      <BoardGutter type="opponent" onDraw={props.onDraw} />
 
       <div className="flex flex-col gap-10">
         <div
@@ -37,7 +37,7 @@ export function GameBoard(props: ExtendedGameBoardProps) {
         />
       </div>
 
-      <BoardGutter side="right" onDraw={props.onDraw} />
+      <BoardGutter type="player" onDraw={props.onDraw} />
     </div>
   );
 }

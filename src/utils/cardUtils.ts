@@ -1,6 +1,8 @@
 import { MagicCard, MonsterCard, TrapCard, type BaseCard } from "../core/domain/Card";
 
-export function mapServerCardToEntity(data: any): BaseCard {
+export function mapServerCardToEntity(data: any): BaseCard | undefined {
+  if (!data) return;
+
   const {
     id,
     name,
@@ -10,7 +12,6 @@ export function mapServerCardToEntity(data: any): BaseCard {
     attackPower,
     defensePower,
     stars,
-    category,
     element,
   } = data;
 
@@ -40,6 +41,6 @@ export function mapServerCardToEntity(data: any): BaseCard {
   }
 }
 
-export const mapHand = (serverHand: any[]): BaseCard[] => {
+export const mapHand = (serverHand: any[]): (BaseCard | undefined)[] => {
   return serverHand.map(mapServerCardToEntity);
 };

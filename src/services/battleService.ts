@@ -6,14 +6,23 @@ export interface BattleState {
     hp: number;
     hand: any[];
     deckCount: number;
+    field: any;
   };
   opponent: {
     hp: number;
     handCount: number;
     deckCount: number;
     name: string;
+    field: any;
   };
   turn: number;
+}
+
+export interface EndTurnResponse {
+  message: string;
+  logs: string[];
+  actions: any[];
+  state: BattleState;
 }
 
 export const battleService = {
@@ -34,6 +43,50 @@ export const battleService = {
       if (response.status === 401) authService.logout();
       const errorData = await response.json();
       throw new Error(errorData.error || "Erro ao iniciar o motor de batalha");
+    }
+
+    return await response.json();
+  },
+
+  summonCard: async (handIndex: number, position: string): Promise<BattleState> => {
+    const API_URL = import.meta.env.VITE_API_URL;
+    const token = authService.getSessionToken();
+
+    const response = await fetch(`${API_URL}/battle-engine/summon`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": `${token}`,
+      },
+      body: JSON.stringify({ handIndex, position }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) authService.logout();
+
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Erro ao realizar a invocação");
+    }
+
+    return await response.json();
+  },
+
+  endTurn: async (): Promise<EndTurnResponse> => {
+    const API_URL = import.meta.env.VITE_API_URL;
+    const token = authService.getSessionToken();
+
+    const response = await fetch(`${API_URL}/battle-engine/end-turn`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": `${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) authService.logout();
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Erro ao finalizar turno");
     }
 
     return await response.json();

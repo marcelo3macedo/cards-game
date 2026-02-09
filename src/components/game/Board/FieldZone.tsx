@@ -15,6 +15,7 @@ export function FieldZone({
   onClick,
   onInitiateAttack,
   onChangeMode,
+  isOpponent
 }: ExtendedFieldZoneProps) {
   const [showMenu, setShowMenu] = useState(false);
   const isFaceDown = mode === "face-down";
@@ -36,13 +37,15 @@ export function FieldZone({
     >
       <AnimatePresence>
         {showMenu && card && (
-          <FieldZoneMenu
-            mode={mode}
-            index={index}
-            onInitiateAttack={onInitiateAttack}
-            onChangeMode={onChangeMode}
-            onClose={() => setShowMenu(false)}
-          />
+          <div className={isOpponent ? "rotate-180" : ""}>
+            <FieldZoneMenu
+              mode={mode}
+              index={index}
+              onInitiateAttack={onInitiateAttack}
+              onChangeMode={onChangeMode}
+              onClose={() => setShowMenu(false)}
+            />
+          </div>
         )}
       </AnimatePresence>
 

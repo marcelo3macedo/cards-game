@@ -6,6 +6,8 @@ import { AbandonBattleModal } from "./components/AbandonBattleModal";
 import { GameBoard } from "../../components/game/Board";
 import { SummonOverlay } from "../../components/game/SummorOverlay";
 import { BattleAnimationOverlay } from "../../components/game/Battle/BattleAnimationOverlay";
+import { EndTurnAction } from "./components/EndTurnAction";
+import { OpponentHandContainer } from "../../components/game/Hand/opponentContainer";
 
 export default function BattleScenario({ onBack, onEnd }: any) {
   const {
@@ -29,7 +31,8 @@ export default function BattleScenario({ onBack, onEnd }: any) {
     clearBattle,
     executeSummon,
     handleBattleComplete,
-    setPendingSummon
+    setPendingSummon,
+    handleEndTurn
   } = useBattleActions();
 
   const handleAbandon = () => {
@@ -44,6 +47,8 @@ export default function BattleScenario({ onBack, onEnd }: any) {
       <div className="absolute left-10 top-5 z-50">
         <AbandonBattleModal onConfirm={handleAbandon} />
       </div>
+
+      <OpponentHandContainer />
 
       <div className="absolute right-10 top-5 flex flex-col gap-2">
         <LifePoints
@@ -108,6 +113,11 @@ export default function BattleScenario({ onBack, onEnd }: any) {
       <div className="absolute left-10 top-1/2 -translate-y-1/2">
         <LifePoints target="player" color="blue" align="left" />
       </div>
+
+      <EndTurnAction
+        handleEndTurn={handleEndTurn}
+        currentTurnOwner={currentTurnOwner}
+      />
     </div>
   );
 }

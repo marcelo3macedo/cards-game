@@ -2,8 +2,9 @@ import { useEffect, useState, useRef } from 'react';
 import { useBattleStore } from '../../../store/BattleStore';
 import { useHandStore } from '../../../store/HandStore';
 import type { MonsterCard } from '../../../core/domain/Card';
-import { mapHand } from '../../../utils/cardUtils';
+import { mapHand, mapServerCardToEntity } from '../../../utils/cardUtils';
 import type { FieldSlot } from '../index copy';
+import { battleService } from '../../../services/battleService';
 
 export const useBattleActions = () => {
   const { player, opponent, currentTurnOwner, clearBattle } = useBattleStore();
@@ -100,7 +101,7 @@ export const useBattleActions = () => {
     setHandVisible(false);
   };
 
-  const executeSummon = (mode: string) => {
+  const executeSummon = async (mode: string) => {
     if (!selectedCard || pendingSummon === null) return;
 
     const updatedZones = [...monsterZones];
@@ -109,17 +110,102 @@ export const useBattleActions = () => {
       mode: mode.includes("def") ? "def" : "atk",
     };
 
-    setMonsterZones(updatedZones);
-    useHandStore.getState().removeCard(selectedCard.id);
+    try {
+      const handIndex = player?.hand.findIndex(c => Number(c.id) === Number(selectedCard.id));
+      if (handIndex === -1) return;
 
-    setSelectedCard(null);
-    setIsSelectingZone(false);
-    setHandVisible(false);
+      const position = mode.includes("def") ? "defense" : "attack"
+      const newState = await battleService.summonCard(handIndex, position);
+
+      useBattleStore.getState().setBattle(newState);
+      setMonsterZones(updatedZones);
+      useHandStore.getState().removeCard(selectedCard.id);
+
+      setSelectedCard(null);
+      setIsSelectingZone(false);
+      setPendingSummon(null);
+
+    } catch (error: any) {
+      console.error(error.message);
+    }
   };
 
   const handleBattleComplete = (result: string) => {
     setBattleData(null);
     setAttackerIndex(null);
+  };
+
+  const handleEndTurn = async () => {
+    try {
+      const response = await battleService.endTurn();
+
+      await processOpponentActions(response.actions);
+
+      useBattleStore.getState().setBattle(response.state);
+
+      const newPlayerZones = syncField(response.state.player.field);
+      const newOpponentZones = syncField(response.state.opponent.field);
+
+      setMonsterZones(newPlayerZones);
+      setOpponentZones(newOpponentZones);
+
+      console.log("Ações do Oponente:", response.logs);
+    } catch (error: any) {
+      console.error("Erro ao encerrar turno:", error.message);
+    }
+  };
+
+  const processOpponentActions = async (actions: any[]) => {
+    for (const action of actions) {
+      switch (action.type) {
+        case 'summon':
+          console.log(`Oponente invocou: ${action.data.monster.name}`);
+          break;
+
+        case 'attack':
+          const { attacker, target } = action.data;
+          if (!target) {
+            console.log(`${attacker?.name || "Monstro"} atacou diretamente!`);
+            setBattleData({
+              attacker: mapServerCardToEntity(attacker),
+              defender: null
+            });
+          } else {
+            console.log(`${attacker.name} atacou ${target.name}`);
+            setBattleData({
+              attacker: mapServerCardToEntity(attacker),
+              defender: mapServerCardToEntity(target)
+            });
+          }
+          break;
+
+        default:
+          console.log("Ação desconhecida:", action.type);
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      setBattleData(null);
+    }
+  };
+
+  const syncField = (serverField: any[]) => {
+    const slots: FieldSlot[] = Array(5).fill(null).map(() => ({ card: null, mode: "atk" }));
+
+    serverField.forEach((slot: any, i: number) => {
+      const index = typeof slot.position === 'number' ? slot.position : i;
+
+      const mode = (slot.position === "defense" || slot.mode === "def") ? "def" : "atk";
+
+      if (index >= 0 && index < 5) {
+        slots[index] = {
+          card: mapServerCardToEntity(slot.card),
+          mode: mode
+        };
+      }
+    });
+
+    return slots;
   };
 
   return {
@@ -141,6 +227,7 @@ export const useBattleActions = () => {
     handleSelectTarget,
     handleChangeMode,
     handleDrawCard,
+    handleEndTurn,
 
     // Funções para o PlayerHand / Controle
     handleHandSelect,
