@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import type { Mode } from "../../../../core/domain/Summon";
+import { ActionKey, getActionFromKey } from "../../../../utils/keyUtils";
 
 export const useSummonOverlayNavigation = ({ onSummon, onCancel }: any) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -13,17 +14,19 @@ export const useSummonOverlayNavigation = ({ onSummon, onCancel }: any) => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case "ArrowLeft":
+      const action = getActionFromKey(e.key);
+
+      switch (action) {
+        case ActionKey.Left:
           setActiveIndex((prev) => (prev > 0 ? prev - 1 : options.length - 1));
           break;
-        case "ArrowRight":
+        case ActionKey.Right:
           setActiveIndex((prev) => (prev < options.length - 1 ? prev + 1 : 0));
           break;
-        case "Enter":
+        case ActionKey.Enter:
           onSummon(options[activeIndex].mode);
           break;
-        case "Escape":
+        case ActionKey.Space:
           onCancel();
           break;
       }

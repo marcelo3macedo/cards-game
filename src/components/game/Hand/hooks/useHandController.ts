@@ -1,13 +1,16 @@
 import { useEffect } from "react";
 import { useHandStore } from "../../../../store/HandStore";
+import { ActionKey, getActionFromKey } from "../../../../utils/keyUtils";
 
 export function useHandController() {
   const { isVisible, setVisible, toggleVisible } = useHandStore();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowUp") setVisible(false);
-      if (e.key === "ArrowDown") setVisible(true);
+      const action = getActionFromKey(e.key);
+
+      if (action === ActionKey.Up) setVisible(false);
+      if (action === ActionKey.Down) setVisible(true);
     };
 
     const handleMouseMove = (e: MouseEvent) => {
