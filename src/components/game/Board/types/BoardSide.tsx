@@ -1,8 +1,9 @@
 import type { BoardSideProps } from "../../../../core/domain/GameBoard";
+import { useBattleStore } from "../../../../store/BattleStore";
+import { mapServerCardToEntity } from "../../../../utils/cardUtils";
 import { FieldZone } from "../FieldZone";
 
 export const BoardSide = ({
-  zones,
   isOpponent,
   isSelectingTarget,
   onSelectTarget,
@@ -13,64 +14,57 @@ export const BoardSide = ({
   onInitiateAttack,
   onChangeMode,
 }: BoardSideProps) => {
+  const rawField = useBattleStore((state) =>
+    isOpponent ? state.opponent?.field : state.player?.field
+  ) || [];
+
+  const normalizedField = Array.from({ length: 5 }, (_, i) => rawField[i] ?? null);
+
   const monsterRow = (
     <div className="flex justify-center gap-4">
-      {zones.map((zone, i) =>
-        isOpponent ? (
-          <div
-            key={i}
-            onClick={(e) => {
-              if (isSelectingTarget && zone.card) {
-                e.stopPropagation();
-                onSelectTarget?.(i);
-              }
-            }}
-            className={`w-24 h-32 border-2 rounded-lg transition-all flex items-center justify-center
-              ${zone.card ? "border-red-500/40 bg-zinc-900 shadow-lg cursor-pointer hover:scale-110" : "border-red-900/20 bg-zinc-900/60"}
-              ${isSelectingTarget && zone.card ? "animate-pulse border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.4)]" : ""}
-            `}
-          >
-            {zone.card && (
-              <div className="text-[10px] text-red-500 font-bold uppercase rotate-180">
-                Oponente
-              </div>
-            )}
-          </div>
-        ) : (
-          <FieldZone
-            key={i}
-            index={i}
-            card={zone.card}
-            mode={zone.mode}
-            isInteractable={isSelecting && !zone.card}
-            isSelected={highlightedIndex === i}
-            isFocused={isSelecting && focusedZoneIndex === i}
-            onClick={() => onZoneSelect?.(i)}
-            onInitiateAttack={onInitiateAttack}
-            onChangeMode={onChangeMode}
-          />
-        ),
-      )}
+      {normalizedField.map((cardData, i) => (
+        <FieldZone
+          key={`monster-${i}`}
+          index={i}
+          card={mapServerCardToEntity(cardData?.card || cardData)}
+          mode={cardData?.mode || "attack"}
+          isInteractable={
+            isOpponent
+              ? (isSelectingTarget && !!cardData)
+              : (isSelecting && !cardData)
+          }
+          isSelected={!isOpponent && highlightedIndex === i}
+          isFocused={!isOpponent && isSelecting && focusedZoneIndex === i}
+          onClick={() => {
+            if (isOpponent) {
+              if (isSelectingTarget && cardData) onSelectTarget?.(i);
+            } else {
+              onZoneSelect?.(i);
+            }
+          }}
+          onInitiateAttack={isOpponent ? undefined : onInitiateAttack}
+          onChangeMode={isOpponent ? undefined : onChangeMode}
+          isOpponent={isOpponent}
+        />
+      ))}
     </div>
   );
 
   const spellRow = (
-    <div className={`flex justify-center gap-4 ${isOpponent ? "opacity-40" : ""}`}>
-      {Array(5)
-        .fill(null)
-        .map((_, i) => (
-          <div
-            key={i}
-            className="w-24 h-32 border-2 border-zinc-800/20 bg-zinc-900/40 rounded-lg hover:bg-zinc-800/10 transition-colors"
-          />
-        ))}
+    <div className="flex justify-center gap-4">
+      {Array(5).fill(null).map((_, i) => (
+        <div
+          key={`spell-${i}`}
+          className="w-24 h-32 border-2 border-zinc-800/10 bg-zinc-900/20 rounded-lg"
+        />
+      ))}
     </div>
   );
 
   return (
-    <div className={`flex flex-col gap-3 ${isOpponent ? "scale-90" : ""}`}>
-      {isOpponent ? spellRow : monsterRow}
-      {isOpponent ? monsterRow : spellRow}
+    <div className={`flex flex-col gap-3 transition-all ${isOpponent ? "flex-col-reverse rotate-180 scale-95" : ""}`}>
+      {spellRow}
+      {monsterRow}
     </div>
   );
 };
