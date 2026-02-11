@@ -6,6 +6,7 @@ export function mapServerCardToEntity(data: any): BaseCard | undefined {
   const {
     id,
     name,
+    mode,
     description,
     imageUrl,
     attribute,
@@ -22,6 +23,7 @@ export function mapServerCardToEntity(data: any): BaseCard | undefined {
         name,
         description,
         imageUrl,
+        mode,
         element,
         attackPower,
         defensePower,
@@ -31,13 +33,13 @@ export function mapServerCardToEntity(data: any): BaseCard | undefined {
 
     case "spell":
     case "magic":
-      return new MagicCard(String(id), name, description, "MAGICA", imageUrl, element);
+      return new MagicCard(String(id), name, description, "MAGICA", imageUrl, mode, element);
 
     case "trap":
-      return new TrapCard(String(id), name, description, "ARMADILHA", imageUrl, element);
+      return new TrapCard(String(id), name, description, "ARMADILHA", imageUrl, mode, element);
 
     default:
-      return new MonsterCard(String(id), name, description, imageUrl, element, 0, 0, 1, "COMUM");
+      return new MonsterCard(String(id), name, description, imageUrl, mode, element, 0, 0, 1, "COMUM");
   }
 }
 

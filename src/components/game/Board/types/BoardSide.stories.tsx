@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { BoardSide } from "./BoardSide";
 import { useBattleStore } from "../../../../store/BattleStore";
 import { useEffect } from "react";
+import { BattleEvent } from "../../../../core/domain/BattleStore";
+import { mockMonsterInAttackMode, mockMonsterInDefenseMode } from "../../../../utils/mockUtils";
 
 const meta: Meta<typeof BoardSide> = {
   title: "Game/BoardSide",
@@ -18,62 +20,150 @@ const meta: Meta<typeof BoardSide> = {
 
 export default meta;
 
-export const PlayerSideWithOneMonster: StoryObj<typeof BoardSide> = {
+export const EventInitial: StoryObj<typeof BoardSide> = {
   render: (args) => {
     const initBattle = useBattleStore((s) => s.initBattle);
+    const setEvent = useBattleStore((s) => s.setEvent);
+
+    useEffect(() => {
+      initBattle({
+        player: { field: [] },
+        opponent: { field: [] },
+        turn: 1,
+        currentTurnOwner: "player"
+      });
+
+      setEvent(BattleEvent.INITIAL);
+    }, []);
+
+    return <BoardSide {...args} isOpponent={false} />;
+  },
+}
+
+export const EventCardSelected: StoryObj<typeof BoardSide> = {
+  render: (args) => {
+    const initBattle = useBattleStore((s) => s.initBattle);
+    const setEvent = useBattleStore((s) => s.setEvent);
+
+    useEffect(() => {
+      initBattle({
+        player: { field: [] },
+        opponent: { field: [] },
+        turn: 1,
+        currentTurnOwner: "player"
+      });
+
+      setEvent(BattleEvent.SELECTING_POSITION);
+    }, []);
+
+    return <BoardSide {...args} isOpponent={false} />;
+  },
+}
+
+export const OpponentOnCardSelected: StoryObj<typeof BoardSide> = {
+  render: (args) => {
+    const initBattle = useBattleStore((s) => s.initBattle);
+    const setEvent = useBattleStore((s) => s.setEvent);
+
+    useEffect(() => {
+      initBattle({
+        player: { field: [] },
+        opponent: { field: [] },
+        turn: 1,
+        currentTurnOwner: "opponent"
+      });
+
+      setEvent(BattleEvent.SELECTING_POSITION);
+    }, []);
+
+    return <BoardSide {...args} isOpponent={true} />;
+  },
+}
+
+export const PlayerSideAttackMode: StoryObj<typeof BoardSide> = {
+  render: (args) => {
+    const initBattle = useBattleStore((s) => s.initBattle);
+    const setEvent = useBattleStore((s) => s.setEvent);
 
     useEffect(() => {
       initBattle({
         player: {
-          name: "Yugi",
-          hp: 8000,
-          field: [{ card: { name: "Mago Negro", atk: 2500, def: 2100, level: 7, imageUrl: "https://images.ygoprodeck.com/images/cards/46986414.jpg" }, mode: "attack" }]
+          field: [ mockMonsterInAttackMode ]
         },
-        opponent: { name: "Kaiba", hp: 8000, field: [] },
+        opponent: { field: [] },
         turn: 1,
         currentTurnOwner: "player"
       });
+
+      setEvent(BattleEvent.INITIAL);
     }, []);
 
     return <BoardSide {...args} isOpponent={false} />;
   },
 };
 
-export const OpponentSideFullField: StoryObj<typeof BoardSide> = {
+export const PlayerSideDefenseMode: StoryObj<typeof BoardSide> = {
   render: (args) => {
     const initBattle = useBattleStore((s) => s.initBattle);
+    const setEvent = useBattleStore((s) => s.setEvent);
 
     useEffect(() => {
-      const monster = { card: { name: "Blue-Eyes", atk: 3000, def: 2500, imageUrl: "https://images.ygoprodeck.com/images/cards/46986414.jpg" }, mode: "attack" };
       initBattle({
-        player: { name: "Yugi", hp: 8000, field: [] },
-        opponent: {
-          name: "Kaiba",
-          hp: 8000,
-          field: [monster, monster, monster, monster, monster]
+        player: {
+          field: [ mockMonsterInDefenseMode ]
         },
+        opponent: { field: [] },
         turn: 1,
         currentTurnOwner: "player"
       });
+
+      setEvent(BattleEvent.INITIAL);
     }, []);
 
-    return <BoardSide {...args} isOpponent={true} isSelectingTarget={true} />;
+    return <BoardSide {...args} isOpponent={false} />;
   },
 };
 
-export const EmptySelectingMode: StoryObj<typeof BoardSide> = {
+export const OpponentSideAttackMode: StoryObj<typeof BoardSide> = {
   render: (args) => {
     const initBattle = useBattleStore((s) => s.initBattle);
+    const setEvent = useBattleStore((s) => s.setEvent);
 
     useEffect(() => {
       initBattle({
-        player: { name: "Yugi", hp: 8000, field: [] },
-        opponent: { name: "Kaiba", hp: 8000, field: [] },
+        player: {
+          field: []
+        },
+        opponent: { field: [ mockMonsterInAttackMode ] },
         turn: 1,
-        currentTurnOwner: "player"
+        currentTurnOwner: "opponent"
       });
+
+      setEvent(BattleEvent.INITIAL);
     }, []);
 
-    return <BoardSide {...args} isSelecting={true} highlightedIndex={2} />;
+    return <BoardSide {...args} isOpponent={true} />;
+  },
+};
+
+export const OpponentSideDefenseMode: StoryObj<typeof BoardSide> = {
+  render: (args) => {
+    const initBattle = useBattleStore((s) => s.initBattle);
+    const setEvent = useBattleStore((s) => s.setEvent);
+
+    useEffect(() => {
+      initBattle({
+        player: {
+          field: []
+        },
+        opponent: { field: [ mockMonsterInDefenseMode ] },
+        turn: 1,
+        currentTurnOwner: "opponent"
+      });
+
+      setEvent(BattleEvent.INITIAL);
+    }, []);
+
+    return <BoardSide {...args} isOpponent={true} />;
   },
 };

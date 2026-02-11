@@ -1,0 +1,11 @@
+import{M as r,C as s}from"./index-CK7_MADk.js";import{e as o}from"./exemplo_legendaria-DxHYjB_J.js";import"./jsx-runtime-u17CrQMm.js";import"./iframe-Dxz4Iu-O.js";import"./preload-helper-PPVm8Dsz.js";import"./sword-tIX24kzi.js";import"./createLucideIcon-SZYWXtx4.js";import"./star-CBuiB-me.js";const g={title:"Game/Card",component:s},e={args:{card:new r("1","Patrulheiro Gárgula de Gelo","Emmissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados. Sua presença inspira coragem, e o eco de seu grito de gelo ressoa nas muralhas, formando escudos de pedra que refutam qualquer ataque.",o,"ice",2500,2100,7,"LEGENDARIO"),isFaceDown:!1}},a={args:{card:new r("1","Patrulheiro Gárgula de Gelo","Emmissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados. Sua presença inspira coragem, e o eco de seu grito de gelo ressoa nas muralhas, formando escudos de pedra que refutam qualquer ataque.",o,"ice",2500,2100,7,"LEGENDARIO"),isFaceDown:!0}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
+  args: {
+    card: new MonsterCard("1", "Patrulheiro Gárgula de Gelo", "Emmissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados. Sua presença inspira coragem, e o eco de seu grito de gelo ressoa nas muralhas, formando escudos de pedra que refutam qualquer ataque.", exemplo_legendaria, "ice", 2500, 2100, 7, "LEGENDARIO"),
+    isFaceDown: false
+  }
+}`,...e.parameters?.docs?.source}}};a.parameters={...a.parameters,docs:{...a.parameters?.docs,source:{originalSource:`{
+  args: {
+    card: new MonsterCard("1", "Patrulheiro Gárgula de Gelo", "Emmissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados. Sua presença inspira coragem, e o eco de seu grito de gelo ressoa nas muralhas, formando escudos de pedra que refutam qualquer ataque.", exemplo_legendaria, "ice", 2500, 2100, 7, "LEGENDARIO"),
+    isFaceDown: true
+  }
+}`,...a.parameters?.docs?.source}}};const p=["FaceUp","FaceDown"];export{a as FaceDown,e as FaceUp,p as __namedExportsOrder,g as default};

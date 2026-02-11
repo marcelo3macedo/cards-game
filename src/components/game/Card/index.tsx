@@ -4,8 +4,15 @@ import { getAttributeIcon } from "../../../core/utils/CardIcon";
 import { renderCardInfo } from "./Info";
 import { Star } from "lucide-react";
 import { getImageUrl } from "../../../utils/imageUtils";
+import { mapServerCardToEntity } from "../../../utils/cardUtils";
 
-export const Card: React.FC<CardProps> = ({ card, size = "lg", isFaceDown = false }) => {
+export const Card: React.FC<CardProps> = ({ card: initialCard, size = "lg", isFaceDown = false }) => {
+  const card = typeof initialCard.getStyle === 'function'
+    ? initialCard
+    : mapServerCardToEntity(initialCard);
+
+  if (!card) return;
+
   const isMonster = card instanceof MonsterCard;
   const cardStyle = card.getStyle();
   const sizeClasses = {

@@ -6,6 +6,7 @@ export enum ActionKey {
   Space = "space",
   Enter = "enter",
   F1 = "f1",
+  Escape = "Escape",
 }
 
 const KEY_TO_ACTION: Record<string, ActionKey> = {
@@ -20,6 +21,7 @@ const KEY_TO_ACTION: Record<string, ActionKey> = {
   " ": ActionKey.Space,
   "Enter": ActionKey.Enter,
   "F1": ActionKey.F1,
+  "Escape": ActionKey.Escape
 };
 
 

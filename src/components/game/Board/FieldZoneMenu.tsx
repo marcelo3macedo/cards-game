@@ -1,24 +1,24 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Sword, RefreshCw, Search, ArrowUpFromLineIcon } from "lucide-react";
-import type { FieldZoneMenuProps } from "../../../core/domain/FieldZone";
-
-interface ExtendedFieldZoneMenuProps extends FieldZoneMenuProps {
-  isOpponent?: boolean;
-  onView?: (index: number) => void;
-}
+import type { ExtendedFieldZoneMenuProps } from "../../../core/domain/FieldZone";
+import { useFieldZoneMenu } from "./hooks/useFieldZoneMenu";
 
 export const FieldZoneMenu: React.FC<ExtendedFieldZoneMenuProps> = ({
+  card,
   mode,
   index,
   isOpponent = false,
-  onInitiateAttack,
-  onChangeMode,
-  onView,
-  onClose,
+  onEnd
 }) => {
-  const isFaceDown = mode === "face-down";
+  const {
+    onInitiateAttack,
+    onChangeMode,
+    onView,
+    onClose
+  } = useFieldZoneMenu({ onEnd, card });
 
+  const isFaceDown = mode === "face-down";
   if (isOpponent && isFaceDown) return <></>
 
   return (

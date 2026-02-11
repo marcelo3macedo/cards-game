@@ -9,8 +9,8 @@ export function useHandController() {
     const handleKeyDown = (e: KeyboardEvent) => {
       const action = getActionFromKey(e.key);
 
-      if (action === ActionKey.Up) setVisible(false);
-      if (action === ActionKey.Down) setVisible(true);
+      if (action === ActionKey.Down) setVisible(false);
+      if (action === ActionKey.Up) setVisible(true);
     };
 
     const handleMouseMove = (e: MouseEvent) => {

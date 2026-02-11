@@ -3,12 +3,12 @@ import { Card } from "../Card";
 import { ActionButton } from "./ActionButton";
 import type { SummonOverlayProps } from "../../../core/domain/Summon";
 import { useSummonOverlayNavigation } from "./hooks/useSummonOverlayNavigation";
+import { BattleEvent } from "../../../core/domain/BattleStore";
 
-export const SummonOverlay: React.FC<SummonOverlayProps> = ({ card, onSummon, onCancel }) => {
-  const { options, activeIndex } = useSummonOverlayNavigation({
-    onSummon,
-    onCancel,
-  });
+export const SummonOverlay: React.FC<SummonOverlayProps> = () => {
+  const { options, activeIndex, card, eventType, onSummon, onCancel } = useSummonOverlayNavigation();
+
+  if (!card || eventType !== BattleEvent.SELECTING_MODE) return <></>;
 
   return (
     <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300 backdrop-blur-md bg-black/80">

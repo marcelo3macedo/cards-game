@@ -20,10 +20,11 @@ export abstract class BaseCard {
     public description: string,
     public category: CardCategory,
     public image: string,
-    public typeIcon: string, // URL do ícone (Atributo)
+    public typeIcon: string,
+    public mode: string
   ) {}
 
-  abstract getStyle(): string; // Retorna as classes Tailwind de cor
+  abstract getStyle(): string;
 }
 
 export class MonsterCard extends BaseCard {
@@ -32,13 +33,14 @@ export class MonsterCard extends BaseCard {
     name: string,
     description: string,
     image: string,
+    mode: string,
     typeIcon: string,
     public atk: number,
     public def: number,
     public stars: number,
     public monsterRarity: "COMUM" | "RARO" | "LEGENDARIO",
   ) {
-    super(id, name, description, monsterRarity, image, typeIcon);
+    super(id, name, description, monsterRarity, image, typeIcon, mode);
   }
 
   getStyle() {
@@ -69,23 +71,23 @@ export class MonsterCard extends BaseCard {
 export class MagicCard extends BaseCard {
   getStyle() {
     return "bg-[#06B6D4] border-[#164E63] text-white";
-  } // Azul claro
+  }
 }
 
 export class TrapCard extends BaseCard {
   getStyle() {
     return "bg-[#E11D48] border-[#4C0519] text-white";
-  } // Vermelho
+  }
 }
 
 export class EquipCard extends BaseCard {
   getStyle() {
     return "bg-[#10B981] border-[#064E3B] text-white";
-  } // Verde
+  }
 }
 
 export class TerrainCard extends BaseCard {
   getStyle() {
     return "bg-[#4B5563] border-[#111827] text-white";
-  } // Cinza
+  }
 }

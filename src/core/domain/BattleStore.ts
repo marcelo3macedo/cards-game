@@ -1,0 +1,38 @@
+interface PlayerData {
+  id: number;
+  name: string;
+  hp: number;
+  deckCount: number;
+  hand?: any;
+  handCount?: number;
+  graveyard: any[];
+  field: any[];
+}
+
+export interface BattleStoreState {
+  player: PlayerData | null;
+  opponent: PlayerData | null;
+  turn: number;
+  currentTurnOwner: "player" | "opponent";
+  event: string | null;
+  initBattle: (state: any) => void;
+  setBattle: (state: any) => void;
+  setEvent: (event: string) => void;
+  updateHP: (playerHP: number, opponentHP: number) => void;
+  clearBattle: () => void;
+}
+
+export const BattleEvent = {
+  INITIAL: "initial",
+  SELECTING_POSITION: "selecting-position",
+  SELECTING_TARGET: "selecting-target",
+  SELECTING_MODE: "selecting-mode"
+} as const;
+
+export type BattleEvent = typeof BattleEvent[keyof typeof BattleEvent];
+
+export interface BoardSideAttributes {
+  isInteractable: boolean;
+  isSelected: boolean;
+  isFocused: boolean;
+}

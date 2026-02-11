@@ -71,6 +71,29 @@ export const battleService = {
     return await response.json();
   },
 
+  changePosition: async (fieldIndex: number): Promise<BattleState> => {
+    const API_URL = import.meta.env.VITE_API_URL;
+    const token = authService.getSessionToken();
+
+    const response = await fetch(`${API_URL}/battle-engine/change-position`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": `${token}`,
+      },
+      body: JSON.stringify({ fieldIndex }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) authService.logout();
+
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Erro ao mudar posição do card");
+    }
+
+    return await response.json();
+  },
+
   endTurn: async (): Promise<EndTurnResponse> => {
     const API_URL = import.meta.env.VITE_API_URL;
     const token = authService.getSessionToken();

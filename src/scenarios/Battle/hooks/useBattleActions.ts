@@ -27,7 +27,7 @@ export const useBattleActions = () => {
   const isDistributing = useRef(false);
 
   // 1. Sincronização da Mão (Efeito de pegar cartas uma por vez)
-  useEffect(() => {
+  /*useEffect(() => {
     if (!player?.hand || isDistributing.current) return;
 
     const serverEntities = mapHand(player.hand);
@@ -55,7 +55,7 @@ export const useBattleActions = () => {
 
       distribute();
     }
-  }, [player?.hand]);
+  }, [player?.hand]);*/
 
   // 2. Funções de Ação
   const handleDrawCard = async () => {

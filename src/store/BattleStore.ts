@@ -1,27 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-
-interface PlayerData {
-  id: number;
-  name: string;
-  hp: number;
-  deckCount: number;
-  hand?: any;
-  handCount?: number;
-  graveyard: any[];
-  field: any[];
-}
-
-interface BattleStoreState {
-  player: PlayerData | null;
-  opponent: PlayerData | null;
-  turn: number;
-  currentTurnOwner: "player" | "opponent";
-  initBattle: (state: any) => void;
-  setBattle: (state: any) => void;
-  updateHP: (playerHP: number, opponentHP: number) => void;
-  clearBattle: () => void;
-}
+import type { BattleStoreState } from "../core/domain/BattleStore";
 
 export const useBattleStore = create<BattleStoreState>()(
   persist(
@@ -30,6 +9,7 @@ export const useBattleStore = create<BattleStoreState>()(
       opponent: null,
       turn: 1,
       currentTurnOwner: "player",
+      event: null,
 
       initBattle: (state) =>
         set({
@@ -37,6 +17,7 @@ export const useBattleStore = create<BattleStoreState>()(
           opponent: state.opponent,
           turn: state.turn,
           currentTurnOwner: state.currentTurnOwner,
+          event: "initial"
         }),
 
       setBattle: (state) =>
@@ -45,6 +26,12 @@ export const useBattleStore = create<BattleStoreState>()(
           opponent: state.opponent,
           turn: state.turn,
           currentTurnOwner: state.currentTurnOwner,
+          event: state.state
+        }),
+
+      setEvent: (event: string) =>
+        set({
+          event
         }),
 
       updateHP: (playerHP, opponentHP) =>
@@ -59,6 +46,7 @@ export const useBattleStore = create<BattleStoreState>()(
           opponent: null,
           turn: 1,
           currentTurnOwner: "player",
+          event: null
         }),
     }),
     {

@@ -23,7 +23,6 @@ export interface BoardGutterProps {
 }
 
 export interface BoardSideProps {
-  zones: any[];
   isOpponent?: boolean;
   isSelectingTarget?: boolean;
   onSelectTarget?: (index: number) => void;

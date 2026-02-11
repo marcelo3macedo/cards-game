@@ -11,13 +11,14 @@ export interface FieldZoneProps {
 export interface FieldZoneMenuProps {
   mode?: "atk" | "def" | "face-down";
   index: number;
-  onInitiateAttack?: (index: number) => void;
-  onChangeMode?: (index: number) => void;
-  onClose: () => void;
+  onEnd: () => void;
 }
 
 export interface ExtendedFieldZoneProps extends FieldZoneProps {
   index: number;
-  onInitiateAttack?: (index: number) => void;
-  onChangeMode?: (index: number) => void;
+}
+
+export interface ExtendedFieldZoneMenuProps extends FieldZoneMenuProps {
+  isOpponent?: boolean;
+  card?: any;
 }

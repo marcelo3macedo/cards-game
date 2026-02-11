@@ -2,13 +2,16 @@ import React from "react";
 import { Card } from "../Card";
 import type { PlayerHandProps } from "../../../core/domain/PlayerHand";
 import { useHandNavigation } from "./hooks/useHandNavigation";
+import { mapServerCardToEntity } from "../../../utils/cardUtils";
 
-export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, onSelect, isHidden }) => {
-  const { selectedIndex, setSelectedIndex } = useHandNavigation({
+export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelect }) => {
+  const { selectedIndex, setSelectedIndex, selectCardHandler } = useHandNavigation({
     cards,
     isHidden,
-    onSelect,
+    onSelect
   });
+
+  if (!cards) return;
 
   return (
     <div
@@ -18,17 +21,20 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, onSelect, isHidde
       `}
     >
       <div className="flex -space-x-16 px-32 py-10">
-        {cards.map((card, i) => {
+        {cards.map((base, i) => {
           const isSelected = i === selectedIndex;
+          const card = mapServerCardToEntity(base);
+          if (!card) return;
 
           return (
             <div
               key={card.id || i}
               onClick={() => {
-                setSelectedIndex(i);
-                onSelect(card);
+                selectCardHandler(card);
               }}
-              onMouseEnter={() => setSelectedIndex(i)}
+              onMouseEnter={() => {
+                setSelectedIndex(i)
+              }}
               className={`
                 relative transition-all duration-300 ease-out cursor-pointer
                 ${isSelected ? "z-50 -translate-y-12 scale-110" : "z-10 translate-y-0 scale-90"}
