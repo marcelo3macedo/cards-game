@@ -4,6 +4,7 @@ import { useVillainStore } from '../../../store/VillainStore';
 import { battleService } from '../../../services/battleService';
 import { useBattleStore } from '../../../store/BattleStore';
 import { BattleEvent } from '../../../core/domain/BattleStore';
+import { useHandStore } from '../../../store/HandStore';
 
 export const useStartBattle = () => {
   const [loading, setLoading] = useState(false);
@@ -13,6 +14,7 @@ export const useStartBattle = () => {
   const selectedVillain = useVillainStore((state) => state.selectedVillain);
   const initBattle = useBattleStore((state) => state.initBattle);
   const setEvent = useBattleStore((state) => state.setEvent);
+  const { setVisible, setIsHidden } = useHandStore();
 
   const startBattle = async () => {
     if (!user?.id || !selectedVillain?.id) {
@@ -28,6 +30,8 @@ export const useStartBattle = () => {
       if (initialState) {
         initBattle(initialState);
         setEvent(BattleEvent.INITIAL);
+        setVisible(true);
+        setIsHidden(false);
       }
 
       return initialState;

@@ -15,10 +15,14 @@ export interface BattleStoreState {
   turn: number;
   currentTurnOwner: "player" | "opponent";
   event: string | null;
+  result: any,
   initBattle: (state: any) => void;
   setBattle: (state: any) => void;
   setEvent: (event: string) => void;
   updateHP: (playerHP: number, opponentHP: number) => void;
+  setOpponent: (opponent: PlayerData) => void;
+  setPlayer: (player: PlayerData) => void;
+  setResult: (result: any) => void;
   clearBattle: () => void;
 }
 

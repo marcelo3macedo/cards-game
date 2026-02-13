@@ -3,7 +3,7 @@ import { useHandStore } from "../../../../store/HandStore";
 import { ActionKey, getActionFromKey } from "../../../../utils/keyUtils";
 
 export function useHandController() {
-  const { isVisible, setVisible, toggleVisible } = useHandStore();
+  const { isVisible, isHidden, setVisible, toggleVisible } = useHandStore();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -27,5 +27,5 @@ export function useHandController() {
     };
   }, [setVisible]);
 
-  return { isVisible, setVisible, toggleVisible };
+  return { isVisible, isHidden, setVisible, toggleVisible };
 }

@@ -1,5 +1,4 @@
 import { PlayerHandContainer } from "../../components/game/Hand/container";
-import { useBattleActions } from "./hooks/useBattleActions";
 import { AbandonBattleModal } from "./components/AbandonBattleModal";
 import { SummonOverlay } from "../../components/game/SummorOverlay";
 import { EndTurnAction } from "./components/EndTurnAction";
@@ -14,11 +13,7 @@ import { ViewOverlay } from "../../components/game/ViewOverlay";
 import { BattleAnimation } from "../../components/game/Battle/BattleAnimation";
 
 export default function BattleScenario({ onBack, onEnd }: any) {
-  const { currentTurnOwner, handleAbandon } = useBattleEvents({ onBack });
-
-  const {
-    handleEndTurn
-  } = useBattleActions();
+  const { currentTurnOwner, handleAbandon, handleEndTurn } = useBattleEvents({ onBack, onEnd });
 
   return (
     <div className="h-screen w-screen bg-zinc-950 flex flex-col items-center justify-center overflow-hidden text-white font-sans select-none relative bg-[radial-gradient(circle_at_center,_#1a1a2e_0%,#09090b_100%)]">

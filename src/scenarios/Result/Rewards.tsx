@@ -1,17 +1,26 @@
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { MonsterCard } from "../../core/domain/Card";
 import { ArrowRight } from "lucide-react";
 import { Card } from "../../components/game/Card";
 import { useRewards } from "./hooks/useRewards";
+import { useBattleStore } from "../../store/BattleStore";
 
 export const RewardsScenario = ({
-  cards,
   onBack,
 }: {
-  cards: MonsterCard[];
   onBack: () => void;
 }) => {
+  const { result } = useBattleStore();
+  const cards = result?.history?.cardsAcquired || [];
   const { xTranslate, cardSize, mouseX } = useRewards(cards);
+
+  if (cards.length === 0) {
+    return (
+      <div className="h-screen w-screen bg-zinc-950 flex flex-col items-center justify-center">
+        <p className="text-zinc-500 mb-4">Nenhuma carta nova encontrada.</p>
+        <button onClick={onBack} className="text-white underline">Voltar</button>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen w-screen bg-zinc-950 flex flex-col items-center justify-center relative overflow-hidden cursor-none">
@@ -23,7 +32,7 @@ export const RewardsScenario = ({
         style={{ x: xTranslate }}
         className="flex gap-10 items-center justify-center min-w-max h-[500px] px-[20vw]"
       >
-        {cards.map((card, index) => (
+        {cards.map((card: any, index: number) => (
           <motion.div
             key={`${card.id}-${index}`}
             initial={{ opacity: 0, y: 100, rotateY: 180, scale: 0.8 }}
@@ -43,7 +52,7 @@ export const RewardsScenario = ({
           >
             <div className="absolute inset-0 bg-yellow-500/10 blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-            <Card card={card} size={cardSize} />
+            <Card card={card.card} size={cardSize} />
           </motion.div>
         ))}
       </motion.div>

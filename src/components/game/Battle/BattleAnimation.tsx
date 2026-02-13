@@ -9,9 +9,9 @@ export const BattleAnimation: React.FC<any> = () => {
 
   return (
     <BattleAnimationOverlay
-        attacker={battleData.attacker}
-        defender={battleData.defender}
-        onAnimationEnd={handleBattleComplete}
-      />
+      attacker={battleData.attacker}
+      defender={battleData.defender}
+      onAnimationEnd={handleBattleComplete}
+    />
   );
 };

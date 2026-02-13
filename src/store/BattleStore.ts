@@ -10,6 +10,7 @@ export const useBattleStore = create<BattleStoreState>()(
       turn: 1,
       currentTurnOwner: "player",
       event: null,
+      result: null,
 
       initBattle: (state) =>
         set({
@@ -17,7 +18,8 @@ export const useBattleStore = create<BattleStoreState>()(
           opponent: state.opponent,
           turn: state.turn,
           currentTurnOwner: state.currentTurnOwner,
-          event: "initial"
+          event: "initial",
+          result: null
         }),
 
       setBattle: (state) =>
@@ -27,6 +29,16 @@ export const useBattleStore = create<BattleStoreState>()(
           turn: state.turn,
           currentTurnOwner: state.currentTurnOwner,
           event: state.state
+        }),
+
+      setPlayer: (playerData: any) =>
+        set({
+          player: playerData,
+        }),
+
+      setOpponent: (opponentData: any) =>
+        set({
+          opponent: opponentData,
         }),
 
       setEvent: (event: string) =>
@@ -46,7 +58,13 @@ export const useBattleStore = create<BattleStoreState>()(
           opponent: null,
           turn: 1,
           currentTurnOwner: "player",
-          event: null
+          event: null,
+          result: null
+        }),
+
+      setResult: (result: any) =>
+        set({
+          result
         }),
     }),
     {

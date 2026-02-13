@@ -6,6 +6,7 @@ import { useFieldZoneMenu } from "./hooks/useFieldZoneMenu";
 
 export const FieldZoneMenu: React.FC<ExtendedFieldZoneMenuProps> = ({
   card,
+  canAttack,
   mode,
   index,
   isOpponent = false,
@@ -30,7 +31,7 @@ export const FieldZoneMenu: React.FC<ExtendedFieldZoneMenuProps> = ({
     >
       {!isOpponent && (
         <>
-          {mode === "atk" && (
+          {mode === "attack" && canAttack && (
             <button
               onClick={(e) => {
                 e.stopPropagation();

@@ -4,7 +4,7 @@ import { PlayerHand } from ".";
 import { useBattleStore } from "../../../store/BattleStore";
 
 export const PlayerHandContainer = () => {
-  const { isVisible, setVisible } = useHandController();
+  const { isVisible, isHidden, setVisible } = useHandController();
   const { player } = useBattleStore();
 
   const selectCardHandle = () => {
@@ -25,7 +25,7 @@ export const PlayerHandContainer = () => {
             <PlayerHand
               cards={player?.hand}
               onSelect={() => selectCardHandle()}
-              isHidden={false}
+              isHidden={isHidden}
             />
           </motion.div>
         )}

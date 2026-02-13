@@ -49,7 +49,7 @@ export const BattleAnimationOverlay: React.FC<BattleAnimationOverlayProps> = ({
               <span
                 className={`text-5xl font-black italic transition-colors duration-1000 ${damageDiff >= 0 ? "text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.4)]" : "text-zinc-700"}`}
               >
-                {attacker.atk}
+                {attacker?.atk}
               </span>
             </div>
           </div>

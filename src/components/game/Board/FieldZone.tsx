@@ -1,27 +1,25 @@
 import { AnimatePresence } from "framer-motion";
 import { Shield } from "lucide-react";
-import type { ExtendedFieldZoneProps } from "../../../core/domain/FieldZone";
 import { Card } from "../Card";
 import { FieldZoneMenu } from "./FieldZoneMenu";
 import { useFieldZone } from "./hooks/useFieldZone";
 
 export function FieldZone({
   index,
-  card,
+  cardData,
   isInteractable,
   isSelected,
   isFocused,
   isOpponent
-}: ExtendedFieldZoneProps) {
+}: any) {
+  const { card } = cardData || {};
   const {
     showMenu, setShowMenu, isFaceDown, onClick, onFocusCard
   } = useFieldZone({ card });
+
   return (
     <div
-      onClick={() => {
-        if (isInteractable) onClick?.();
-        else if (card) setShowMenu(!showMenu);
-      }}
+      onClick={() => { onClick(index) }}
       onMouseEnter={() => onFocusCard(index)}
       onMouseLeave={() => setShowMenu(false)}
       className={`
@@ -36,7 +34,8 @@ export function FieldZone({
         {showMenu && card && (
           <FieldZoneMenu
             card={card}
-            mode={card?.mode}
+            mode={cardData?.position}
+            canAttack={cardData?.canAttack}
             index={index}
             isOpponent={isOpponent}
             onEnd={() => { setShowMenu(false) }}
@@ -52,7 +51,7 @@ export function FieldZone({
         )
       ) : (
         <div
-          className={`transition-all duration-500 relative ${card?.mode === "def" ? "rotate-90 scale-75" : "scale-90"}`}
+          className={`transition-all duration-500 relative ${cardData?.position === "defense" ? "rotate-90 scale-75" : "scale-90"}`}
         >
           <Card card={card} size="xs" isFaceDown={isFaceDown}  />
 

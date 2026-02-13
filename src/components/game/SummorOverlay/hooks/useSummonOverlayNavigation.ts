@@ -11,7 +11,7 @@ export const useSummonOverlayNavigation = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { selectedCard, setSelectedCard } = useBattleEventStore();
   const { player, event, setEvent } = useBattleStore();
-  const { setVisible } = useHandStore();
+  const { setVisible, setIsHidden } = useHandStore();
 
   const options: { mode: Mode; label: string; subLabel: string; isVertical: boolean }[] = [
     { mode: "atk", label: "Invocar", subLabel: "Modo Ataque", isVertical: true },
@@ -31,6 +31,7 @@ export const useSummonOverlayNavigation = () => {
       useBattleStore.getState().setBattle(newState);
 
       setSelectedCard(null);
+      setIsHidden(true);
       setEvent(BattleEvent.INITIAL);
     } catch (error: any) {
       console.error(error.message);

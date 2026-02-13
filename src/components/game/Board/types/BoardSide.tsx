@@ -1,5 +1,4 @@
 import type { BoardSideProps } from "../../../../core/domain/GameBoard";
-import { mapServerCardToEntity } from "../../../../utils/cardUtils";
 import { FieldZone } from "../FieldZone";
 import { useBoardSideContent } from "../hooks/useBoardSideContent";
 
@@ -14,9 +13,9 @@ export const BoardSide = ({
     <div className="flex justify-center gap-4 mt-8">
       {normalizedField.map((cardData, i) => (
         <FieldZone
-          key={`${i}_${cardData?.id}`}
+          key={`${i}_${cardData?.card?.id}`}
           index={i}
-          card={mapServerCardToEntity(cardData?.card || cardData)}
+          cardData={cardData}
           isInteractable={attributes.isInteractable}
           isSelected={attributes.isSelected}
           isFocused={attributes.isFocused && selectedFieldIndex === i}
