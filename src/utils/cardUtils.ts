@@ -1,4 +1,4 @@
-import { MagicCard, MonsterCard, TrapCard, type BaseCard } from "../core/domain/Card";
+import { EquipCard, MagicCard, MonsterCard, TerrainCard, TrapCard, type BaseCard } from "../core/domain/Card";
 
 export function mapServerCardToEntity(data: any): BaseCard | undefined {
   if (!data) return;
@@ -14,6 +14,8 @@ export function mapServerCardToEntity(data: any): BaseCard | undefined {
     defensePower,
     stars,
     element,
+    effectScript,
+    effectValue
   } = data;
 
   switch (attribute?.toLowerCase()) {
@@ -33,10 +35,16 @@ export function mapServerCardToEntity(data: any): BaseCard | undefined {
 
     case "spell":
     case "magic":
-      return new MagicCard(String(id), name, description, "MAGICA", imageUrl, mode, element);
+      return new MagicCard(String(id), name, description, imageUrl, mode, element, effectScript, effectValue);
 
     case "trap":
-      return new TrapCard(String(id), name, description, "ARMADILHA", imageUrl, mode, element);
+      return new TrapCard(String(id), name, description, imageUrl, mode, element, effectScript, effectValue);
+
+    case "equip":
+      return new EquipCard(String(id), name, description, imageUrl, mode, element, effectScript, effectValue);
+
+    case "terrain":
+      return new TerrainCard(String(id), name, description, imageUrl, mode, element, effectScript, effectValue);
 
     default:
       return new MonsterCard(String(id), name, description, imageUrl, mode, element, 0, 0, 1, "COMUM");

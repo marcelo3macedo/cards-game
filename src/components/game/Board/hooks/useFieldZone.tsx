@@ -5,14 +5,14 @@ import { useBattleEventStore } from "../../../../store/BattleEventStore";
 import { BattleEvent } from "../../../../core/domain/BattleStore";
 import { useBattleEvents } from "../../../../scenarios/Battle/hooks/useBattleEvents";
 
-export const useFieldZone = ({ card }: any) => {
+export const useFieldZone = ({ card, position }: any) => {
     const { event, setEvent } = useBattleStore();
     const { setSelectedFieldIndex, setSelectedTargetIndex, selectedAttackerIndex } = useBattleEventStore();
     const { handleAttack } = useBattleEvents({});
     const log = withContextLogging('useFieldZone');
 
     const [showMenu, setShowMenu] = useState(false);
-    const isFaceDown = card?.mode === "face-down";
+    const isFaceDown = (position === "face-down-attack" || position === "face-down-defense");
 
     const onClick = async (index: number) => {
         if (event === BattleEvent.SELECTING_TARGET) {

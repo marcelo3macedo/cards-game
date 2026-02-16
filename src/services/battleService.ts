@@ -18,6 +18,13 @@ export interface BattleState {
   turn: number;
 }
 
+export interface ActivationResponse {
+  status: "WAITING_SELECTION" | "SUCCESS";
+  newState?: BattleState;
+  targetRequired?: any;
+  message?: string;
+}
+
 export interface EndTurnResponse {
   message: string;
   logs: string[];
@@ -116,7 +123,7 @@ export const battleService = {
     return await response.json();
   },
 
-  changePosition: async (fieldIndex: number): Promise<BattleState> => {
+  changePosition: async (fieldIndex: number, position: string): Promise<BattleState> => {
     const API_URL = import.meta.env.VITE_API_URL;
     const token = authService.getSessionToken();
 
@@ -126,7 +133,7 @@ export const battleService = {
         "Content-Type": "application/json",
         "authorization": `${token}`,
       },
-      body: JSON.stringify({ fieldIndex }),
+      body: JSON.stringify({ fieldIndex, position }),
     });
 
     if (!response.ok) {
@@ -176,6 +183,29 @@ export const battleService = {
       if (response.status === 401) authService.logout();
       const errorData = await response.json();
       throw new Error(errorData.error || "Erro ao salvar histórico da batalha");
+    }
+
+    return await response.json();
+  },
+
+  activateCard: async (cardIndex: number, origin: string): Promise<BattleState | ActivationResponse> => {
+    const API_URL = import.meta.env.VITE_API_URL;
+    const token = authService.getSessionToken();
+
+    const response = await fetch(`${API_URL}/battle-engine/activate-card`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": `${token}`,
+      },
+      body: JSON.stringify({ origin, cardIndex }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) authService.logout();
+
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Erro ao ativar efeito do card");
     }
 
     return await response.json();

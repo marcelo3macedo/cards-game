@@ -4,6 +4,9 @@ import type { BaseCard, MonsterCard } from "../../../../core/domain/Card";
 export const renderCardInfo = (card: BaseCard, size: string, isMonster: boolean) => {
   const isSmall = size === "sm";
   const isExtraSmall = size === "xs";
+  const isBig = size === "lg";
+
+  if (!isMonster && !isBig) return;
 
   return (
     <div

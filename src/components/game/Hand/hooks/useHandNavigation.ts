@@ -7,12 +7,12 @@ import { BattleEvent } from "../../../../core/domain/BattleStore";
 
 export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigationProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const { setSelectedCard } = useBattleEventStore();
+  const { setSelectedCard, setSelectedOrigin } = useBattleEventStore();
   const { setEvent } = useBattleStore();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (isHidden || cards.length === 0) return;
+      if (isHidden || !cards || cards.length === 0) return;
 
       const action = getActionFromKey(e.key);
 
@@ -35,9 +35,12 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [cards, selectedIndex, isHidden]);
 
-  const selectCardHandler = (card: any) => {
+  const selectCardHandler = ({ card, isMagic }: any) => {
+    const event = isMagic ? BattleEvent.SELECTING_EFFECT : BattleEvent.SELECTING_POSITION;
     setSelectedCard(card);
-    setEvent(BattleEvent.SELECTING_POSITION);
+    setEvent(event);
+    setSelectedOrigin("hand");
+
     onSelect();
   }
 

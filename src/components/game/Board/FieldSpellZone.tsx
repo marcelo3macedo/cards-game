@@ -1,10 +1,9 @@
 import { AnimatePresence } from "framer-motion";
-import { Shield } from "lucide-react";
 import { Card } from "../Card";
 import { FieldZoneMenu } from "./FieldZoneMenu";
 import { useFieldZone } from "./hooks/useFieldZone";
 
-export function FieldZone({
+export function FieldSpellZone({
   index,
   cardData,
   isInteractable,
@@ -12,10 +11,10 @@ export function FieldZone({
   isFocused,
   isOpponent
 }: any) {
-  const { card, position } = cardData || {};
+  const card = cardData;
   const {
-    showMenu, setShowMenu, isFaceDown, onClick, onFocusCard
-  } = useFieldZone({ card, position });
+    showMenu, setShowMenu, onClick, onFocusCard
+  } = useFieldZone({ card, position: card ? "face-down-attack" : null });
 
   return (
     <div
@@ -23,7 +22,7 @@ export function FieldZone({
       onMouseEnter={() => onFocusCard(index)}
       onMouseLeave={() => setShowMenu(false)}
       className={`
-        w-24 h-32 border-2 rounded-lg flex items-center justify-center relative transition-all duration-300
+        w-24 h-32 border-2 mt-1 rounded-lg flex items-center justify-center relative transition-all duration-300
         ${card ? "border-solid shadow-lg" : "border-dashed cursor-default"}
         ${!card && isInteractable ? "cursor-pointer border-blue-400/50 bg-blue-900/20" : "border-blue-500/20 bg-zinc-900/80"}
         ${isFocused && !isSelected && !isOpponent ? "ring-4 ring-blue-400 border-blue-300 scale-105 shadow-[0_0_15px_rgba(59,130,246,0.5)] z-20" : ""}
@@ -34,8 +33,8 @@ export function FieldZone({
         {showMenu && card && (
           <FieldZoneMenu
             card={card}
-            mode={position}
-            canAttack={cardData?.canAttack}
+            mode={"face-down-attack"}
+            canAttack={false}
             index={index}
             isOpponent={isOpponent}
             onEnd={() => { setShowMenu(false) }}
@@ -51,15 +50,9 @@ export function FieldZone({
         )
       ) : (
         <div
-          className={`transition-all duration-500 relative ${cardData?.position === "defense" ||  cardData?.position === "face-down-defense" ? "rotate-90 scale-75" : "scale-90"}`}
+          className={`transition-all duration-500 relative`}
         >
-          <Card card={card} size="xs" isFaceDown={isFaceDown}  />
-
-          {(card?.mode === "defense" || card?.mode === "face-down-defense") && !isFaceDown && (
-            <div className="absolute -top-2 -right-2 bg-blue-600 rounded-full p-1 shadow-lg -rotate-90">
-              <Shield size={10} className="text-white" />
-            </div>
-          )}
+          <Card card={card} size="xs" isFaceDown={true}  />
         </div>
       )}
     </div>

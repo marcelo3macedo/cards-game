@@ -1,17 +1,32 @@
 import { BattleEvent } from "../../../../core/domain/BattleStore";
+import { MonsterCard } from "../../../../core/domain/Card";
 import { battleService } from "../../../../services/battleService";
 import { useBattleEventStore } from "../../../../store/BattleEventStore";
 import { useBattleStore } from "../../../../store/BattleStore";
 import { withContextLogging } from "../../../../utils/loggingUtils"
 
-export const useFieldZoneMenu = ({ onEnd, card }: any) => {
+export const useFieldZoneMenu = ({ onEnd, card, mode }: any) => {
     const log = withContextLogging('useFieldZoneMenu');
     const { setEvent } = useBattleStore();
-    const { setViewCard, setIsSelectingTarget, setSelectedAttackerIndex } = useBattleEventStore();
+    const { setSelectedCard, setSelectedOrigin, setViewCard, setIsSelectingTarget, setSelectedAttackerIndex } = useBattleEventStore();
 
     const onChangeMode = async (index: number) => {
-        const response = await battleService.changePosition(index);
-        useBattleStore.getState().setBattle(response);
+        if (card instanceof MonsterCard) {
+            const position = (() => {
+            if (mode === "face-down-defense") return "attack";
+
+            return mode.includes("attack")
+                ? mode.replaceAll("attack", "defense")
+                : mode.replaceAll("defense", "attack");
+            })();
+
+            const response = await battleService.changePosition(index, position);
+            useBattleStore.getState().setBattle(response);
+        } else {
+            setSelectedOrigin("spells");
+            setSelectedCard(card);
+            setEvent(BattleEvent.ACTIVATING_EFFECT);
+        }
     }
 
     const onInitiateAttack = (index: number) => {

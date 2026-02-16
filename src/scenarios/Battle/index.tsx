@@ -11,6 +11,8 @@ import { TargetSelectMessage } from "./components/TargetSelectMessage";
 import { GameBoard } from "../../components/game/Board";
 import { ViewOverlay } from "../../components/game/ViewOverlay";
 import { BattleAnimation } from "../../components/game/Battle/BattleAnimation";
+import { MagicOverlay } from "../../components/game/MagicOverlay";
+import { EffectCardOverlay } from "../../components/game/EffectCardOverlay";
 
 export default function BattleScenario({ onBack, onEnd }: any) {
   const { currentTurnOwner, handleAbandon, handleEndTurn } = useBattleEvents({ onBack, onEnd });
@@ -40,8 +42,10 @@ export default function BattleScenario({ onBack, onEnd }: any) {
       </div>
       <div className="effects">
         <SummonOverlay />
+        <MagicOverlay />
         <ViewOverlay />
         <BattleAnimation />
+        <EffectCardOverlay />
       </div>
       <div className="board">
         <GameBoard />

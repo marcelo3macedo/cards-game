@@ -13,12 +13,17 @@ export const useBoardSideContent = ({
     const rawField = useBattleStore((state) =>
         isOpponent ? state.opponent?.field : state.player?.field
     ) || [];
+    const rawFieldSpells = useBattleStore((state) =>
+        isOpponent ? state.opponent?.spells : state.player?.spells
+    ) || [];
 
     const normalizedField = Array.from({ length: 5 }, (_, i) => rawField[i] ?? null);
+    const normalizedFieldSpells = Array.from({ length: 5 }, (_, i) => rawFieldSpells[i] ?? null);
 
     return {
         attributes,
         normalizedField,
+        normalizedFieldSpells,
         selectedFieldIndex,
     }
 }

@@ -1,11 +1,12 @@
 import type { BoardSideProps } from "../../../../core/domain/GameBoard";
+import { FieldSpellZone } from "../FieldSpellZone";
 import { FieldZone } from "../FieldZone";
 import { useBoardSideContent } from "../hooks/useBoardSideContent";
 
 export const BoardSide = ({
   isOpponent
 }: BoardSideProps) => {
-  const { attributes, normalizedField, selectedFieldIndex } = useBoardSideContent({
+  const { attributes, normalizedField, normalizedFieldSpells, selectedFieldIndex } = useBoardSideContent({
     isOpponent,
   });
 
@@ -13,7 +14,7 @@ export const BoardSide = ({
     <div className="flex justify-center gap-4 mt-8">
       {normalizedField.map((cardData, i) => (
         <FieldZone
-          key={`${i}_${cardData?.card?.id}`}
+          key={`monster_${i}_${cardData?.card?.id}`}
           index={i}
           cardData={cardData}
           isInteractable={attributes.isInteractable}
@@ -27,10 +28,15 @@ export const BoardSide = ({
 
   const spellRow = (
     <div className="flex justify-center gap-4">
-      {Array(5).fill(null).map((_, i) => (
-        <div
-          key={`spell-${i}`}
-          className="w-24 h-32 border-2 border-zinc-800/10 bg-zinc-900/20 rounded-lg"
+      {normalizedFieldSpells.map((cardData, i) => (
+        <FieldSpellZone
+          key={`magic_${i}_${cardData?.card?.id}`}
+          index={i}
+          cardData={cardData}
+          isInteractable={attributes.isInteractable}
+          isSelected={attributes.isSelected}
+          isFocused={attributes.isFocused && selectedFieldIndex === i}
+          isOpponent={isOpponent}
         />
       ))}
     </div>

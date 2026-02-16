@@ -11,21 +11,23 @@ export const PlayerHandContainer = () => {
     setVisible(false);
   }
 
+  if (!player?.hand || player.hand.length === 0) return null;
+
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 flex justify-center pointer-events-none">
       <AnimatePresence>
         {isVisible && (
           <motion.div
-            initial={{ y: 300, opacity: 0 }}
+            initial={{ y: 200, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 300, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            className="pointer-events-auto pb-8"
+            exit={{ y: 200, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 200, damping: 25 }}
+            className="pointer-events-auto"
           >
             <PlayerHand
               cards={player?.hand}
-              onSelect={() => selectCardHandle()}
-              isHidden={isHidden}
+              onSelect={selectCardHandle}
+              isHidden={isHidden || !player?.canSummon}
             />
           </motion.div>
         )}

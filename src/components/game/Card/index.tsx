@@ -19,7 +19,7 @@ export const Card: React.FC<CardProps> = ({ card: initialCard, size = "lg", isFa
     lg: "w-72 h-120 p-3",
     md: "w-60 h-96 p-2.5",
     sm: "w-48 h-72 p-2",
-    xs: "w-28 h-40 p-1 border-2",
+    xs: "w-24 h-36 p-1 border-2",
   };
   const isExtraSmall = size === "xs";
 
@@ -49,7 +49,7 @@ export const Card: React.FC<CardProps> = ({ card: initialCard, size = "lg", isFa
       ${cardStyle}
       ${sizeClasses[size]}
       rounded-sm shadow-2xl flex flex-col relative
-      transition-transform hover:z-50 cursor-pointer select-none
+      transition-transform hover:z-50 select-none
     `}
     >
       <div

@@ -7,6 +7,8 @@ interface PlayerData {
   handCount?: number;
   graveyard: any[];
   field: any[];
+  spells: any[];
+  canSummon: boolean;
 }
 
 export interface BattleStoreState {
@@ -29,6 +31,9 @@ export interface BattleStoreState {
 export const BattleEvent = {
   INITIAL: "initial",
   SELECTING_POSITION: "selecting-position",
+  SELECTING_EFFECT: "selecting-effect",
+  ACTIVATING_EFFECT: "activating-effect",
+  ACTIVE_EFFECT: "active-effect",
   SELECTING_TARGET: "selecting-target",
   SELECTING_MODE: "selecting-mode"
 } as const;

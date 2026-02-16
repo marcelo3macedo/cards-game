@@ -17,9 +17,10 @@ export const FieldZoneMenu: React.FC<ExtendedFieldZoneMenuProps> = ({
     onChangeMode,
     onView,
     onClose
-  } = useFieldZoneMenu({ onEnd, card });
+  } = useFieldZoneMenu({ onEnd, card, mode });
 
-  const isFaceDown = mode === "face-down";
+  const isFaceDown = (mode === "face-down-attack" || mode === "face-down-defense");
+
   if (isOpponent && isFaceDown) return <></>
 
   return (

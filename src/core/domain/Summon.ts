@@ -1,3 +1,3 @@
 export interface SummonOverlayProps {}
 
-export type Mode = "atk" | "face-down-atk" | "def" | "face-down-def";
+export type Mode = "attack" | "face-down-attack" | "defense" | "face-down-defense";

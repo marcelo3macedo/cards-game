@@ -1,6 +1,6 @@
 export interface FieldZoneProps {
   card: any | null;
-  position?: "attack" | "defense" | "face-down";
+  position?: "attack" | "defense" | "face-down-attack" | "face-down-defense";
   canAttack: boolean;
   isInteractable?: boolean;
   isSelected?: boolean;
@@ -10,7 +10,7 @@ export interface FieldZoneProps {
 }
 
 export interface FieldZoneMenuProps {
-  mode?: "attack" | "defense" | "face-down";
+  mode?: "attack" | "defense" | "face-down-attack" | "face-down-defense";
   index: number;
   onEnd: () => void;
 }

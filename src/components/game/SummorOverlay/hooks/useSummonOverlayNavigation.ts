@@ -6,18 +6,20 @@ import { useBattleStore } from "../../../../store/BattleStore";
 import { BattleEvent } from "../../../../core/domain/BattleStore";
 import { useHandStore } from "../../../../store/HandStore";
 import { battleService } from "../../../../services/battleService";
+import { withContextLogging } from "../../../../utils/loggingUtils";
 
 export const useSummonOverlayNavigation = () => {
+  const log = withContextLogging('useSummonOverlayNavigation');
   const [activeIndex, setActiveIndex] = useState(0);
   const { selectedCard, setSelectedCard } = useBattleEventStore();
   const { player, event, setEvent } = useBattleStore();
   const { setVisible, setIsHidden } = useHandStore();
 
   const options: { mode: Mode; label: string; subLabel: string; isVertical: boolean }[] = [
-    { mode: "atk", label: "Invocar", subLabel: "Modo Ataque", isVertical: true },
-    { mode: "face-down-atk", label: "Oculto", subLabel: "Modo Ataque", isVertical: true },
-    { mode: "def", label: "Invocar", subLabel: "Modo Defesa", isVertical: false },
-    { mode: "face-down-def", label: "Oculto", subLabel: "Defesa Oculto", isVertical: false },
+    { mode: "attack", label: "Invocar", subLabel: "Modo Ataque", isVertical: true },
+    { mode: "face-down-attack", label: "Oculto", subLabel: "Modo Ataque", isVertical: true },
+    { mode: "defense", label: "Invocar", subLabel: "Modo Defesa", isVertical: false },
+    { mode: "face-down-defense", label: "Oculto", subLabel: "Defesa Oculto", isVertical: false },
   ];
 
   const onSummon = async (mode: string) => {
@@ -25,9 +27,7 @@ export const useSummonOverlayNavigation = () => {
       const handIndex = player?.hand.findIndex((c:any) => Number(c.id) === Number(selectedCard.id));
       if (handIndex === -1) return;
 
-      const position = mode.includes("def") ? "defense" : "attack"
-      const newState = await battleService.summonCard(handIndex, position);
-
+      const newState = await battleService.summonCard(handIndex, mode);
       useBattleStore.getState().setBattle(newState);
 
       setSelectedCard(null);
@@ -77,7 +77,7 @@ export const useSummonOverlayNavigation = () => {
     card: selectedCard,
     options,
     eventType: event,
-    onSummon,
-    onCancel
+    onSummon: log(onSummon),
+    onCancel: log(onCancel)
   };
 };
