@@ -9,6 +9,7 @@ export const useBattleStore = create<BattleStoreState>()(
       opponent: null,
       turn: 1,
       currentTurnOwner: "player",
+      environment: null,
       event: null,
       result: null,
 
@@ -18,6 +19,7 @@ export const useBattleStore = create<BattleStoreState>()(
           opponent: state.opponent,
           turn: state.turn,
           currentTurnOwner: state.currentTurnOwner,
+          environment: state.environment,
           event: "initial",
           result: null
         }),
@@ -28,7 +30,8 @@ export const useBattleStore = create<BattleStoreState>()(
           opponent: state.opponent,
           turn: state.turn,
           currentTurnOwner: state.currentTurnOwner,
-          event: state.state
+          event: state.state,
+          environment: state.environment
         }),
 
       setPlayer: (playerData: any) =>

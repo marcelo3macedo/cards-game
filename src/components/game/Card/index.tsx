@@ -7,9 +7,7 @@ import { getImageUrl } from "../../../utils/imageUtils";
 import { mapServerCardToEntity } from "../../../utils/cardUtils";
 
 export const Card: React.FC<CardProps> = ({ card: initialCard, size = "lg", isFaceDown = false }) => {
-  const card = typeof initialCard.getStyle === 'function'
-    ? initialCard
-    : mapServerCardToEntity(initialCard);
+  const card = mapServerCardToEntity(initialCard);
 
   if (!card) return;
 
@@ -18,7 +16,7 @@ export const Card: React.FC<CardProps> = ({ card: initialCard, size = "lg", isFa
   const sizeClasses = {
     lg: "w-72 h-120 p-3",
     md: "w-60 h-96 p-2.5",
-    sm: "w-48 h-72 p-2",
+    sm: "w-44 h-64 p-1.5",
     xs: "w-24 h-36 p-1 border-2",
   };
   const isExtraSmall = size === "xs";

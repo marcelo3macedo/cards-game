@@ -2,8 +2,8 @@ import React from "react";
 import { Card } from "../Card";
 import type { PlayerHandProps } from "../../../core/domain/PlayerHand";
 import { useHandNavigation } from "./hooks/useHandNavigation";
-import { mapServerCardToEntity } from "../../../utils/cardUtils";
 import { MonsterCard } from "../../../core/domain/Card";
+import { mapServerCardToEntity } from "../../../utils/cardUtils";
 
 export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelect }) => {
   const { selectedIndex, setSelectedIndex, selectCardHandler } = useHandNavigation({
@@ -17,7 +17,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
   return (
     <div
       className={`
-        fixed bottom-6 left-0 w-full flex justify-center transition-all duration-500 z-40
+        fixed bottom-0 left-0 w-full flex justify-center transition-all duration-500 z-40
         opacity-100 translate-y-0"
       `}
     >
@@ -48,7 +48,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
               }}
               onMouseEnter={() => setSelectedIndex(i)}
               style={{
-                transform: `rotate(${rotation}deg) translateY(${isSelected ? -48 : 0}px) scale(${isSelected ? 1.1 : 1})`,
+                transform: `rotate(${rotation}deg) translateY(${isSelected ? -28 : 0}px) scale(${isSelected ? 1 : 1})`,
                 zIndex: isSelected ? 100 : i,
               }}
               className={`
@@ -59,7 +59,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
               <div
                 className={`
                 absolute -inset-1 transition-all duration-300
-                ${isSelected && !isRestrictedMonster ? "ring-4 ring-slate-500 shadow-[0_0_20px_rgba(59,130,246,0.6)]" : "ring-0"}
+                ${isSelected && !isRestrictedMonster ? "ring-2 ring-blue-300 shadow-[0_0_12px_rgba(147,197,253,0.45)]" : "ring-0"}
               `}
               />
 

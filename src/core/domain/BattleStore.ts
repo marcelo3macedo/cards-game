@@ -18,6 +18,7 @@ export interface BattleStoreState {
   currentTurnOwner: "player" | "opponent";
   event: string | null;
   result: any,
+  environment: any,
   initBattle: (state: any) => void;
   setBattle: (state: any) => void;
   setEvent: (event: string) => void;

@@ -22,5 +22,6 @@ export interface ExtendedFieldZoneProps extends FieldZoneProps {
 export interface ExtendedFieldZoneMenuProps extends FieldZoneMenuProps {
   isOpponent?: boolean;
   canAttack?: boolean;
+  isMonster?: boolean;
   card?: any;
 }

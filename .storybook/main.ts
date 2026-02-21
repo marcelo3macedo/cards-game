@@ -25,6 +25,12 @@ const config: StorybookConfig = {
           '@': path.resolve(__dirname, '../src'),
         },
       },
+      assetsInclude: ['**/*.jpg', '**/*.png', '**/*.jpeg', '**/*.webp'],
+      define: {
+        'import.meta.env.VITE_IMAGES_URL': JSON.stringify(
+          ''
+        ),
+      },
     });
   },
 };

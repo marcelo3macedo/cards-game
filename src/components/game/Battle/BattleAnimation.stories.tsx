@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { BattleAnimation } from "./BattleAnimation";
 import { useBattleEventStore } from "../../../store/BattleEventStore";
 import { MonsterCard } from "../../../core/domain/Card";
-import exemplo_comum from "@/assets/images/exemplo_comum.jpg";
 
 const meta: Meta<typeof BattleAnimation> = {
   title: "Game/BattleAnimation",
@@ -19,7 +18,7 @@ const better = new MonsterCard(
   "1",
   "Patrulheiro Gárgula de Gelo",
   "Emmissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados. Sua presença inspira coragem, e o eco de seu grito de gelo ressoa nas muralhas, formando escudos de pedra que refutam qualquer ataque.",
-  exemplo_comum,
+  'images/exemplo_monstro_raro.jpg',
   "attack",
   "ice",
   2500,
@@ -31,7 +30,7 @@ const lower = new MonsterCard(
   "1",
   "Patrulheiro Gárgula de Gelo",
   "Emmissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados. Sua presença inspira coragem, e o eco de seu grito de gelo ressoa nas muralhas, formando escudos de pedra que refutam qualquer ataque.",
-  exemplo_comum,
+  'images/exemplo_monstro_raro.jpg',
   "attack",
   "ice",
   2300,

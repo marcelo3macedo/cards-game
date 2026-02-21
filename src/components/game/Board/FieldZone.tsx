@@ -10,12 +10,27 @@ export function FieldZone({
   isInteractable,
   isSelected,
   isFocused,
-  isOpponent
+  isOpponent,
+  isMonster
 }: any) {
   const { card, position } = cardData || {};
   const {
     showMenu, setShowMenu, isFaceDown, onClick, onFocusCard
-  } = useFieldZone({ card, position });
+  } = useFieldZone({ position, isMonster });
+
+  const themeColors = isOpponent
+    ? {
+        border: "border-blue-500/20",
+        bg: "bg-zinc-900/80",
+        interact: "border-red-400/50 bg-red-900/20",
+        ring: "ring-red-500 border-red-400 shadow-[0_0_15px_rgba(239,68,68,0.5)]"
+      }
+    : {
+        border: "border-blue-500/20",
+        bg: "bg-zinc-900/80",
+        interact: "border-blue-400/50 bg-blue-900/20",
+        ring: "ring-blue-400 border-blue-300 shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+      };
 
   return (
     <div
@@ -25,10 +40,11 @@ export function FieldZone({
       className={`
         w-24 h-32 border-2 rounded-lg flex items-center justify-center relative transition-all duration-300
         ${card ? "border-solid shadow-lg" : "border-dashed cursor-default"}
-        ${!card && isInteractable ? "cursor-pointer border-blue-400/50 bg-blue-900/20" : "border-blue-500/20 bg-zinc-900/80"}
-        ${isFocused && !isSelected && !isOpponent ? "ring-4 ring-blue-400 border-blue-300 scale-105 shadow-[0_0_15px_rgba(59,130,246,0.5)] z-20" : ""}
+        ${!card && isInteractable ? themeColors.interact : `${themeColors.border} ${themeColors.bg}`}
+        ${isFocused && !isSelected && !isOpponent ? `ring-4 ${themeColors.ring} scale-105 z-20` : ""}
         ${isSelected ? "border-yellow-400 border-4 shadow-[0_0_20px_rgba(250,204,21,0.4)] scale-105 z-30" : ""}
       `}
+      data-testid={`field-zone-${isOpponent ? 'opponent' : 'player'}-${index}`}
     >
       <AnimatePresence>
         {showMenu && card && (
@@ -38,6 +54,7 @@ export function FieldZone({
             canAttack={cardData?.canAttack}
             index={index}
             isOpponent={isOpponent}
+            isMonster={isMonster}
             onEnd={() => { setShowMenu(false) }}
           />
         )}
@@ -46,17 +63,17 @@ export function FieldZone({
       {!card ? (
         isInteractable && (
           <div
-            className={`absolute inset-0 bg-blue-400/10 ${isFocused ? "animate-pulse" : ""} rounded-lg`}
+            className={`absolute inset-0 ${isOpponent ? 'bg-red-400/10' : 'bg-blue-400/10'} ${isFocused ? "animate-pulse" : ""} rounded-lg`}
           />
         )
       ) : (
         <div
-          className={`transition-all duration-500 relative ${cardData?.position === "defense" ||  cardData?.position === "face-down-defense" ? "rotate-90 scale-75" : "scale-90"}`}
+          className={`transition-all duration-500 relative ${cardData?.position === "defense" || cardData?.position === "face-down-defense" ? "rotate-90 scale-75" : "scale-90"}`}
         >
-          <Card card={card} size="xs" isFaceDown={isFaceDown}  />
+          <Card card={card} size="xs" isFaceDown={isFaceDown} />
 
           {(card?.mode === "defense" || card?.mode === "face-down-defense") && !isFaceDown && (
-            <div className="absolute -top-2 -right-2 bg-blue-600 rounded-full p-1 shadow-lg -rotate-90">
+            <div className={`absolute -top-2 -right-2 ${isOpponent ? 'bg-red-600' : 'bg-blue-600'} rounded-full p-1 shadow-lg -rotate-90`}>
               <Shield size={10} className="text-white" />
             </div>
           )}

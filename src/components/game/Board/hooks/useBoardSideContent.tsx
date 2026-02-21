@@ -7,7 +7,7 @@ export const useBoardSideContent = ({
     isOpponent
 }: BoardSideProps) => {
     const { event } = useBattleStore();
-    const { selectedFieldIndex } = useBattleEventStore();
+    const { selectedFieldIndex, selectedFieldArea } = useBattleEventStore();
 
     const attributes = getBoardSideAttributes(event, isOpponent);
     const rawField = useBattleStore((state) =>
@@ -25,5 +25,6 @@ export const useBoardSideContent = ({
         normalizedField,
         normalizedFieldSpells,
         selectedFieldIndex,
+        selectedFieldArea,
     }
 }

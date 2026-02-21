@@ -2,6 +2,7 @@ export function EndTurnAction({ handleEndTurn, currentTurnOwner }:any) {
     return (
         <div className="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col items-center gap-4">
             <button
+                data-testid="button-endturn"
                 onClick={handleEndTurn}
                 disabled={currentTurnOwner !== 'player'}
                 className={`
@@ -11,11 +12,11 @@ export function EndTurnAction({ handleEndTurn, currentTurnOwner }:any) {
                     : 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50 skew-x-[-12deg]'}
                 `}
             >
-            <span className="absolute top-0 left-0 w-full h-full border-2 border-white/20 translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform"></span>
+                <span className="absolute top-0 left-0 w-full h-full border-2 border-white/20 translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform"></span>
 
-            <span className="relative z-10">
-                {currentTurnOwner === 'player' ? 'ENCERRAR TURNO' : 'TURNO RIVAL'}
-            </span>
+                <span className="relative z-10">
+                    {currentTurnOwner === 'player' ? 'ENCERRAR TURNO' : 'TURNO RIVAL'}
+                </span>
             </button>
 
             <div className="flex flex-col items-end gap-1">

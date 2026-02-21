@@ -7,30 +7,33 @@ import { BattleEvent } from '../../../core/domain/BattleStore';
 import BattleScenario from '..';
 import { startMockBattle } from '../../../services/mockBattle';
 
-const card = {
-  id: 99,
-  name: "Pote da Ganância",
-  description: "Compre cartas do seu baralho.",
-  imageUrl: "images/exemplo_monstro_raro.jpg",
-  attribute: "magic",
-  effectScript: "POT_OF_GREED_TYPE",
-  effectValue: { value: 2, target: "player" },
-  createdAt: null,
-  updatedAt: null
-}
-
 const BASE_MOCK_STATE = {
   player: {
     id: 1,
     name: "marcelo",
     hp: 8000,
-    hand: [
-      card
+    hand: [],
+    field: [
+      {
+        card: {
+          id: 24,
+          name: "Íbis Mensageiro Vanguarda",
+          description: "Monstro de suporte.",
+          imageUrl: "images/exemplo_monstro_raro.jpg",
+          type: "Íbis de Thoth",
+          element: "wind",
+          attribute: "monster",
+          stars: 1,
+          attackPower: 1700,
+          defensePower: 1900,
+          modifiers: [],
+          effectScript: null,
+          effectValue: null,
+        },
+        position: "attack",
+        canAttack: false
+      }
     ],
-    deck: [
-      card, card, card, card, card
-    ],
-    field: [],
     spells: [],
     graveyard: [],
     canSummon: false,
@@ -40,28 +43,31 @@ const BASE_MOCK_STATE = {
     id: 5,
     name: "Darius Blackflare",
     hp: 8000,
-    hand: [
-      card
-    ],
-    deck: [
-      card, card, card, card, card
-    ],
     field: [],
     spells: [],
     graveyard: [],
-    handCount: 1,
+    handCount: 0,
     deckCount: 40
   },
   turn: 1,
   currentTurnOwner: "player"
 };
 
-const createDrawMockState = (value: number, target: 'player' | 'opponent') => {
+const createMockWithModifiers = (atkMod: number, defMod: number, sourceName: string) => {
   const newState = JSON.parse(JSON.stringify(BASE_MOCK_STATE));
+  const card = newState.player.field[0].card;
 
-  newState.player.hand[0].effectValue = { value, target };
+  card.modifiers = [
+    {
+      id: "mod-1",
+      source: sourceName,
+      atk: atkMod,
+      def: defMod
+    }
+  ];
 
-  newState.player.spells = [newState.player.hand[0]];
+  card.attackPower += atkMod;
+  card.defensePower += defMod;
 
   return newState;
 };
@@ -82,41 +88,34 @@ const withBattleMock = (mockData: any) => (Story: any) => {
       setLoading(false);
     };
     bootstrap();
-  }, [initBattle, setEvent, setVisible, setIsHidden]);
+  }, [mockData]);
 
-  if (loading) return <div style={{ color: "#fff", padding: "20px" }}>Simulando Compra de Cartas...</div>;
+  if (loading) return <div style={{ color: '#fff', padding: '20px' }}>Carregando cenário...</div>;
+
   return <Story />;
 };
 
+
 const meta: Meta<typeof BattleScenario> = {
-  title: 'Game/BattleScenario/PotOfGreedVariations',
+  title: 'Game/BattleScenario/CardModifiers',
   component: BattleScenario,
   parameters: { layout: 'fullscreen' },
-  args: {
-    onBack: () => console.log('Back'),
-    onEnd: () => console.log('End'),
-  },
 };
 
 export default meta;
 type Story = StoryObj<typeof BattleScenario>;
 
-export const PlayerDrawOne: Story = {
-  name: 'Player Draws 1 Card',
-  decorators: [withBattleMock(createDrawMockState(1, 'player'))],
+export const MonsterBuffed: Story = {
+  name: 'Monster Buff (+500 ATK/DEF)',
+  decorators: [withBattleMock(createMockWithModifiers(500, 500, "Equipamento Místico"))],
 };
 
-export const PlayerDrawTwo: Story = {
-  name: 'Player Draws 2 Cards (Classic)',
-  decorators: [withBattleMock(createDrawMockState(2, 'player'))],
+export const MonsterDebuffed: Story = {
+  name: 'Monster Debuff (-300 ATK)',
+  decorators: [withBattleMock(createMockWithModifiers(-300, 0, "Grito Enfraquecedor"))],
 };
 
-export const OpponentDrawOne: Story = {
-  name: 'Opponent Draws 1 Card',
-  decorators: [withBattleMock(createDrawMockState(1, 'opponent'))],
-};
-
-export const OpponentDrawFive: Story = {
-  name: 'Opponent Draws 5 Cards (Max)',
-  decorators: [withBattleMock(createDrawMockState(5, 'opponent'))],
+export const MassiveBuff: Story = {
+  name: 'Massive Buff (+2000 ATK)',
+  decorators: [withBattleMock(createMockWithModifiers(2000, 0, "Fúria de Rá"))],
 };

@@ -3,7 +3,26 @@ import { BoardSide } from "./BoardSide";
 import { useBattleStore } from "../../../../store/BattleStore";
 import { useEffect } from "react";
 import { BattleEvent } from "../../../../core/domain/BattleStore";
-import { mockMonsterInAttackMode, mockMonsterInDefenseMode } from "../../../../utils/mockUtils";
+import { useBattleEventStore } from "../../../../store/BattleEventStore";
+import { MonsterCard } from "../../../../core/domain/Card";
+
+const mockMonster = new MonsterCard(
+  "1",
+  "Patrulheiro Gárgula de Gelo",
+  "Emmissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados. Sua presença inspira coragem, e o eco de seu grito de gelo ressoa nas muralhas, formando escudos de pedra que refutam qualquer ataque.",
+  'images/exemplo_monstro_raro.jpg',
+  "attack",
+  "ice",
+  2300,
+  2100,
+  7,
+  "LEGENDARIO",
+);
+
+const cardData = {
+  card: mockMonster,
+  position: "attack"
+}
 
 const meta: Meta<typeof BoardSide> = {
   title: "Game/BoardSide",
@@ -40,7 +59,7 @@ export const EventInitial: StoryObj<typeof BoardSide> = {
   },
 }
 
-export const EventCardSelected: StoryObj<typeof BoardSide> = {
+export const EventInitialOpponent: StoryObj<typeof BoardSide> = {
   render: (args) => {
     const initBattle = useBattleStore((s) => s.initBattle);
     const setEvent = useBattleStore((s) => s.setEvent);
@@ -53,14 +72,57 @@ export const EventCardSelected: StoryObj<typeof BoardSide> = {
         currentTurnOwner: "player"
       });
 
+      setEvent(BattleEvent.INITIAL);
+    }, []);
+
+    return <BoardSide {...args} isOpponent={true} />;
+  },
+}
+
+export const EventCardSelectPosition: StoryObj<typeof BoardSide> = {
+  render: (args) => {
+    const initBattle = useBattleStore((s) => s.initBattle);
+    const setEvent = useBattleStore((s) => s.setEvent);
+    const { setSelectedFieldIndex, setSelectedFieldArea } = useBattleEventStore();
+
+    useEffect(() => {
+      initBattle({
+        player: { field: [] },
+        opponent: { field: [] },
+        turn: 1,
+        currentTurnOwner: "player"
+      });
+
       setEvent(BattleEvent.SELECTING_POSITION);
+      setSelectedFieldIndex(0);
+      setSelectedFieldArea("MONSTER");
     }, []);
 
     return <BoardSide {...args} isOpponent={false} />;
   },
 }
 
-export const OpponentOnCardSelected: StoryObj<typeof BoardSide> = {
+export const EventCardOnField: StoryObj<typeof BoardSide> = {
+  render: (args) => {
+    const initBattle = useBattleStore((s) => s.initBattle);
+    const setEvent = useBattleStore((s) => s.setEvent);
+
+    useEffect(() => {
+      initBattle({
+        player: { field: [ cardData ] },
+        opponent: { field: [] },
+        turn: 1,
+        currentTurnOwner: "player"
+      });
+
+      setEvent(BattleEvent.INITIAL);
+    }, []);
+
+    return <BoardSide {...args} isOpponent={false} />;
+  },
+}
+
+export const EventSelectTarget: StoryObj<typeof BoardSide> = {
   render: (args) => {
     const initBattle = useBattleStore((s) => s.initBattle);
     const setEvent = useBattleStore((s) => s.setEvent);
@@ -68,102 +130,14 @@ export const OpponentOnCardSelected: StoryObj<typeof BoardSide> = {
     useEffect(() => {
       initBattle({
         player: { field: [] },
-        opponent: { field: [] },
+        opponent: { field: [ cardData ] },
         turn: 1,
-        currentTurnOwner: "opponent"
+        currentTurnOwner: "player"
       });
 
-      setEvent(BattleEvent.SELECTING_POSITION);
+      setEvent(BattleEvent.SELECTING_TARGET);
     }, []);
 
     return <BoardSide {...args} isOpponent={true} />;
   },
 }
-
-export const PlayerSideAttackMode: StoryObj<typeof BoardSide> = {
-  render: (args) => {
-    const initBattle = useBattleStore((s) => s.initBattle);
-    const setEvent = useBattleStore((s) => s.setEvent);
-
-    useEffect(() => {
-      initBattle({
-        player: {
-          field: [ mockMonsterInAttackMode ]
-        },
-        opponent: { field: [] },
-        turn: 1,
-        currentTurnOwner: "player"
-      });
-
-      setEvent(BattleEvent.INITIAL);
-    }, []);
-
-    return <BoardSide {...args} isOpponent={false} />;
-  },
-};
-
-export const PlayerSideDefenseMode: StoryObj<typeof BoardSide> = {
-  render: (args) => {
-    const initBattle = useBattleStore((s) => s.initBattle);
-    const setEvent = useBattleStore((s) => s.setEvent);
-
-    useEffect(() => {
-      initBattle({
-        player: {
-          field: [ mockMonsterInDefenseMode ]
-        },
-        opponent: { field: [] },
-        turn: 1,
-        currentTurnOwner: "player"
-      });
-
-      setEvent(BattleEvent.INITIAL);
-    }, []);
-
-    return <BoardSide {...args} isOpponent={false} />;
-  },
-};
-
-export const OpponentSideAttackMode: StoryObj<typeof BoardSide> = {
-  render: (args) => {
-    const initBattle = useBattleStore((s) => s.initBattle);
-    const setEvent = useBattleStore((s) => s.setEvent);
-
-    useEffect(() => {
-      initBattle({
-        player: {
-          field: []
-        },
-        opponent: { field: [ mockMonsterInAttackMode ] },
-        turn: 1,
-        currentTurnOwner: "opponent"
-      });
-
-      setEvent(BattleEvent.INITIAL);
-    }, []);
-
-    return <BoardSide {...args} isOpponent={true} />;
-  },
-};
-
-export const OpponentSideDefenseMode: StoryObj<typeof BoardSide> = {
-  render: (args) => {
-    const initBattle = useBattleStore((s) => s.initBattle);
-    const setEvent = useBattleStore((s) => s.setEvent);
-
-    useEffect(() => {
-      initBattle({
-        player: {
-          field: []
-        },
-        opponent: { field: [ mockMonsterInDefenseMode ] },
-        turn: 1,
-        currentTurnOwner: "opponent"
-      });
-
-      setEvent(BattleEvent.INITIAL);
-    }, []);
-
-    return <BoardSide {...args} isOpponent={true} />;
-  },
-};

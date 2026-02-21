@@ -10,6 +10,7 @@ export const FieldZoneMenu: React.FC<ExtendedFieldZoneMenuProps> = ({
   mode,
   index,
   isOpponent = false,
+  isMonster = false,
   onEnd
 }) => {
   const {
@@ -17,7 +18,7 @@ export const FieldZoneMenu: React.FC<ExtendedFieldZoneMenuProps> = ({
     onChangeMode,
     onView,
     onClose
-  } = useFieldZoneMenu({ onEnd, card, mode });
+  } = useFieldZoneMenu({ onEnd, card, mode, isMonster });
 
   const isFaceDown = (mode === "face-down-attack" || mode === "face-down-defense");
 
@@ -34,6 +35,7 @@ export const FieldZoneMenu: React.FC<ExtendedFieldZoneMenuProps> = ({
         <>
           {mode === "attack" && canAttack && (
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 onInitiateAttack?.(index);
@@ -41,6 +43,7 @@ export const FieldZoneMenu: React.FC<ExtendedFieldZoneMenuProps> = ({
               }}
               className="p-2 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors group/btn"
               title="Declarar Ataque"
+              aria-label="Declarar Ataque"
             >
               <Sword size={18} className="group-hover/btn:scale-110 group-active/btn:scale-90" />
             </button>

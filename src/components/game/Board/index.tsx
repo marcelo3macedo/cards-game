@@ -1,14 +1,17 @@
+import { ActiveFieldIndicator } from "./ActiveFieldIndicator";
 import { useGameBoard } from "./hooks/useGameBoard";
 import { BoardGutter } from "./types/BoardGutter";
 import { BoardSide } from "./types/BoardSide";
 
 export function GameBoard() {
-  const { isSelectingTarget, isBlur, onDraw, onSelectTarget } = useGameBoard();
+  const { activeField, isSelectingTarget, isBlur, onDraw, onSelectTarget } = useGameBoard();
 
   return (
     <div
       className={`grid grid-cols-[120px_1fr_120px] gap-8 items-center w-full max-w-7xl px-10 transition-all duration-500 ${isBlur ? "blur-xl scale-95 opacity-40" : ""}`}
     >
+      <ActiveFieldIndicator field={activeField} />
+
       <BoardGutter type="opponent" onDraw={onDraw} />
 
       <div className="flex flex-col gap-10">

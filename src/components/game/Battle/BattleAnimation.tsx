@@ -11,6 +11,7 @@ export const BattleAnimation: React.FC<any> = () => {
     <BattleAnimationOverlay
       attacker={battleData.attacker}
       defender={battleData.defender}
+      position={battleData.position}
       onAnimationEnd={handleBattleComplete}
     />
   );

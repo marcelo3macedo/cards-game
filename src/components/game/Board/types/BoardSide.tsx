@@ -6,7 +6,7 @@ import { useBoardSideContent } from "../hooks/useBoardSideContent";
 export const BoardSide = ({
   isOpponent
 }: BoardSideProps) => {
-  const { attributes, normalizedField, normalizedFieldSpells, selectedFieldIndex } = useBoardSideContent({
+  const { attributes, normalizedField, normalizedFieldSpells, selectedFieldIndex, selectedFieldArea } = useBoardSideContent({
     isOpponent,
   });
 
@@ -19,8 +19,9 @@ export const BoardSide = ({
           cardData={cardData}
           isInteractable={attributes.isInteractable}
           isSelected={attributes.isSelected}
-          isFocused={attributes.isFocused && selectedFieldIndex === i}
+          isFocused={attributes.isFocused && selectedFieldIndex === i && selectedFieldArea == "MONSTER"}
           isOpponent={isOpponent}
+          isMonster={true}
         />
       ))}
     </div>
@@ -31,11 +32,12 @@ export const BoardSide = ({
       {normalizedFieldSpells.map((cardData, i) => (
         <FieldSpellZone
           key={`magic_${i}_${cardData?.card?.id}`}
+          data-test={`magic_${i}_${isOpponent}`}
           index={i}
           cardData={cardData}
           isInteractable={attributes.isInteractable}
           isSelected={attributes.isSelected}
-          isFocused={attributes.isFocused && selectedFieldIndex === i}
+          isFocused={attributes.isFocused && selectedFieldIndex === i  && selectedFieldArea == "MAGIC"}
           isOpponent={isOpponent}
         />
       ))}

@@ -1,13 +1,21 @@
+import { useEffect } from "react";
 import { battleService } from "../../../services/battleService";
 import { useBattleEventStore } from "../../../store/BattleEventStore";
 import { useBattleStore } from "../../../store/BattleStore";
 import { useHandStore } from "../../../store/HandStore";
 import { mapServerCardToEntity } from "../../../utils/cardUtils";
+import { villainActionsHandlers } from "../../../services/villainActionsService";
 
 export const useBattleEvents = ({ onBack, onEnd }: any) => {
     const { clearBattle, currentTurnOwner, player, opponent } = useBattleStore();
     const { setBattleData } = useBattleEventStore();
     const { setVisible, setIsHidden } = useHandStore();
+
+    useEffect(() => {
+      if (player?.hp === 0 || opponent?.hp === 0) {
+        handleEndBattle();
+      }
+    }, [player, opponent]);
 
     const handleAbandon = () => {
         clearBattle();
@@ -44,38 +52,15 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
     };
 
     const processOpponentActions = async (actions: any[], state: any) => {
-        for (const action of actions) {
-          switch (action.type) {
-            case 'summon':
-              useBattleStore.getState().setOpponent(state.opponent);
-              await new Promise(resolve => setTimeout(resolve, 1000));
-              break;
+      for (const action of actions) {
+        const handler = villainActionsHandlers[action.type];
 
-            case 'attack':
-              const { attacker, target } = action.data;
-              if (!target) {
-                console.log(`${attacker?.name || "Monstro"} atacou diretamente!`);
-
-                setBattleData({
-                  attacker: mapServerCardToEntity(attacker),
-                  defender: null
-                });
-              } else {
-                console.log(`${attacker.name} atacou ${target.name}`);
-                setBattleData({
-                  attacker: mapServerCardToEntity(attacker),
-                  defender: mapServerCardToEntity(target)
-                });
-              }
-              await new Promise(resolve => setTimeout(resolve, 6000));
-              break;
-
-            default:
-              console.log("Ação desconhecida:", action.type);
-          }
-
-          setBattleData(null);
+        if (handler) {
+          await handler(action, state, setBattleData);
+        } else {
+          console.warn("Ação desconhecida:", action.type);
         }
+      }
     };
 
     const handleAttack = async ({ attackerIdx, targetIdx }: any) => {
@@ -83,10 +68,11 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
             const response = await battleService.attack(attackerIdx, targetIdx);
             setBattleData({
               attacker: mapServerCardToEntity(player?.field[attackerIdx]?.card),
-              defender: mapServerCardToEntity(opponent?.field[targetIdx]?.card)
+              defender: mapServerCardToEntity(opponent?.field[targetIdx]?.card),
+              position: opponent?.field[targetIdx]?.position
             });
 
-            await new Promise(resolve => setTimeout(resolve, 3000));
+            await new Promise(resolve => setTimeout(resolve, 6500));
 
             useBattleStore.getState().setPlayer(response.state.player);
             useBattleStore.getState().setOpponent(response.state.opponent);

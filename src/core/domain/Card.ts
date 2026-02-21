@@ -23,6 +23,7 @@ export abstract class BaseCard {
   public mode: string;
   public effectScript?: string;
   public effectValue?: object;
+  public modifiers?: any;
 
   constructor(
     id: string,
@@ -68,13 +69,15 @@ export class MonsterCard extends BaseCard {
     stars: number,
     monsterRarity: "COMUM" | "RARO" | "LEGENDARIO",
     effectScript?: string,
-    effectValue?: object
+    effectValue?: object,
+    modifiers?: any
   ) {
     super(id, name, description, monsterRarity, image, typeIcon, mode, effectScript, effectValue);
     this.atk = atk;
     this.def = def;
     this.stars = stars;
     this.monsterRarity = monsterRarity;
+    this.modifiers = modifiers;
   }
 
   getStyle() {

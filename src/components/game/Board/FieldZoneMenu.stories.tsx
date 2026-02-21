@@ -16,12 +16,7 @@ const meta: Meta<typeof FieldZoneMenu> = {
       </div>
     ),
   ],
-  argTypes: {
-    onInitiateAttack: { action: "attack_initiated" },
-    onChangeMode: { action: "mode_changed" },
-    onView: { action: "view_card" },
-    onClose: { action: "menu_closed" },
-  },
+  argTypes: {},
 };
 
 export default meta;
@@ -29,15 +24,25 @@ type Story = StoryObj<typeof FieldZoneMenu>;
 
 export const PlayerAttackMode: Story = {
   args: {
-    mode: "atk",
+    mode: "attack",
     index: 0,
     isOpponent: false,
+    canAttack: true
+  },
+};
+
+export const PlayerAttackDisableMode: Story = {
+  args: {
+    mode: "attack",
+    index: 0,
+    isOpponent: false,
+    canAttack: false
   },
 };
 
 export const PlayerFaceDown: Story = {
   args: {
-    mode: "face-down",
+    mode: "face-down-attack",
     index: 1,
     isOpponent: false,
   },
@@ -45,7 +50,7 @@ export const PlayerFaceDown: Story = {
 
 export const PlayerDefenseMode: Story = {
   args: {
-    mode: "def",
+    mode: "defense",
     index: 2,
     isOpponent: false,
   },
@@ -53,7 +58,7 @@ export const PlayerDefenseMode: Story = {
 
 export const OpponentCard: Story = {
   args: {
-    mode: "atk",
+    mode: "attack",
     index: 3,
     isOpponent: true,
   },
@@ -61,7 +66,7 @@ export const OpponentCard: Story = {
 
 export const OpponentFaceDown: Story = {
   args: {
-    mode: "face-down",
+    mode: "face-down-attack",
     index: 4,
     isOpponent: true,
   },

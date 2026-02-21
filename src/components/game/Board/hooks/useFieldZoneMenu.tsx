@@ -1,17 +1,16 @@
 import { BattleEvent } from "../../../../core/domain/BattleStore";
-import { MonsterCard } from "../../../../core/domain/Card";
 import { battleService } from "../../../../services/battleService";
 import { useBattleEventStore } from "../../../../store/BattleEventStore";
 import { useBattleStore } from "../../../../store/BattleStore";
 import { withContextLogging } from "../../../../utils/loggingUtils"
 
-export const useFieldZoneMenu = ({ onEnd, card, mode }: any) => {
+export const useFieldZoneMenu = ({ onEnd, card, mode, isMonster }: any) => {
     const log = withContextLogging('useFieldZoneMenu');
     const { setEvent } = useBattleStore();
     const { setSelectedCard, setSelectedOrigin, setViewCard, setIsSelectingTarget, setSelectedAttackerIndex } = useBattleEventStore();
 
     const onChangeMode = async (index: number) => {
-        if (card instanceof MonsterCard) {
+        if (isMonster) {
             const position = (() => {
             if (mode === "face-down-defense") return "attack";
 

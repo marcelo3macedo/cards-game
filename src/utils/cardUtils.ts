@@ -1,7 +1,9 @@
 import { EquipCard, MagicCard, MonsterCard, TerrainCard, TrapCard, type BaseCard } from "../core/domain/Card";
 
-export function mapServerCardToEntity(data: any): BaseCard | undefined {
+export function mapServerCardToEntity(data: any): any | undefined {
   if (!data) return;
+
+  if (typeof data.getStyle === "function") return data;
 
   const {
     id,
@@ -15,7 +17,8 @@ export function mapServerCardToEntity(data: any): BaseCard | undefined {
     stars,
     element,
     effectScript,
-    effectValue
+    effectValue,
+    modifiers
   } = data;
 
   switch (attribute?.toLowerCase()) {
@@ -30,7 +33,10 @@ export function mapServerCardToEntity(data: any): BaseCard | undefined {
         attackPower,
         defensePower,
         stars,
-        data.monsterRarity || "LEGENDARIO"
+        data.monsterRarity || "LEGENDARIO",
+        effectScript,
+        effectValue,
+        modifiers
       );
 
     case "spell":
@@ -47,10 +53,18 @@ export function mapServerCardToEntity(data: any): BaseCard | undefined {
       return new TerrainCard(String(id), name, description, imageUrl, mode, element, effectScript, effectValue);
 
     default:
-      return new MonsterCard(String(id), name, description, imageUrl, mode, element, 0, 0, 1, "COMUM");
+      return new MonsterCard(String(id), name, description, imageUrl, mode, element, 0, 0, 1, "COMUM", modifiers);
   }
 }
 
 export const mapHand = (serverHand: any[]): (BaseCard | undefined)[] => {
   return serverHand.map(mapServerCardToEntity);
 };
+
+export function isMonsterCard(card: BaseCard) {
+  return (
+    "atk" in card &&
+    "def" in card &&
+    "stars" in card
+  );
+}

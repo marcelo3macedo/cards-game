@@ -6,6 +6,7 @@ export type BattlePhase = "intro" | "confront" | "impact" | "resolve" | "damage"
 export const useBattleSequence = ({
   attacker,
   defender,
+  position,
   onAnimationEnd,
 }: BattleAnimationOverlayProps) => {
   const [phase, setPhase] = useState<BattlePhase>("intro");
@@ -16,19 +17,21 @@ export const useBattleSequence = ({
 
   const defenderValue = useMemo(() => {
     if (isDirectAttack) return 0;
-    return defender.mode === "def" ? defender.def : defender.atk;
+    return ["defense", "face-down-defense"].includes(position) ? defender.def : defender.atk;
   }, [isDirectAttack, defender]);
 
   const damageDiff = attacker?.atk - defenderValue;
 
   useEffect(() => {
+    if (!attackerId) return;
+
     setPhase("intro");
 
     const timers = [
       setTimeout(() => setPhase("confront"), 1000),
       setTimeout(() => setPhase("impact"), 2500),
       setTimeout(() => setPhase("resolve"), 3500),
-      setTimeout(() => setPhase("damage"), 4200),
+      setTimeout(() => setPhase("damage"), 3500),
       setTimeout(() => {
         const result = isDirectAttack
           ? "direct_hit"
@@ -38,11 +41,11 @@ export const useBattleSequence = ({
               ? "defender_wins"
               : "draw";
         onAnimationEnd(result);
-      }, 6500),
+      }, 5000),
     ];
 
     return () => timers.forEach(clearTimeout);
-  }, [attackerId, defenderId, damageDiff, isDirectAttack, onAnimationEnd]);
+  }, [attackerId, defenderId]);
 
   return {
     phase,

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Card } from "./index";
 import { MonsterCard } from "../../../core/domain/Card";
-import exemplo_legendaria from "@/assets/images/exemplo_legendaria.jpg";
 
 const meta = {
   title: "Game/Card",
@@ -16,7 +15,8 @@ export const FaceUp: StoryObj<typeof meta> = {
       "1",
       "Patrulheiro Gárgula de Gelo",
       "Emmissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados. Sua presença inspira coragem, e o eco de seu grito de gelo ressoa nas muralhas, formando escudos de pedra que refutam qualquer ataque.",
-      exemplo_legendaria,
+      'images/exemplo_monstro_raro.jpg',
+      "attack",
       "ice",
       2500,
       2100,
@@ -33,7 +33,8 @@ export const FaceDown: StoryObj<typeof meta> = {
       "1",
       "Patrulheiro Gárgula de Gelo",
       "Emmissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados. Sua presença inspira coragem, e o eco de seu grito de gelo ressoa nas muralhas, formando escudos de pedra que refutam qualquer ataque.",
-      exemplo_legendaria,
+      'images/exemplo_monstro_raro.jpg',
+      "attack",
       "ice",
       2500,
       2100,

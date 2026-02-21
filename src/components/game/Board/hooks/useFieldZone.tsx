@@ -5,9 +5,9 @@ import { useBattleEventStore } from "../../../../store/BattleEventStore";
 import { BattleEvent } from "../../../../core/domain/BattleStore";
 import { useBattleEvents } from "../../../../scenarios/Battle/hooks/useBattleEvents";
 
-export const useFieldZone = ({ card, position }: any) => {
+export const useFieldZone = ({ position, isMonster }: any) => {
     const { event, setEvent } = useBattleStore();
-    const { setSelectedFieldIndex, setSelectedTargetIndex, selectedAttackerIndex } = useBattleEventStore();
+    const { setSelectedFieldIndex, setSelectedTargetIndex, setSelectedFieldArea, selectedAttackerIndex } = useBattleEventStore();
     const { handleAttack } = useBattleEvents({});
     const log = withContextLogging('useFieldZone');
 
@@ -33,7 +33,9 @@ export const useFieldZone = ({ card, position }: any) => {
     }
 
     const onFocusCard = (index: number) => {
+        const area = isMonster ? "MONSTER" : "MAGIC";
         setSelectedFieldIndex(index);
+        setSelectedFieldArea(area);
     }
 
     return {
