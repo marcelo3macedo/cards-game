@@ -26,15 +26,15 @@ export const useStartBattle = () => {
     setError(null);
 
     try {
-      const initialState = await battleService.startBattle(user.id, selectedVillain.id);
-      if (initialState) {
-        initBattle(initialState);
+      const response = await battleService.startBattle(user.id, selectedVillain.id);
+      if (response?.state) {
+        initBattle(response?.state);
         setEvent(BattleEvent.INITIAL);
         setVisible(true);
         setIsHidden(false);
       }
 
-      return initialState;
+      return response?.state;
 
     } catch (err: any) {
       setError(err.message);

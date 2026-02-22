@@ -27,8 +27,8 @@ export const useSummonOverlayNavigation = () => {
       const handIndex = player?.hand.findIndex((c:any) => Number(c.id) === Number(selectedCard.id));
       if (handIndex === -1) return;
 
-      const newState = await battleService.summonCard(handIndex, mode);
-      useBattleStore.getState().setBattle(newState);
+      const response = await battleService.summonCard(handIndex, mode);
+      useBattleStore.getState().setBattle(response.state);
 
       setSelectedCard(null);
       setIsHidden(true);

@@ -1,5 +1,13 @@
 import { authService } from "./authService";
 
+export interface BattleResponse {
+  success: boolean;
+  drawnCount: number;
+  state: any;
+  logs: string[];
+  actions: any;
+}
+
 export interface BattleState {
   battleId: string;
   player: {
@@ -33,7 +41,7 @@ export interface EndTurnResponse {
 }
 
 export const battleService = {
-  startBattle: async (userId: number, villainId: number): Promise<BattleState> => {
+  startBattle: async (userId: number, villainId: number): Promise<BattleResponse> => {
     const API_URL = import.meta.env.VITE_API_URL;
     const token = authService.getSessionToken();
 
@@ -55,7 +63,7 @@ export const battleService = {
     return await response.json();
   },
 
-  summonCard: async (handIndex: number, position: string): Promise<BattleState> => {
+  summonCard: async (handIndex: number, position: string): Promise<BattleResponse> => {
     const API_URL = import.meta.env.VITE_API_URL;
     const token = authService.getSessionToken();
 
@@ -78,7 +86,7 @@ export const battleService = {
     return await response.json();
   },
 
-  onDraw: async (): Promise<BattleState> => {
+  onDraw: async (): Promise<BattleResponse> => {
     const API_URL = import.meta.env.VITE_API_URL;
     const token = authService.getSessionToken();
 
@@ -100,7 +108,7 @@ export const battleService = {
     return await response.json();
   },
 
-  attack: async (attackerIdx: number, targetIdx: number): Promise<any> => {
+  attack: async (attackerIdx: number, targetIdx: number): Promise<BattleResponse> => {
     const API_URL = import.meta.env.VITE_API_URL;
     const token = authService.getSessionToken();
 
@@ -146,7 +154,7 @@ export const battleService = {
     return await response.json();
   },
 
-  endTurn: async (): Promise<EndTurnResponse> => {
+  endTurn: async (): Promise<BattleResponse> => {
     const API_URL = import.meta.env.VITE_API_URL;
     const token = authService.getSessionToken();
 

@@ -25,7 +25,7 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
     const handleDrawCard = async () => {
         try {
             const response = await battleService.onDraw();
-            useBattleStore.getState().setBattle(response);
+            useBattleStore.getState().setBattle(response.state);
             setVisible(true);
         } catch (error: any) {
             console.error("Erro ao encerrar turno:", error.message);

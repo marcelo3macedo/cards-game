@@ -115,9 +115,9 @@ export const useBattleActions = () => {
       if (handIndex === -1) return;
 
       const position = mode.includes("def") ? "defense" : "attack"
-      const newState = await battleService.summonCard(handIndex, position);
+      const response = await battleService.summonCard(handIndex, position);
 
-      useBattleStore.getState().setBattle(newState);
+      useBattleStore.getState().setBattle(response.state);
       setMonsterZones(updatedZones);
       useHandStore.getState().removeCard(selectedCard.id);
 
