@@ -13,7 +13,7 @@ export const useBattleActions = () => {
   // Estados de Controle de Batalha e Campo
   const [attackerIndex, setAttackerIndex] = useState<number | null>(null);
   const [isSelectingTarget, setIsSelectingTarget] = useState(false);
-  const [battleData, setBattleData] = useState<{ attacker: MonsterCard; defender?: MonsterCard } | null>(null);
+  const [battleData, setBattleData] = useState<{ attacker: MonsterCard; defender?: MonsterCard, position: string } | null>(null);
   const [selectedCard, setSelectedCard] = useState<MonsterCard | null>(null);
   const [isSelectingZone, setIsSelectingZone] = useState(false);
   const [focusedZoneIndex, setFocusedZoneIndex] = useState(0);
@@ -163,7 +163,7 @@ export const useBattleActions = () => {
           break;
 
         case 'attack':
-          const { attacker, target } = action.data;
+          const { attacker, target, position } = action.data;
           if (!target) {
             console.log(`${attacker?.name || "Monstro"} atacou diretamente!`);
             setBattleData({
@@ -174,7 +174,8 @@ export const useBattleActions = () => {
             console.log(`${attacker.name} atacou ${target.name}`);
             setBattleData({
               attacker: mapServerCardToEntity(attacker),
-              defender: mapServerCardToEntity(target)
+              defender: mapServerCardToEntity(target),
+              position
             });
           }
           break;

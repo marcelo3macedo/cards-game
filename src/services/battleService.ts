@@ -63,7 +63,7 @@ export const battleService = {
     return await response.json();
   },
 
-  summonCard: async (handIndex: number, position: string): Promise<BattleResponse> => {
+  summonCard: async (handIndex: number, position: string, selectedFieldIndex: number): Promise<BattleResponse> => {
     const API_URL = import.meta.env.VITE_API_URL;
     const token = authService.getSessionToken();
 
@@ -73,7 +73,7 @@ export const battleService = {
         "Content-Type": "application/json",
         "authorization": `${token}`,
       },
-      body: JSON.stringify({ handIndex, position }),
+      body: JSON.stringify({ handIndex, position, selectedFieldIndex }),
     });
 
     if (!response.ok) {

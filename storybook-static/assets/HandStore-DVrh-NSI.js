@@ -1,1 +1,0 @@
-import{c as a}from"./BattleStore-DJ04qHHZ.js";const c=a(s=>({cards:[],isVisible:!0,setCards:i=>s({cards:i}),addCard:i=>s(r=>({cards:[...r.cards,i]})),removeCard:i=>s(r=>({cards:r.cards.filter(e=>e.id!==i)})),setVisible:i=>s({isVisible:i}),toggleVisible:()=>s(i=>({isVisible:!i.isVisible}))}));export{c as u};

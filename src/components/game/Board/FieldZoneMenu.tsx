@@ -16,6 +16,7 @@ export const FieldZoneMenu: React.FC<ExtendedFieldZoneMenuProps> = ({
   const {
     onInitiateAttack,
     onChangeMode,
+    onInvoke,
     onView,
     onClose
   } = useFieldZoneMenu({ onEnd, card, mode, isMonster });
@@ -53,7 +54,7 @@ export const FieldZoneMenu: React.FC<ExtendedFieldZoneMenuProps> = ({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onChangeMode?.(index);
+                onInvoke?.(index);
                 onClose();
               }}
               className="p-2 hover:bg-yellow-500/20 text-yellow-400 rounded-lg transition-colors group/btn"

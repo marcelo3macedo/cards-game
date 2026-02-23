@@ -7,7 +7,7 @@ import { BattleEvent } from "../../../../core/domain/BattleStore";
 
 export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigationProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const { setSelectedCard, setSelectedOrigin } = useBattleEventStore();
+  const { setSelectedCard, setSelectedOrigin, setSelectedFieldArea } = useBattleEventStore();
   const { setEvent } = useBattleStore();
 
   useEffect(() => {
@@ -40,6 +40,7 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
     setSelectedCard(card);
     setEvent(event);
     setSelectedOrigin("hand");
+    setSelectedFieldArea(isMagic ? "MAGIC": "MONSTER");
 
     onSelect();
   }

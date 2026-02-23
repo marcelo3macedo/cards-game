@@ -5,9 +5,10 @@ import { useBattleStore } from "../../../store/BattleStore";
 import { useHandStore } from "../../../store/HandStore";
 import { mapServerCardToEntity } from "../../../utils/cardUtils";
 import { villainActionsHandlers } from "../../../services/villainActionsService";
+import { BattleEvent } from "../../../core/domain/BattleStore";
 
 export const useBattleEvents = ({ onBack, onEnd }: any) => {
-    const { clearBattle, currentTurnOwner, player, opponent } = useBattleStore();
+    const { clearBattle, currentTurnOwner, player, opponent, setEvent } = useBattleStore();
     const { setBattleData } = useBattleEventStore();
     const { setVisible, setIsHidden } = useHandStore();
 
@@ -65,6 +66,8 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
 
     const handleAttack = async ({ attackerIdx, targetIdx }: any) => {
         try {
+            setEvent(BattleEvent.INITIAL);
+
             const response = await battleService.attack(attackerIdx, targetIdx);
             setBattleData({
               attacker: mapServerCardToEntity(player?.field[attackerIdx]?.card),
@@ -72,7 +75,7 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
               position: opponent?.field[targetIdx]?.position
             });
 
-            await new Promise(resolve => setTimeout(resolve, 6500));
+            await new Promise(resolve => setTimeout(resolve, 5000));
 
             useBattleStore.getState().setPlayer(response.state.player);
             useBattleStore.getState().setOpponent(response.state.opponent);

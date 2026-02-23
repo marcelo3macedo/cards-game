@@ -20,7 +20,9 @@ export const useBattleSequence = ({
     return ["defense", "face-down-defense"].includes(position) ? defender.def : defender.atk;
   }, [isDirectAttack, defender]);
 
-  const damageDiff = attacker?.atk - defenderValue;
+  const damageDiff = ["defense", "face-down-defense"].includes(position)
+    ? 0
+    : attacker?.atk - defenderValue;
 
   useEffect(() => {
     if (!attackerId) return;

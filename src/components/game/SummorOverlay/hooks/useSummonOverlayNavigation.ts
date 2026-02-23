@@ -11,7 +11,7 @@ import { withContextLogging } from "../../../../utils/loggingUtils";
 export const useSummonOverlayNavigation = () => {
   const log = withContextLogging('useSummonOverlayNavigation');
   const [activeIndex, setActiveIndex] = useState(0);
-  const { selectedCard, setSelectedCard } = useBattleEventStore();
+  const { selectedCard, setSelectedCard, selectedFieldIndex } = useBattleEventStore();
   const { player, event, setEvent } = useBattleStore();
   const { setVisible, setIsHidden } = useHandStore();
 
@@ -27,7 +27,7 @@ export const useSummonOverlayNavigation = () => {
       const handIndex = player?.hand.findIndex((c:any) => Number(c.id) === Number(selectedCard.id));
       if (handIndex === -1) return;
 
-      const response = await battleService.summonCard(handIndex, mode);
+      const response = await battleService.summonCard(handIndex, mode, selectedFieldIndex);
       useBattleStore.getState().setBattle(response.state);
 
       setSelectedCard(null);

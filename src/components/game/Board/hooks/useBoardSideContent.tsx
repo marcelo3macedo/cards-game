@@ -21,6 +21,7 @@ export const useBoardSideContent = ({
     const normalizedFieldSpells = Array.from({ length: 5 }, (_, i) => rawFieldSpells[i] ?? null);
 
     return {
+        event,
         attributes,
         normalizedField,
         normalizedFieldSpells,

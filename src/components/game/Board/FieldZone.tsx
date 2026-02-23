@@ -16,7 +16,7 @@ export function FieldZone({
   const { card, position } = cardData || {};
   const {
     showMenu, setShowMenu, isFaceDown, onClick, onFocusCard
-  } = useFieldZone({ position, isMonster });
+  } = useFieldZone({ position, isMonster, isInteractable });
 
   const themeColors = isOpponent
     ? {

@@ -17,7 +17,7 @@ export const BoardSide = ({
           key={`monster_${i}_${cardData?.card?.id}`}
           index={i}
           cardData={cardData}
-          isInteractable={attributes.isInteractable}
+          isInteractable={attributes.isInteractable && selectedFieldArea == "MONSTER"}
           isSelected={attributes.isSelected}
           isFocused={attributes.isFocused && selectedFieldIndex === i && selectedFieldArea == "MONSTER"}
           isOpponent={isOpponent}
@@ -35,7 +35,7 @@ export const BoardSide = ({
           data-test={`magic_${i}_${isOpponent}`}
           index={i}
           cardData={cardData}
-          isInteractable={attributes.isInteractable}
+          isInteractable={attributes.isInteractable && selectedFieldArea == "MAGIC"}
           isSelected={attributes.isSelected}
           isFocused={attributes.isFocused && selectedFieldIndex === i  && selectedFieldArea == "MAGIC"}
           isOpponent={isOpponent}

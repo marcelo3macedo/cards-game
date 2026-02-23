@@ -28,6 +28,19 @@ export const useFieldZoneMenu = ({ onEnd, card, mode, isMonster }: any) => {
         }
     }
 
+    const onInvoke = async (index: number) => {
+        if (isMonster) {
+            const position = "attack";
+
+            const response = await battleService.changePosition(index, position);
+            useBattleStore.getState().setBattle(response);
+        } else {
+            setSelectedOrigin("spells");
+            setSelectedCard(card);
+            setEvent(BattleEvent.ACTIVATING_EFFECT);
+        }
+    }
+
     const onInitiateAttack = (index: number) => {
         setSelectedAttackerIndex(index);
         setIsSelectingTarget(true);
@@ -38,6 +51,7 @@ export const useFieldZoneMenu = ({ onEnd, card, mode, isMonster }: any) => {
 
     return {
         onInitiateAttack: log(onInitiateAttack),
+        onInvoke: log(onInvoke),
         onChangeMode: log(onChangeMode),
         onView: log(onView),
         onClose: log(onClose)
