@@ -6,7 +6,7 @@ export type ScenarioType =
   | "REWARDS" | "PROFILE" | "MAINMENU" | "DECKMANAGER" | "TUTORIAL";
 
 export const useNavigation = () => {
-  const [currentScenario, setCurrentScenario] = useState<ScenarioType>("BATTLE");
+  const [currentScenario, setCurrentScenario] = useState<ScenarioType>("WELCOME");
   const navigateTo = (scenario: ScenarioType) => setCurrentScenario(scenario);
 
   const checkUserStatus = useCallback(() => {

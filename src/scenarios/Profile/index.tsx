@@ -1,9 +1,5 @@
 import { useProfileRegistration } from "./hooks/useProfileRegistration";
 
-// Use as variáveis de ambiente ou passe as strings diretamente
-const API_URL = "https://card-game-api.professoraantenada.com.br";
-const IMAGES_URL = "https://card-game-images.professoraantenada.com.br";
-
 export default function ProfileScenario({ onConfirm }: { onConfirm: (data: any) => void }) {
   const {
     name, setName,
@@ -20,7 +16,6 @@ export default function ProfileScenario({ onConfirm }: { onConfirm: (data: any) 
       const newUser = await registerUser();
       onConfirm(newUser);
     } catch (e) {
-      // Erro tratado no hook
     }
   };
 
@@ -63,8 +58,8 @@ export default function ProfileScenario({ onConfirm }: { onConfirm: (data: any) 
                     setSelectedAvatarId(null);
                   }}
                   className={`flex-1 py-4 rounded-xl font-black uppercase tracking-widest transition-all border-2 ${
-                    gender === g 
-                    ? "bg-blue-600 border-blue-400 shadow-[0_0_15px_rgba(37,99,235,0.4)]" 
+                    gender === g
+                    ? "bg-blue-600 border-blue-400 shadow-[0_0_15px_rgba(37,99,235,0.4)]"
                     : "bg-zinc-800/50 border-white/5 text-zinc-600"
                   }`}
                 >

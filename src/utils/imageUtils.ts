@@ -6,5 +6,5 @@ export function getImageUrl(base?: string) {
     }
 
     const IMAGES_URL = import.meta.env.VITE_IMAGES_URL;
-    return `${IMAGES_URL}/${base}`;
+    return `${IMAGES_URL}${base}`;
 }

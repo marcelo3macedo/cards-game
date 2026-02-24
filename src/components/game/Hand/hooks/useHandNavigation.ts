@@ -37,6 +37,7 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
 
   const selectCardHandler = ({ card, isMagic }: any) => {
     const event = isMagic ? BattleEvent.SELECTING_EFFECT : BattleEvent.SELECTING_POSITION;
+    console.log(isMagic);
     setSelectedCard(card);
     setEvent(event);
     setSelectedOrigin("hand");

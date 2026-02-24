@@ -44,7 +44,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
                   return;
                 }
 
-                selectCardHandler({ card });
+                selectCardHandler({ card, isMagic: !isMonster });
               }}
               onMouseEnter={() => setSelectedIndex(i)}
               style={{
