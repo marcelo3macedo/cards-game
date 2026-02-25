@@ -15,6 +15,7 @@ export const ActionButton = ({
 }) => (
   <button
     onClick={() => onSummon(mode)}
+    data-testid={`summon-card-${mode}`}
     className={`
         group flex flex-col items-center gap-3 p-4 rounded-xl transition-all w-full
         ${

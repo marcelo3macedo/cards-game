@@ -1,9 +1,3 @@
-import type { MonsterCard } from "./Card";
+export interface SummonOverlayProps {}
 
-export interface SummonOverlayProps {
-  card: MonsterCard;
-  onSummon: (mode: "atk" | "def" | "face-down-atk" | "face-down-def") => void;
-  onCancel: () => void;
-}
-
-export type Mode = "atk" | "face-down-atk" | "def" | "face-down-def";
+export type Mode = "attack" | "face-down-attack" | "defense" | "face-down-defense";

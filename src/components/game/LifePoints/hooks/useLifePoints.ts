@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useBattleStore } from "../../../../store/BattleStore";
 
 export function useLifePoints(target: "player" | "opponent") {
-  const lp = useBattleStore((state) => state[target].lp);
-  const name = useBattleStore((state) => state[target].name);
+  const lp = useBattleStore((state) => state[target]?.hp ?? 8000);
+  const name = useBattleStore((state) => state[target]?.name ?? "Carregando...");
 
   const [displayLP, setDisplayLP] = useState(lp);
   const [damagePopup, setDamagePopup] = useState<{ id: number; amount: number } | null>(null);

@@ -1,21 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { BaseCard, MonsterCard } from "../../../core/domain/Card";
+import { MonsterCard } from "../../../core/domain/Card";
 import { PlayerHand } from ".";
-import exemplo_comum from "@/assets/images/exemplo_comum.jpg";
 
 const card = new MonsterCard(
-  "2",
-  "Guarda de Pedra",
-  "Um soldado incansável esculpido nas montanhas antigas. Sua lealdade é tão imutável quanto a rocha de que é feito, servindo como a primeira linha de defesa contra hordas invasoras.",
-  exemplo_comum,
-  "earth",
-  1200,
-  2000,
-  4,
-  "COMUM",
+  "1",
+  "Patrulheiro Gárgula de Gelo",
+  "Emmissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados. Sua presença inspira coragem, e o eco de seu grito de gelo ressoa nas muralhas, formando escudos de pedra que refutam qualquer ataque.",
+  'images/exemplo_comum.jpg',
+  "attack",
+  "ice",
+  2500,
+  2100,
+  7,
+  "LEGENDARIO",
 );
 
-const mockCards: BaseCard[] = [card, card, card, card, card];
+const mockCards = [card, card, card, card, card];
 
 const meta: Meta<typeof PlayerHand> = {
   title: "Game/PlayerHand",

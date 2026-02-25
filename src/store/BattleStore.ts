@@ -1,32 +1,78 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import type { BattleStoreState } from "../core/domain/BattleStore";
 
-interface PlayerData {
-  name: string;
-  lp: number;
-}
+export const useBattleStore = create<BattleStoreState>()(
+  persist(
+    (set) => ({
+      player: null,
+      opponent: null,
+      turn: 1,
+      currentTurnOwner: "player",
+      environment: null,
+      event: null,
+      result: null,
 
-interface BattleState {
-  player: PlayerData;
-  opponent: PlayerData;
-  damagePlayer: (amount: number) => void;
-  damageOpponent: (amount: number) => void;
-  setPlayerLP: (value: number) => void;
-  setOpponentLP: (value: number) => void;
-}
+      initBattle: (state) =>
+        set({
+          player: state.player,
+          opponent: state.opponent,
+          turn: state.turn,
+          currentTurnOwner: state.currentTurnOwner,
+          environment: state.environment,
+          event: "initial",
+          result: null
+        }),
 
-export const useBattleStore = create<BattleState>((set) => ({
-  player: { name: "Yugi", lp: 8000 },
-  opponent: { name: "Kaiba", lp: 8000 },
+      setBattle: (state) =>
+        set({
+          player: state.player,
+          opponent: state.opponent,
+          turn: state.turn,
+          currentTurnOwner: state.currentTurnOwner,
+          event: state.state,
+          environment: state.environment
+        }),
 
-  damagePlayer: (amount) =>
-    set((state) => ({ player: { ...state.player, lp: Math.max(0, state.player.lp - amount) } })),
+      setPlayer: (playerData: any) =>
+        set({
+          player: playerData,
+        }),
 
-  damageOpponent: (amount) =>
-    set((state) => ({
-      opponent: { ...state.opponent, lp: Math.max(0, state.opponent.lp - amount) },
-    })),
+      setOpponent: (opponentData: any) =>
+        set({
+          opponent: opponentData,
+        }),
 
-  setPlayerLP: (value) => set((state) => ({ player: { ...state.player, lp: value } })),
+      setEvent: (event: string) =>
+        set({
+          event
+        }),
 
-  setOpponentLP: (value) => set((state) => ({ opponent: { ...state.opponent, lp: value } })),
-}));
+      updateHP: (playerHP, opponentHP) =>
+        set((state) => ({
+          player: state.player ? { ...state.player, hp: playerHP } : null,
+          opponent: state.opponent ? { ...state.opponent, hp: opponentHP } : null,
+        })),
+
+      clearBattle: () =>
+        set({
+          player: null,
+          opponent: null,
+          turn: 1,
+          currentTurnOwner: "player",
+          event: null,
+          result: null
+        }),
+
+      setResult: (result: any) =>
+        set({
+          result
+        }),
+    }),
+    {
+      name: "battle-storage",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);

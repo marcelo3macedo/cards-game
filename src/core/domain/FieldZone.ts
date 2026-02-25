@@ -1,22 +1,27 @@
 export interface FieldZoneProps {
   card: any | null;
-  mode?: "atk" | "def" | "face-down";
+  position?: "attack" | "defense" | "face-down-attack" | "face-down-defense";
+  canAttack: boolean;
   isInteractable?: boolean;
   isSelected?: boolean;
+  isOpponent?: boolean;
   isFocused?: boolean;
   onClick?: () => void;
 }
 
 export interface FieldZoneMenuProps {
-  mode?: "atk" | "def" | "face-down";
+  mode?: "attack" | "defense" | "face-down-attack" | "face-down-defense";
   index: number;
-  onInitiateAttack?: (index: number) => void;
-  onChangeMode?: (index: number) => void;
-  onClose: () => void;
+  onEnd: () => void;
 }
 
 export interface ExtendedFieldZoneProps extends FieldZoneProps {
   index: number;
-  onInitiateAttack?: (index: number) => void;
-  onChangeMode?: (index: number) => void;
+}
+
+export interface ExtendedFieldZoneMenuProps extends FieldZoneMenuProps {
+  isOpponent?: boolean;
+  canAttack?: boolean;
+  isMonster?: boolean;
+  card?: any;
 }

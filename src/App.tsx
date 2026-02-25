@@ -12,11 +12,8 @@ import { useNavigation, type ScenarioType } from "./hooks/useNavigation";
 function App() {
   const {
     currentScenario,
-    lastBattleOutcome,
-    mockedRewards,
     navigateTo,
     handleStartGame,
-    handleBattleEnd
   } = useNavigation();
 
   const scenarios: Record<ScenarioType, React.ReactNode> = {
@@ -32,20 +29,19 @@ function App() {
     MATCHMAKING: (
       <MatchmakingScenario
         onBack={() => navigateTo("MAINMENU")}
-        onSelectOpponent={() => navigateTo("BATTLE")}
+        onBattleStarted={() => navigateTo("BATTLE")}
       />
     ),
-    BATTLE: <BattleScenario onEnd={handleBattleEnd} />,
-    BATTLE_RESULT: lastBattleOutcome && (
+    BATTLE: <BattleScenario
+              onBack={() => navigateTo("MAINMENU")}
+              onEnd={() => navigateTo("BATTLE_RESULT")} />,
+    BATTLE_RESULT:
       <BattleResultScenario
-        {...lastBattleOutcome}
         onSeeRewards={() => navigateTo("REWARDS")}
         onGoMenu={() => navigateTo("MAINMENU")}
-      />
-    ),
+      />,
     REWARDS: (
       <RewardsScenario
-        cards={mockedRewards}
         onBack={() => navigateTo("MAINMENU")}
       />
     ),

@@ -3,15 +3,21 @@ import { MonsterCard, type CardProps } from "../../../core/domain/Card";
 import { getAttributeIcon } from "../../../core/utils/CardIcon";
 import { renderCardInfo } from "./Info";
 import { Star } from "lucide-react";
+import { getImageUrl } from "../../../utils/imageUtils";
+import { mapServerCardToEntity } from "../../../utils/cardUtils";
 
-export const Card: React.FC<CardProps> = ({ card, size = "lg", isFaceDown = false }) => {
+export const Card: React.FC<CardProps> = ({ card: initialCard, size = "lg", isFaceDown = false }) => {
+  const card = mapServerCardToEntity(initialCard);
+
+  if (!card) return;
+
   const isMonster = card instanceof MonsterCard;
   const cardStyle = card.getStyle();
   const sizeClasses = {
     lg: "w-72 h-120 p-3",
     md: "w-60 h-96 p-2.5",
-    sm: "w-48 h-72 p-2",
-    xs: "w-28 h-40 p-1 border-2",
+    sm: "w-44 h-64 p-1.5",
+    xs: "w-24 h-36 p-1 border-2",
   };
   const isExtraSmall = size === "xs";
 
@@ -41,7 +47,7 @@ export const Card: React.FC<CardProps> = ({ card, size = "lg", isFaceDown = fals
       ${cardStyle}
       ${sizeClasses[size]}
       rounded-sm shadow-2xl flex flex-col relative
-      transition-transform hover:z-50 cursor-pointer select-none
+      transition-transform hover:z-50 select-none
     `}
     >
       <div
@@ -78,7 +84,7 @@ export const Card: React.FC<CardProps> = ({ card, size = "lg", isFaceDown = fals
       )}
 
       <div className="flex-1 bg-zinc-900 border border-black/40 overflow-hidden shadow-inner">
-        <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
+        <img src={getImageUrl(card.image)} alt={card.name} className="w-full h-full object-cover" />
       </div>
 
       {renderCardInfo(card, size, isMonster)}

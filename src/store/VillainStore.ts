@@ -13,7 +13,9 @@ export interface Villain {
 
 interface VillainState {
   villains: Villain[];
+  selectedVillain: Villain | null;
   setVillains: (villains: Villain[]) => void;
+  setSelectedVillain: (villain: Villain | null) => void;
   clearVillains: () => void;
 }
 
@@ -21,8 +23,10 @@ export const useVillainStore = create<VillainState>()(
   persist(
     (set) => ({
       villains: [],
+      selectedVillain: null,
       setVillains: (villains) => set({ villains }),
-      clearVillains: () => set({ villains: [] }),
+      setSelectedVillain: (villain) => set({ selectedVillain: villain }),
+      clearVillains: () => set({ villains: [], selectedVillain: null }),
     }),
     {
       name: "villains-storage",

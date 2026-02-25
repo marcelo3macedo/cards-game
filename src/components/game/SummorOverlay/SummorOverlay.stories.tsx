@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { SummonOverlay } from "./index";
 import { MonsterCard } from "../../../core/domain/Card";
-import exemplo_legendaria from "@/assets/images/exemplo_legendaria.jpg";
-import exemplo_comum from "@/assets/images/exemplo_comum.jpg";
 
 const meta: Meta<typeof SummonOverlay> = {
   title: "Game/SummonOverlay",
@@ -29,8 +27,9 @@ type Story = StoryObj<typeof SummonOverlay>;
 const mockMonster = new MonsterCard(
   "1",
   "Patrulheiro Gárgula de Gelo",
-  "Emissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados.",
-  exemplo_legendaria,
+  "Emmissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados. Sua presença inspira coragem, e o eco de seu grito de gelo ressoa nas muralhas, formando escudos de pedra que refutam qualquer ataque.",
+  'images/exemplo_monstro_raro.jpg',
+  "attack",
   "ice",
   2500,
   2100,
@@ -47,15 +46,16 @@ export const Default: Story = {
 export const SmallTextCard: Story = {
   args: {
     card: new MonsterCard(
-      "2",
-      "Goblin Curioso",
-      "Um pequeno goblin que adora bisbilhotar baralhos alheios.",
-      exemplo_comum,
-      "earth",
-      1200,
-      800,
-      3,
-      "COMUM",
+      "1",
+      "Patrulheiro Gárgula de Gelo",
+      "Emmissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados. Sua presença inspira coragem, e o eco de seu grito de gelo ressoa nas muralhas, formando escudos de pedra que refutam qualquer ataque.",
+      'images/exemplo_monstro_raro.jpg',
+      "attack",
+      "ice",
+      2300,
+      2100,
+      7,
+      "LEGENDARIO",
     ),
   },
 };

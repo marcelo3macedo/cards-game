@@ -7,7 +7,7 @@ import { villainService } from "../../../services/villainService";
 
 export function useMainMenu() {
   const { user, loading, setUser, setLoading } = useUserStore();
-  const { villains, setVillains } = useVillainStore();
+  const { villains, setVillains, setSelectedVillain } = useVillainStore();
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -44,6 +44,7 @@ export function useMainMenu() {
     user,
     villains,
     loading,
+    setSelectedVillain,
     handleLogout
   };
 }

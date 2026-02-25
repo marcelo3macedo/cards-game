@@ -17,13 +17,12 @@ export interface ExtendedGameBoardProps extends GameBoardProps {
 }
 
 export interface BoardGutterProps {
-  side: "left" | "right";
+  type: string;
   onDraw?: () => void;
   deckCount?: number;
 }
 
 export interface BoardSideProps {
-  zones: any[];
   isOpponent?: boolean;
   isSelectingTarget?: boolean;
   onSelectTarget?: (index: number) => void;

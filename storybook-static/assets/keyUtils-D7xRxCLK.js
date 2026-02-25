@@ -1,0 +1,1 @@
+const e={Up:"up",Down:"down",Left:"left",Right:"right",Space:"space",Enter:"enter",F1:"f1",Escape:"Escape"},o={w:e.Up,ArrowUp:e.Up,s:e.Down,ArrowDown:e.Down,a:e.Left,ArrowLeft:e.Left,d:e.Right,ArrowRight:e.Right," ":e.Space,Enter:e.Enter,F1:e.F1,Escape:e.Escape},n=t=>o[t]||null;export{e as A,n as g};
