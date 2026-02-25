@@ -1,180 +1,144 @@
-🃏 Card Game Project
+# 🃏 Card Game Project
 
 A strategic digital card game inspired by classic monster card battles, featuring turn-based combat, intelligent AI opponents, and an extensible plugin system for additional content.
 
-🔗 Live Demo:
+🔗 **Live Demo**
 https://cardgame.alemdoscript.com.br/
 
-🔗 Storybook (UI & Scenarios):
+🔗 **Storybook (UI & Scenarios)**
 https://storybook-cardgame.alemdoscript.com.br/
 
-📖 Overview
+---
+
+## 📖 Overview
+
+This project is a modern card battle game inspired by *Yu-Gi-Oh!*, focused on tactical decision-making, card positioning, and animated battles. Players collect cards, manage their personal library, and face AI-controlled opponents in intense duels.
+
+The architecture is modular and extensible, allowing new cards, mechanics, and scenarios to be added through plugins.
+
+---
+
+## 🎮 Main Features
+
+### 🏠 Main Screens
+- **Home Screen** – Main entry point to the game
+- **User Library** – View, manage, and organize owned cards
+- **Help / FAQ Screen** – Game rules and mechanics
+- **Battle Screens** – Full duel experience with animations
+
+---
+
+### ⚔️ Battle System
+- Monster card battles with **Attack** and **Defense** modes
+- Card positioning:
+  - Attack Mode
+  - Defense Mode
+  - Face-down cards
+- **AI-controlled opponent**
+- Core actions:
+  - Attack enemy cards
+  - Defend and reposition cards
+  - Draw cards from the deck
+  - Activate magic cards
+  - Direct attacks on player life points
+- Animated battle resolution
+- Life points system
 
-This project is a modern card battle game inspired by Yu-Gi-Oh!, focused on tactical decision-making, card positioning, and animated battles. Players collect cards, build their library, and face AI-controlled opponents in intense duels.
+---
 
-The architecture is designed to be modular, allowing new cards, mechanics, and scenarios to be added through plugins.
+### 🧠 Artificial Intelligence
+- Enemy logic includes:
+  - Choosing between card attacks and direct player attacks
+  - Changing card positions strategically
+  - Activating magic card effects
+- Context-aware decisions based on the current board state
 
-🎮 Main Features
-🏠 Main Screens
+---
 
-Home Screen – Entry point to the game and battles
+### 🧩 Plugin System
+- Support for **additional content via plugins**
+- Easily extend the game with:
+  - New cards
+  - New effects
+  - Custom rules
+  - Extra battle scenarios
+- Designed for scalability and future expansions
 
-User Library – Manage collected cards and decks
+---
 
-Help / FAQ Screen – Game rules and mechanics explanation
+## 📚 Storybook Scenarios
 
-Battle Screens – Full duel interface with animations and interactions
+The project includes a full Storybook setup for UI components and gameplay simulations.
 
-⚔️ Battle System
+### ⚔️ Attack Scenarios
+- AttackSimulation
+- Attack Vs Attack Wins
+- Attack Vs Attack Loses
 
-Monster card battles with attack and defense modes
+---
 
-Card positioning (Attack / Defense / Face-down)
+### 🐲 Summon Scenarios
+- Successful Attack Mode Summon
+- Successful Defense Mode Summon
+- Successful Face Down Attack Mode Summon
+- Successful Face Down Defense Mode Summon
 
-AI-controlled opponent
+---
 
-Core actions:
+### 👹 Villain Actions
+- Attack Player Direct
+- Attack Player In Attack Mode And Wins
+- Attack Player In Defense Mode And Wins
+- Change Card Position
+- Magic Card Effect
 
-Attack enemy cards
+---
 
-Defend and change card positions
+### 🧩 UI & Gameplay Components
+- AbandonBattleModal
+- ActiveFieldIndicator
+- BattleAnimation
+- BattleAnimationOverlay
+- BattleScenario
+- BoardGutter
+- BoardSide
+- Card
+- FieldZone
+- FieldZoneMenu
+- GameBoard
+- LifePoints
+- OpponentHand
+- PlayerHand
+- SummonOverlay
+- WelcomeScenario
 
-Draw cards
+---
 
-Activate magic cards
+## 🛠️ Architecture & Design
 
-Direct attacks on player life points
+- Component-driven architecture
+- Storybook for UI documentation and simulations
+- Modular battle engine
+- Plugin-based extensibility
+- Designed for maintainability and long-term evolution
 
-Animated battle resolution
+---
 
-Life points system
+## 🚀 Future Improvements
 
-🧠 Artificial Intelligence
+- Advanced deck builder
+- New card types and effects
+- Multiple AI difficulty levels
+- Sound effects and background music
 
-Enemy decision-making for:
+---
 
-Attacking cards or the player directly
+## 🎴 Inspiration
 
-Changing card positions
+Inspired by classic monster card games like **Yu-Gi-Oh!**, reimagined with a modern web-based architecture and extensibility at its core.
 
-Activating magic card effects
+---
 
-Context-aware actions based on board state
-
-🧩 Plugin System
-
-Support for additional content via plugins
-
-Add new:
-
-Cards
-
-Effects
-
-Rules
-
-Battle scenarios
-
-Designed for scalability and future expansions
-
-📚 Storybook Scenarios
-
-The project includes a complete Storybook setup for UI components and battle simulations.
-
-⚔️ Attack Scenarios
-
-AttackSimulation
-
-Attack vs Attack (Wins)
-
-Attack vs Attack (Loses)
-
-🐲 Summon Scenarios
-
-Successful Attack Mode Summon
-
-Successful Defense Mode Summon
-
-Successful Face-Down Attack Mode Summon
-
-Successful Face-Down Defense Mode Summon
-
-👹 Villain Actions
-
-Attack Player Directly
-
-Attack Player in Attack Mode and Wins
-
-Attack Player in Defense Mode and Wins
-
-Change Card Position
-
-Magic Card Effect
-
-🧩 UI & Gameplay Components
-
-AbandonBattleModal
-
-ActiveFieldIndicator
-
-BattleAnimation
-
-BattleAnimationOverlay
-
-BattleScenario
-
-BoardGutter
-
-BoardSide
-
-Card
-
-FieldZone
-
-FieldZoneMenu
-
-GameBoard
-
-LifePoints
-
-OpponentHand
-
-PlayerHand
-
-SummonOverlay
-
-WelcomeScenario
-
-🛠️ Technologies & Architecture
-
-Component-driven architecture
-
-Storybook for UI documentation and simulations
-
-Modular battle engine
-
-Extensible plugin-based design
-
-Focus on maintainability and scalability
-
-🚀 Future Improvements
-
-Online multiplayer mode
-
-Ranked matches
-
-Deck builder with advanced filters
-
-New card types and effects
-
-More AI difficulty levels
-
-Sound effects and music
-
-📜 Inspiration
-
-This project is inspired by classic monster card games like Yu-Gi-Oh!, reimagined with a modern web-based architecture and extensibility in mind.
-
-📄 License
+## 📄 License
 
 This project is licensed under the MIT License.
