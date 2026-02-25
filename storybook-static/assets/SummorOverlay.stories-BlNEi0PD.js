@@ -1,9 +1,0 @@
-import{j as r}from"./jsx-runtime-u17CrQMm.js";import{S as m}from"./index-DMUaVgyo.js";import{M as a}from"./index-mHFlCYGw.js";import{e as t}from"./exemplo_legendaria-DxHYjB_J.js";import"./iframe-Dm5SVBJu.js";import"./preload-helper-PPVm8Dsz.js";import"./keyUtils-CoVaxQrz.js";import"./BattleEventStore-BfrLx-A1.js";import"./middleware-BNMqIGpK.js";import"./BattleStore-Dt-_ZxQZ.js";import"./BattleStore-T2x42JYO.js";import"./HandStore-Bpl3shuK.js";import"./loggingUtils-DeIXD9E4.js";import"./sword-B4t4mRyy.js";import"./createLucideIcon-CUMascdk.js";import"./imageUtils-CZ9VB9H-.js";const i=""+new URL("exemplo_comum-CbYDrqaI.jpg",import.meta.url).href,G={title:"Game/SummonOverlay",component:m,parameters:{layout:"fullscreen"},decorators:[s=>r.jsx("div",{className:"h-screen w-full bg-zinc-950 relative overflow-hidden",children:r.jsx(s,{})})],argTypes:{onSummon:{action:"summoned"},onCancel:{action:"cancelled"}}},n=new a("1","Patrulheiro Gárgula de Gelo","Emissão de sombras geladas, ele vigia fronteiras celestiais, lançando gelo que bloqueia invasores e fortalece aliados.",t,"ice",2500,2100,7,"LEGENDARIO"),e={args:{card:n}},o={args:{card:new a("2","Goblin Curioso","Um pequeno goblin que adora bisbilhotar baralhos alheios.",i,"earth",1200,800,3,"COMUM")}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
-  args: {
-    card: mockMonster
-  }
-}`,...e.parameters?.docs?.source}}};o.parameters={...o.parameters,docs:{...o.parameters?.docs,source:{originalSource:`{
-  args: {
-    card: new MonsterCard("2", "Goblin Curioso", "Um pequeno goblin que adora bisbilhotar baralhos alheios.", exemplo_comum, "earth", 1200, 800, 3, "COMUM")
-  }
-}`,...o.parameters?.docs?.source}}};const O=["Default","SmallTextCard"];export{e as Default,o as SmallTextCard,O as __namedExportsOrder,G as default};

@@ -1,1 +1,0 @@
-import{c as r}from"./middleware-BNMqIGpK.js";const l=r(s=>({cards:[],isVisible:!0,isHidden:!1,setCards:i=>s({cards:i}),addCard:i=>s(e=>({cards:[...e.cards,i]})),removeCard:i=>s(e=>({cards:e.cards.filter(d=>d.id!==i)})),setVisible:i=>s({isVisible:i}),setIsHidden:i=>s({isHidden:i}),toggleVisible:()=>s(i=>({isVisible:!i.isVisible}))}));export{l as u};

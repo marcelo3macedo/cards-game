@@ -1,1 +1,0 @@
-var e=(r=>(r.Up="up",r.Down="down",r.Left="left",r.Right="right",r.Space="space",r.Enter="enter",r.F1="f1",r.Escape="Escape",r))(e||{});const p={w:"up",ArrowUp:"up",s:"down",ArrowDown:"down",a:"left",ArrowLeft:"left",d:"right",ArrowRight:"right"," ":"space",Enter:"enter",F1:"f1",Escape:"Escape"},t=r=>p[r]||null;export{e as A,t as g};
