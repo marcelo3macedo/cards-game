@@ -29,6 +29,7 @@ export const MonsterLegendary: StoryObj<typeof meta> = {
       7,
       "LEGENDARIO",
     ),
+    size: "lg"
   },
 };
 
@@ -46,6 +47,7 @@ export const MonsterCommon: StoryObj<typeof meta> = {
       4,
       "COMUM",
     ),
+    size: "lg"
   },
 };
 
@@ -63,6 +65,7 @@ export const MonsterRare: StoryObj<typeof meta> = {
       4,
       "RARO",
     ),
+    size: "lg"
   },
 };
 
@@ -76,6 +79,7 @@ export const Magic: StoryObj<typeof meta> = {
       "MAGICA",
       "spell",
     ),
+    size: "lg"
   },
 };
 
@@ -89,6 +93,7 @@ export const Trap: StoryObj<typeof meta> = {
       "ARMADILHA",
       "trap",
     ),
+    size: "lg"
   },
 };
 
@@ -102,6 +107,7 @@ export const Equipment: StoryObj<typeof meta> = {
       "EQUIPAMENTO",
       "fire",
     ),
+    size: "lg"
   },
 };
 
@@ -115,5 +121,6 @@ export const Terrain: StoryObj<typeof meta> = {
       "TERRENO",
       "wind",
     ),
+    size: "lg"
   },
 };

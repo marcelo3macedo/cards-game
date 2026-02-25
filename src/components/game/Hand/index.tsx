@@ -36,6 +36,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
           return (
             <div
               key={card.id || i}
+              data-testid={`hand-card-${i}`}
               onClick={() => {
                 if (isRestrictedMonster) return;
 

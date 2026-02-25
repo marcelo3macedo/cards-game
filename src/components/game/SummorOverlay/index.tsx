@@ -13,7 +13,7 @@ export const SummonOverlay: React.FC<SummonOverlayProps> = () => {
   return (
     <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300 backdrop-blur-md bg-black/80">
       <div className="mb-10 shadow-[0_0_80px_rgba(0,0,0,0.6)] scale-110">
-        <Card card={card} />
+        <Card card={card} size="lg" />
       </div>
 
       <div className="flex flex-col items-center gap-8 w-full max-w-2xl px-6">

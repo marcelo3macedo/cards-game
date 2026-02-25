@@ -1,6 +1,7 @@
+export type CardSize = "sm" | "md" | "lg" | "xs";
 export interface CardProps {
   card: BaseCard;
-  size?: "sm" | "md" | "lg" | "xs";
+  size: CardSize;
   isFaceDown?: boolean;
 }
 

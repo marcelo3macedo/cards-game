@@ -23,6 +23,7 @@ export const FaceUp: StoryObj<typeof meta> = {
       7,
       "LEGENDARIO",
     ),
+    size: 'md',
     isFaceDown: false,
   },
 };
@@ -41,6 +42,7 @@ export const FaceDown: StoryObj<typeof meta> = {
       7,
       "LEGENDARIO",
     ),
+    size: 'md',
     isFaceDown: true,
   },
 };

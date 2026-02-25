@@ -50,7 +50,7 @@ export const EffectCardOverlay: React.FC = () => {
             <div className="relative group">
               <div className="absolute -inset-2 bg-cyan-500/30 blur-xl rounded-lg" />
 
-              <Card card={selectedCard!} />
+              <Card card={selectedCard!} size="lg" />
 
               <motion.div
                 initial={{ opacity: 0 }}

@@ -16,7 +16,7 @@ export const ViewOverlay: React.FC<any> = () => {
         className="relative scale-110 drop-shadow-[0_0_50px_rgba(0,0,0,0.8)] animate-in zoom-in-95 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
-        <Card card={viewCard} />
+        <Card card={viewCard} size="lg" />
       </div>
 
       <div className="mt-12 flex flex-col items-center gap-4">

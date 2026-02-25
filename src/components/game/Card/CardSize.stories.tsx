@@ -22,12 +22,6 @@ const card = new MonsterCard(
   "COMUM",
 )
 
-export const Standard: StoryObj<typeof meta> = {
-  args: {
-    card,
-  },
-};
-
 export const Large: StoryObj<typeof meta> = {
   args: {
     card,

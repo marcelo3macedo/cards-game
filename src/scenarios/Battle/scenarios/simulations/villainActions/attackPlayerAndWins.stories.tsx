@@ -43,12 +43,12 @@ const BASE_MOCK_STATE = {
                     attribute: "monster",
                     stars: 1,
                     attackPower: 1200,
-                    defensePower: 1200,
+                    defensePower: 1900,
                     modifiers: [],
                     effectScript: null,
                     effectValue: null,
                 },
-                position: "defense",
+                position: "attack",
                 canAttack: true
             }
         ],
@@ -61,24 +61,7 @@ const BASE_MOCK_STATE = {
         id: 5,
         name: "Darius Blackflare",
         hp: 8000,
-        field: [{    card: {
-                    id: 24,
-                    name: "Íbis Mensageiro Vanguarda",
-                    description: "Monstro de suporte.",
-                    imageUrl: "images/exemplo_monstro_raro.jpg",
-                    type: "Íbis de Thoth",
-                    element: "wind",
-                    attribute: "monster",
-                    stars: 1,
-                    attackPower: 1200,
-                    defensePower: 1200,
-                    modifiers: [],
-                    effectScript: null,
-                    effectValue: null,
-                },
-                position: "attack",
-                canAttack: true
-            }],
+        field: [],
         spells: [],
         graveyard: [],
         handCount: 5,
@@ -172,22 +155,81 @@ export default {
     parameters: { layout: 'fullscreen' },
 } as Meta;
 
-export const ChangeCardPosition: StoryObj = {
+export const AttackPlayerInAttackModeAndWins: StoryObj = {
     decorators: [
         withTurnMock(
             BASE_MOCK_STATE,
             {
                 actions: [
                     {
-                        type: 'changePosition',
-                        index: 0,
-                        position: "defense"
+                        type: 'handCountUpdated', handCount: 3
+                    },
+                    {
+                        type: 'summon',
+                        data: {
+                            card: {
+                                id: 24,
+                                name: "Íbis Mensageiro Vanguarda",
+                                description: "Monstro de suporte.",
+                                imageUrl: "images/exemplo_monstro_raro.jpg",
+                                type: "Íbis de Thoth",
+                                element: "wind",
+                                attribute: "monster",
+                                stars: 1,
+                                attackPower: 1900,
+                                defensePower: 1900,
+                                modifiers: [],
+                                effectScript: null,
+                                effectValue: null,
+                            },
+                            position: "attack",
+                            canAttack: true,
+                            index: 0
+                        },
+                        handCount: 2
+                    },
+                    {
+                        type: 'attack',
+                        data: {
+                            attacker: {
+                                id: 24,
+                                name: "Íbis Mensageiro Vanguarda",
+                                description: "Monstro de suporte.",
+                                imageUrl: "images/exemplo_monstro_raro.jpg",
+                                type: "Íbis de Thoth",
+                                element: "wind",
+                                attribute: "monster",
+                                stars: 1,
+                                attackPower: 1900,
+                                defensePower: 1900,
+                                modifiers: [],
+                                effectScript: null,
+                                effectValue: null,
+                            },
+                            target: {
+                                id: 24,
+                                name: "Íbis Mensageiro Vanguarda",
+                                description: "Monstro de suporte.",
+                                imageUrl: "images/exemplo_monstro_raro.jpg",
+                                type: "Íbis de Thoth",
+                                element: "wind",
+                                attribute: "monster",
+                                stars: 1,
+                                attackPower: 1200,
+                                defensePower: 1900,
+                                modifiers: [],
+                                effectScript: null,
+                                effectValue: null,
+                            }
+                        }
                     }
                 ],
                 state: {
                     ...BASE_MOCK_STATE,
                     player: {
                         ...BASE_MOCK_STATE.player,
+                        hp: 7300,
+                        field: []
                     },
                     opponent: {
                         id: 5,
@@ -210,7 +252,7 @@ export const ChangeCardPosition: StoryObj = {
                                     effectScript: null,
                                     effectValue: null,
                                 },
-                                position: "defense",
+                                position: "attack",
                                 canAttack: true
                             }
                         ],

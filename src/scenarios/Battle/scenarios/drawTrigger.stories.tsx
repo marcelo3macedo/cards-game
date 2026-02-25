@@ -54,19 +54,6 @@ const BASE_MOCK_STATE = {
   currentTurnOwner: "player"
 };
 
-// --- HELPERS PARA MOCKS DINÂMICOS ---
-
-const createMockWithModifiers = (atkMod: number, defMod: number, sourceName: string) => {
-  const newState = JSON.parse(JSON.stringify(BASE_MOCK_STATE));
-  const card = newState.player.field[0].card;
-
-  card.modifiers = [{ id: "mod-1", source: sourceName, atk: atkMod, def: defMod }];
-  card.attackPower += atkMod;
-  card.defensePower += defMod;
-
-  return newState;
-};
-
 const createDrawTriggerMock = () => {
   const newState = JSON.parse(JSON.stringify(BASE_MOCK_STATE));
 

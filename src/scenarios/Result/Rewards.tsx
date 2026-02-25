@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Card } from "../../components/game/Card";
 import { useRewards } from "./hooks/useRewards";
 import { useBattleStore } from "../../store/BattleStore";
+import type { CardSize } from "../../core/domain/Card";
 
 export const RewardsScenario = ({
   onBack,
@@ -52,7 +53,7 @@ export const RewardsScenario = ({
           >
             <div className="absolute inset-0 bg-yellow-500/10 blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-            <Card card={card.card} size={cardSize} />
+            <Card card={card.card} size={cardSize as CardSize} />
           </motion.div>
         ))}
       </motion.div>

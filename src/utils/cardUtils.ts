@@ -14,6 +14,7 @@ export function mapServerCardToEntity(data: any): any | undefined {
     attribute,
     attackPower,
     defensePower,
+    monsterRarity,
     stars,
     element,
     effectScript,
@@ -33,7 +34,7 @@ export function mapServerCardToEntity(data: any): any | undefined {
         attackPower,
         defensePower,
         stars,
-        data.monsterRarity || "LEGENDARIO",
+        monsterRarity || "LEGENDARIO",
         effectScript,
         effectValue,
         modifiers

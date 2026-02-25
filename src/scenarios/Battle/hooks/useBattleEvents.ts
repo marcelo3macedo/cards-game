@@ -42,7 +42,8 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
             useBattleStore.getState().setBattle(response.state);
 
             if (response.state.player.hp === 0 || response.state.opponent.hp === 0) {
-              handleEndBattle();
+              await handleEndBattle();
+              return;
             }
 
             setIsHidden(false);

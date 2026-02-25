@@ -63,7 +63,7 @@ export const StrikerLoses: Story = {
 export const DirectHit: Story = {
   args: {
     attacker: lower,
-    defender: null,
+    defender: undefined,
     onAnimationEnd: (res) => console.log("Resultado:", res),
   },
 };

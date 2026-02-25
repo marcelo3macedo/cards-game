@@ -10,12 +10,24 @@ const meta: Meta<typeof BoardGutter> = {
     (Story) => {
       useBattleStore.setState({
         player: {
+          id: 1,
+          hp: 3000,
+          name: "Test",
+          field: [],
+          spells: [],
           graveyard: Array(5).fill({}),
           deckCount: 30,
+          canSummon: true
         },
         opponent: {
+          id: 2,
+          hp: 3000,
+          name: "Test",
+          field: [],
+          spells: [],
           graveyard: Array(2).fill({}),
           deckCount: 15,
+          canSummon: true
         },
       });
       return (
@@ -42,7 +54,16 @@ export const EmptyDeck: Story = {
   args: { type: "player" },
   play: () => {
     useBattleStore.setState({
-      player: { graveyard: [], deckCount: 0 }
+      player: {
+          id: 1,
+          hp: 3000,
+          name: "Test",
+          field: [],
+          spells: [],
+          graveyard: Array(5).fill({}),
+          deckCount: 0,
+          canSummon: true
+        }
     });
   }
 };

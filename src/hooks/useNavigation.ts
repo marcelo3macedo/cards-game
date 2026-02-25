@@ -1,13 +1,14 @@
 import { useCallback, useState } from "react";
 import { authService } from "../services/authService";
+import { useNavigationStore } from "../store/NavigationStore";
 
 export type ScenarioType =
   | "WELCOME" | "MATCHMAKING" | "BATTLE" | "BATTLE_RESULT"
   | "REWARDS" | "PROFILE" | "MAINMENU" | "DECKMANAGER" | "TUTORIAL";
 
 export const useNavigation = () => {
-  const [currentScenario, setCurrentScenario] = useState<ScenarioType>("WELCOME");
-  const navigateTo = (scenario: ScenarioType) => setCurrentScenario(scenario);
+  const currentScenario = useNavigationStore((s) => s.currentScenario);
+  const navigateTo = useNavigationStore((s) => s.navigateTo);
 
   const checkUserStatus = useCallback(() => {
     if (authService.isAuthenticated()) {
@@ -17,13 +18,13 @@ export const useNavigation = () => {
     }
   }, [navigateTo]);
 
-  const handleStartGame = () => {
+  const handleStartGame = useCallback(() => {
     checkUserStatus();
-  };
+  }, [checkUserStatus]);
 
-  const handleBattleEnd = () => {
+  const handleBattleEnd = useCallback(() => {
     navigateTo("BATTLE_RESULT");
-  };
+  }, [navigateTo]);
 
   return {
     currentScenario,

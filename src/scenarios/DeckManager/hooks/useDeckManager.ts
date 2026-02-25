@@ -82,11 +82,7 @@ export const useDeck = () => {
     if (localDeck.length !== 40) return alert("O deck deve ter exatamente 40 cartas!");
 
     try {
-      // Extrai apenas os IDs das cartas para enviar à API
-      const cardIds = localDeck.map(c => c.id);
-      //await deckService.updateDeck(cardIds);
       alert("Deck salvo com sucesso!");
-      //refresh();
     } catch (err: any) {
       alert("Erro ao salvar: " + err.message);
     }

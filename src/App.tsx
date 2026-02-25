@@ -34,7 +34,7 @@ function App() {
     ),
     BATTLE: <BattleScenario
               onBack={() => navigateTo("MAINMENU")}
-              onEnd={() => navigateTo("REWARDS")} />,
+              onEnd={() => navigateTo("BATTLE_RESULT")} />,
     BATTLE_RESULT:
       <BattleResultScenario
         onSeeRewards={() => navigateTo("REWARDS")}

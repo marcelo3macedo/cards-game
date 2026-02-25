@@ -15,7 +15,7 @@ export const MagicOverlay: React.FC = () => {
   return (
     <div className="absolute inset-0 z-[110] flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300 backdrop-blur-xl bg-black/85">
       <div className="mb-12 shadow-[0_0_100px_rgba(6,182,212,0.3)] scale-125 transition-transform">
-        <Card card={selectedCard} />
+        <Card card={selectedCard} size="lg" />
       </div>
 
       <div className="flex flex-col items-center gap-10 w-full max-w-md px-6">
