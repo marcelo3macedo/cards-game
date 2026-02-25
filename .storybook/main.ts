@@ -28,7 +28,7 @@ const config: StorybookConfig = {
       assetsInclude: ['**/*.jpg', '**/*.png', '**/*.jpeg', '**/*.webp'],
       define: {
         'import.meta.env.VITE_IMAGES_URL': JSON.stringify(
-          'https://cardgame.alemdoscript.com.br/public/'
+          'https://cardgame.alemdoscript.com.br/'
         ),
       },
     });
