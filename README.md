@@ -1,73 +1,180 @@
-# React + TypeScript + Vite
+🃏 Card Game Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A strategic digital card game inspired by classic monster card battles, featuring turn-based combat, intelligent AI opponents, and an extensible plugin system for additional content.
 
-Currently, two official plugins are available:
+🔗 Live Demo:
+https://cardgame.alemdoscript.com.br/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔗 Storybook (UI & Scenarios):
+https://storybook-cardgame.alemdoscript.com.br/
 
-## React Compiler
+📖 Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This project is a modern card battle game inspired by Yu-Gi-Oh!, focused on tactical decision-making, card positioning, and animated battles. Players collect cards, build their library, and face AI-controlled opponents in intense duels.
 
-## Expanding the ESLint configuration
+The architecture is designed to be modular, allowing new cards, mechanics, and scenarios to be added through plugins.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+🎮 Main Features
+🏠 Main Screens
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Home Screen – Entry point to the game and battles
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+User Library – Manage collected cards and decks
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Help / FAQ Screen – Game rules and mechanics explanation
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Battle Screens – Full duel interface with animations and interactions
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+⚔️ Battle System
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Monster card battles with attack and defense modes
+
+Card positioning (Attack / Defense / Face-down)
+
+AI-controlled opponent
+
+Core actions:
+
+Attack enemy cards
+
+Defend and change card positions
+
+Draw cards
+
+Activate magic cards
+
+Direct attacks on player life points
+
+Animated battle resolution
+
+Life points system
+
+🧠 Artificial Intelligence
+
+Enemy decision-making for:
+
+Attacking cards or the player directly
+
+Changing card positions
+
+Activating magic card effects
+
+Context-aware actions based on board state
+
+🧩 Plugin System
+
+Support for additional content via plugins
+
+Add new:
+
+Cards
+
+Effects
+
+Rules
+
+Battle scenarios
+
+Designed for scalability and future expansions
+
+📚 Storybook Scenarios
+
+The project includes a complete Storybook setup for UI components and battle simulations.
+
+⚔️ Attack Scenarios
+
+AttackSimulation
+
+Attack vs Attack (Wins)
+
+Attack vs Attack (Loses)
+
+🐲 Summon Scenarios
+
+Successful Attack Mode Summon
+
+Successful Defense Mode Summon
+
+Successful Face-Down Attack Mode Summon
+
+Successful Face-Down Defense Mode Summon
+
+👹 Villain Actions
+
+Attack Player Directly
+
+Attack Player in Attack Mode and Wins
+
+Attack Player in Defense Mode and Wins
+
+Change Card Position
+
+Magic Card Effect
+
+🧩 UI & Gameplay Components
+
+AbandonBattleModal
+
+ActiveFieldIndicator
+
+BattleAnimation
+
+BattleAnimationOverlay
+
+BattleScenario
+
+BoardGutter
+
+BoardSide
+
+Card
+
+FieldZone
+
+FieldZoneMenu
+
+GameBoard
+
+LifePoints
+
+OpponentHand
+
+PlayerHand
+
+SummonOverlay
+
+WelcomeScenario
+
+🛠️ Technologies & Architecture
+
+Component-driven architecture
+
+Storybook for UI documentation and simulations
+
+Modular battle engine
+
+Extensible plugin-based design
+
+Focus on maintainability and scalability
+
+🚀 Future Improvements
+
+Online multiplayer mode
+
+Ranked matches
+
+Deck builder with advanced filters
+
+New card types and effects
+
+More AI difficulty levels
+
+Sound effects and music
+
+📜 Inspiration
+
+This project is inspired by classic monster card games like Yu-Gi-Oh!, reimagined with a modern web-based architecture and extensibility in mind.
+
+📄 License
+
+This project is licensed under the MIT License.
