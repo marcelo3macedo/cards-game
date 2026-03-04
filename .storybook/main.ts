@@ -30,6 +30,9 @@ const config: StorybookConfig = {
         'import.meta.env.VITE_IMAGES_URL': JSON.stringify(
           'https://cardgame.alemdoscript.com.br/'
         ),
+        'import.meta.env.VITE_API_URL': JSON.stringify(
+          'https://api-cardgame.alemdoscript.com.br'
+        ),
       },
     });
   },

@@ -4,7 +4,7 @@ import { BattleResultContainer } from "./container";
 import { getImageUrl } from "../../utils/imageUtils";
 
 interface BattleResultContainerProps {
-  onSeeRewards: (cards: any[]) => void;
+  onSeeRewards: () => void;
   onGoMenu: () => void;
 }
 
@@ -19,16 +19,12 @@ export const BattleResultScenario: React.FC<BattleResultContainerProps> = ({
   }
 
   const { history, villain } = result;
-  const status = history.status === "win" ? "victory" : "defeat";
+  const status = history.status === "victory" ? "victory" : "defeat";
   const opponentMessage = status === "victory" ? villain.angerQuote : villain.happyQuote;
 
   const handleGoMenuClick = () => {
     clearBattle();
     onGoMenu();
-  };
-
-  const handleSeeRewardsClick = () => {
-    onSeeRewards(history.cardsAcquired);
   };
 
   return (
@@ -38,7 +34,7 @@ export const BattleResultScenario: React.FC<BattleResultContainerProps> = ({
       opponentImage={getImageUrl(villain.profilePictureUrl) || ""}
       opponentMessage={opponentMessage}
       rating={history.stars}
-      onSeeRewards={handleSeeRewardsClick}
+      onSeeRewards={onSeeRewards}
       onGoMenu={handleGoMenuClick}
     />
   );
