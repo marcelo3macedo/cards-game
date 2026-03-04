@@ -5,6 +5,7 @@ export const ActionKey = {
   Right: "right",
   Space: "space",
   Enter: "enter",
+  Info: "info",
   F1: "f1",
   Escape: "Escape",
 } as const;
@@ -22,6 +23,7 @@ const KEY_TO_ACTION: Record<string, ActionKey> = {
   "ArrowRight": ActionKey.Right,
   " ": ActionKey.Space,
   "Enter": ActionKey.Enter,
+  "i": ActionKey.Info,
   "F1": ActionKey.F1,
   "Escape": ActionKey.Escape
 };

@@ -15,7 +15,7 @@ import { MagicOverlay } from "../../components/game/MagicOverlay";
 import { EffectCardOverlay } from "../../components/game/EffectCardOverlay";
 
 export default function BattleScenario({ onBack, onEnd }: any) {
-  const { currentTurnOwner, handleAbandon, handleEndTurn } = useBattleEvents({ onBack, onEnd });
+  const { currentTurnOwner, isOpponentPlaying, handleAbandon, handleEndTurn } = useBattleEvents({ onBack, onEnd });
 
   return (
     <div className="h-screen w-screen bg-zinc-950 flex flex-col items-center justify-center overflow-hidden text-white font-sans select-none relative bg-[radial-gradient(circle_at_center,_#1a1a2e_0%,#09090b_100%)]">
@@ -26,6 +26,7 @@ export default function BattleScenario({ onBack, onEnd }: any) {
         <EndTurnAction
           handleEndTurn={handleEndTurn}
           currentTurnOwner={currentTurnOwner}
+          isOpponentPlaying={isOpponentPlaying}
         />
       </div>
       <div className="life-points">

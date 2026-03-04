@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { battleService } from "../../../services/battleService";
 import { useBattleEventStore } from "../../../store/BattleEventStore";
 import { useBattleStore } from "../../../store/BattleStore";
@@ -14,6 +14,8 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
     const { clearBattle, currentTurnOwner, player, opponent, setEvent } = useBattleStore();
     const { setBattleData } = useBattleEventStore();
     const { setVisible, setIsHidden } = useHandStore();
+
+    const [isOpponentPlaying, setIsOpponentPlaying] = useState(false);
 
     // Guard: prevents handleEndBattle from being called more than once,
     // regardless of how many code paths detect hp === 0 simultaneously.
@@ -52,9 +54,13 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
 
     const handleEndTurn = async () => {
         try {
+            setIsOpponentPlaying(true);
+
             const response = await battleService.endTurn();
 
             await processOpponentActions(response.actions, response.state);
+
+            setIsOpponentPlaying(false);
 
             useBattleStore.getState().setBattle(response.state);
 
@@ -66,6 +72,7 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
             setIsHidden(false);
             await handleDrawCard();
         } catch (error: any) {
+            setIsOpponentPlaying(false);
             console.error("Erro ao encerrar turno:", error.message);
         }
     };
@@ -108,6 +115,7 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
 
     return {
         currentTurnOwner,
+        isOpponentPlaying,
         handleAbandon,
         handleEndTurn,
         handleAttack

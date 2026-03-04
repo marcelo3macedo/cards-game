@@ -64,8 +64,11 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
               `}
               />
 
-              <div className="shadow-2xl">
+              <div className="shadow-2xl relative">
                 <Card card={card} size="sm" />
+                <div className={`absolute top-1 right-1 z-10 w-4 h-4 rounded-full bg-zinc-900/80 border border-white/30 flex items-center justify-center text-white text-[9px] font-bold pointer-events-none transition-opacity duration-200 ${isSelected ? "opacity-100" : "opacity-30"}`}>
+                  i
+                </div>
               </div>
             </div>
           );
