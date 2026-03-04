@@ -1,11 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Coins, X } from "lucide-react";
-import { getImageUrl } from "../../utils/imageUtils";
 import { useStore } from "./hooks/useStore";
 import { PackageCard } from "./components/PackageCard";
 import type { StorePackageItem } from "../../services/storeService";
+import seller from "../../assets/images/seller.jpg"
 
-const SELLER_IMAGE = "images/exemplo_monstro_raro.jpg";
 const SELLER_QUOTE = "Bem-vindo, duelista! Tenho os melhores pacotes do reino. Escolha com sabedoria!";
 
 interface StoreScenarioProps {
@@ -49,9 +48,9 @@ export default function StoreScenario({ onBack, onPackageOpened }: StoreScenario
         {/* Seller panel */}
         <div className="w-64 shrink-0 relative flex flex-col overflow-hidden border-r border-white/5">
           <img
-            src={getImageUrl(SELLER_IMAGE)}
+            src={seller}
             alt="Vendedor"
-            className="absolute inset-0 w-full h-full object-cover object-top"
+            className="absolute inset-0 w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
 
