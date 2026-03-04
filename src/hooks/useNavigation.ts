@@ -4,7 +4,7 @@ import { useNavigationStore } from "../store/NavigationStore";
 
 export type ScenarioType =
   | "WELCOME" | "MATCHMAKING" | "BATTLE" | "BATTLE_RESULT"
-  | "REWARDS" | "PROFILE" | "MAINMENU" | "DECKMANAGER" | "TUTORIAL";
+  | "REWARDS" | "PROFILE" | "MAINMENU" | "DECKMANAGER" | "TUTORIAL" | "STORE";
 
 export const useNavigation = () => {
   const currentScenario = useNavigationStore((s) => s.currentScenario);
