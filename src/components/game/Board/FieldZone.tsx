@@ -63,6 +63,7 @@ export function FieldZone({
       };
 
   const isDefense = cardData?.position === "defense" || cardData?.position === "face-down-defense";
+  const hasAttacked = card && cardData?.canAttack === false;
 
   return (
     <div
@@ -113,7 +114,11 @@ export function FieldZone({
             key={card.id}
             className={`relative ${isDefense ? "rotate-90 scale-75" : "scale-90"}`}
             initial={{ scale: 0.1, opacity: 0, filter: "brightness(4)" }}
-            animate={{ scale: 1, opacity: 1, filter: "brightness(1)" }}
+            animate={{
+              scale: 1,
+              opacity: hasAttacked ? 0.45 : 1,
+              filter: hasAttacked ? "brightness(0.6) grayscale(0.5)" : "brightness(1)",
+            }}
             exit={{ scale: 0.4, opacity: 0 }}
             transition={{ type: "spring", stiffness: 450, damping: 22 }}
           >
