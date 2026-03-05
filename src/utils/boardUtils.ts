@@ -9,7 +9,7 @@ export function getBoardSideAttributes(event:string | null, isOpponent: boolean 
         }
     }
 
-    if (event === BattleEvent.SELECTING_POSITION) {
+    if (event === BattleEvent.SELECTING_POSITION || event === BattleEvent.FUSION_PLACING) {
         return {
             isInteractable: !isOpponent ? true : false,
             isSelected: false,

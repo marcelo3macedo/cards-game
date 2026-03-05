@@ -53,7 +53,7 @@ function App() {
         onPackageOpened={() => navigateTo("REWARDS")}
       />
     ),
-    DECKMANAGER: <DeckManagerScenario onBack={() => navigateTo("MAINMENU")} />,
+    DECKMANAGER: <DeckManagerScenario onBack={() => navigateTo("MAINMENU")} onOpenPackage={() => navigateTo("REWARDS")} />,
     TUTORIAL: <TutorialScenario onBack={() => navigateTo("MAINMENU")} />,
   };
 

@@ -1,7 +1,9 @@
-import { AnimatePresence } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "../Card";
 import { FieldZoneMenu } from "./FieldZoneMenu";
 import { useFieldZone } from "./hooks/useFieldZone";
+import { SummonEffect, ExplosionEffect } from "./FieldCardEffects";
 
 export function FieldSpellZone({
   index,
@@ -15,6 +17,36 @@ export function FieldSpellZone({
   const {
     showMenu, setShowMenu, onClick, onFocusCard
   } = useFieldZone({ card, position: card ? "face-down-attack" : null });
+
+  const prevCardIdRef = useRef<string | undefined>(card?.card?.id ?? card?.id);
+  const [showSummon, setShowSummon] = useState(false);
+  const [showExplosion, setShowExplosion] = useState(false);
+
+  const cardId = card?.card?.id ?? card?.id;
+
+  useEffect(() => {
+    const prevId = prevCardIdRef.current;
+    const currId = cardId;
+
+    if (!prevId && currId) setShowSummon(true);
+    else if (prevId && !currId) setShowExplosion(true);
+
+    prevCardIdRef.current = currId;
+  }, [cardId]);
+
+  useEffect(() => {
+    if (showSummon) {
+      const t = setTimeout(() => setShowSummon(false), 900);
+      return () => clearTimeout(t);
+    }
+  }, [showSummon]);
+
+  useEffect(() => {
+    if (showExplosion) {
+      const t = setTimeout(() => setShowExplosion(false), 750);
+      return () => clearTimeout(t);
+    }
+  }, [showExplosion]);
 
   const theme = isOpponent
     ? {
@@ -58,6 +90,15 @@ export function FieldSpellZone({
         )}
       </AnimatePresence>
 
+      {card && (
+        <div className={`absolute top-1 right-1 z-10 w-4 h-4 rounded-full bg-zinc-900/80 border border-white/30 flex items-center justify-center text-white text-[9px] font-bold pointer-events-none transition-opacity duration-200 ${isFocused ? "opacity-100" : "opacity-30"}`}>
+          i
+        </div>
+      )}
+
+      {showSummon && <SummonEffect isOpponent={isOpponent} />}
+      {showExplosion && <ExplosionEffect />}
+
       {!card ? (
         isInteractable && (
           <div
@@ -65,9 +106,18 @@ export function FieldSpellZone({
           />
         )
       ) : (
-        <div className="transition-all duration-500 relative">
-          <Card card={card} size="xs" isFaceDown={true}  />
-        </div>
+        <AnimatePresence mode="popLayout">
+          <motion.div
+            key={cardId}
+            className="transition-all duration-500 relative"
+            initial={{ scale: 0.1, opacity: 0, filter: "brightness(4)" }}
+            animate={{ scale: 1, opacity: 1, filter: "brightness(1)" }}
+            exit={{ scale: 0.4, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 450, damping: 22 }}
+          >
+            <Card card={card} size="xs" isFaceDown={true} />
+          </motion.div>
+        </AnimatePresence>
       )}
     </div>
   );

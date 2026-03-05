@@ -4,17 +4,41 @@ import { ActionButton } from "./ActionButton";
 import type { SummonOverlayProps } from "../../../core/domain/Summon";
 import { useSummonOverlayNavigation } from "./hooks/useSummonOverlayNavigation";
 import { BattleEvent } from "../../../core/domain/BattleStore";
+import { useBattleEventStore } from "../../../store/BattleEventStore";
+import { useHandStore } from "../../../store/HandStore";
 
 export const SummonOverlay: React.FC<SummonOverlayProps> = () => {
   const { options, activeIndex, card, eventType, onSummon, onCancel } = useSummonOverlayNavigation();
+  const { fusionCardIndices } = useBattleEventStore();
+  const { fusionMaterialCards } = useHandStore();
 
-  if (!card || eventType !== BattleEvent.SELECTING_MODE) return <></>;
+  const isFusion = fusionCardIndices.length > 0;
+  const isVisible = eventType === BattleEvent.SELECTING_MODE && (!!card || isFusion);
+
+  if (!isVisible) return <></>;
 
   return (
     <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300 backdrop-blur-md bg-black/80">
       <div className="mb-10 shadow-[0_0_80px_rgba(0,0,0,0.6)] scale-110">
-        <Card card={card} size="lg" />
+        {isFusion ? (
+          <div className="flex items-center gap-4">
+            {fusionMaterialCards.slice(0, 2).map((c, i) => (
+              <div key={i} className="opacity-90">
+                <Card card={c} size="md" />
+              </div>
+            ))}
+            <div className="text-purple-400 text-4xl font-black">⬡</div>
+          </div>
+        ) : (
+          <Card card={card!} size="lg" />
+        )}
       </div>
+
+      {isFusion && (
+        <div className="mb-6 text-purple-300 font-bold italic tracking-[0.2em] text-sm animate-pulse">
+          FUSÃO — Escolha o modo
+        </div>
+      )}
 
       <div className="flex flex-col items-center gap-8 w-full max-w-2xl px-6">
         <div className="grid grid-cols-4 gap-4 w-full">
