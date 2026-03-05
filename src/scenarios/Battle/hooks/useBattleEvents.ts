@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { battleService } from "../../../services/battleService";
 import { useBattleEventStore } from "../../../store/BattleEventStore";
 import { useBattleStore } from "../../../store/BattleStore";
@@ -7,11 +7,28 @@ import { mapServerCardToEntity } from "../../../utils/cardUtils";
 import { villainActionsHandlers } from "../../../services/villainActionsService";
 import { BattleEvent } from "../../../core/domain/BattleStore";
 
+const isBattleOver = (state: any) =>
+  state?.player?.hp === 0 || state?.opponent?.hp === 0;
+
 export const useBattleEvents = ({ onBack, onEnd }: any) => {
     const { clearBattle, currentTurnOwner, player, opponent, setEvent } = useBattleStore();
     const { setBattleData } = useBattleEventStore();
     const { setVisible, setIsHidden } = useHandStore();
 
+    // Guard: prevents handleEndBattle from being called more than once,
+    // regardless of how many code paths detect hp === 0 simultaneously.
+    const isEndingRef = useRef(false);
+
+    const handleEndBattle = async () => {
+      if (isEndingRef.current) return;
+      isEndingRef.current = true;
+      const results = await battleService.saveBattleHistory();
+      useBattleStore.getState().setResult(results);
+      onEnd();
+    };
+
+    // Safety net: catches hp=0 coming from villain spell/trap effects
+    // that update the store without going through handleAttack/handleEndTurn.
     useEffect(() => {
       if (player?.hp === 0 || opponent?.hp === 0) {
         handleEndBattle();
@@ -29,9 +46,9 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
             useBattleStore.getState().setBattle(response.state);
             setVisible(true);
         } catch (error: any) {
-            console.error("Erro ao encerrar turno:", error.message);
+            console.error("Erro ao comprar carta:", error.message);
         }
-    }
+    };
 
     const handleEndTurn = async () => {
         try {
@@ -41,7 +58,7 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
 
             useBattleStore.getState().setBattle(response.state);
 
-            if (response.state.player.hp === 0 || response.state.opponent.hp === 0) {
+            if (isBattleOver(response.state)) {
               await handleEndBattle();
               return;
             }
@@ -81,24 +98,18 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
             useBattleStore.getState().setPlayer(response.state.player);
             useBattleStore.getState().setOpponent(response.state.opponent);
 
-            if (response.state.player.hp === 0 || response.state.opponent.hp === 0) {
-              handleEndBattle();
+            if (isBattleOver(response.state)) {
+              await handleEndBattle();
             }
         } catch (error: any) {
-            console.error("Erro ao encerrar turno:", error.message);
+            console.error("Erro ao realizar ataque:", error.message);
         }
-    }
-
-    const handleEndBattle = async () => {
-      const results = await battleService.saveBattleHistory();
-      useBattleStore.getState().setResult(results);
-      onEnd();
-    }
+    };
 
     return {
         currentTurnOwner,
         handleAbandon,
         handleEndTurn,
         handleAttack
-    }
+    };
 }

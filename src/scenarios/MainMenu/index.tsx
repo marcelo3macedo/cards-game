@@ -8,6 +8,7 @@ export default function MainMenuScenario({
   onSelectOpponent,
   onViewDeck,
   onViewTips,
+  onViewStore,
 }: any) {
   const { user, villains, loading, handleLogout, setSelectedVillain } = useMainMenu();
   const handleChooseOpponent = (villain: Villain) => {
@@ -79,6 +80,13 @@ export default function MainMenuScenario({
             className="w-full py-4 px-6 text-zinc-500 font-bold text-left hover:text-white hover:bg-white/5 transition-all uppercase tracking-widest text-xs"
           >
             Meu Baralho (Deck)
+          </button>
+
+          <button
+            onClick={onViewStore}
+            className="w-full py-4 px-6 text-zinc-500 font-bold text-left hover:text-white hover:bg-white/5 transition-all uppercase tracking-widest text-xs"
+          >
+            Loja
           </button>
 
           <button

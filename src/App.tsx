@@ -4,6 +4,7 @@ import BattleScenario from "./scenarios/Battle";
 import ProfileScenario from "./scenarios/Profile";
 import MainMenuScenario from "./scenarios/MainMenu";
 import DeckManagerScenario from "./scenarios/DeckManager";
+import StoreScenario from "./scenarios/Store";
 import { BattleResultScenario } from "./scenarios/Result";
 import { RewardsScenario } from "./scenarios/Result/Rewards";
 import TutorialScenario from "./scenarios/Help";
@@ -24,6 +25,7 @@ function App() {
         onViewDeck={() => navigateTo("DECKMANAGER")}
         onSelectOpponent={() => navigateTo("MATCHMAKING")}
         onViewTips={() => navigateTo("TUTORIAL")}
+        onViewStore={() => navigateTo("STORE")}
       />
     ),
     MATCHMAKING: (
@@ -43,6 +45,12 @@ function App() {
     REWARDS: (
       <RewardsScenario
         onBack={() => navigateTo("MAINMENU")}
+      />
+    ),
+    STORE: (
+      <StoreScenario
+        onBack={() => navigateTo("MAINMENU")}
+        onPackageOpened={() => navigateTo("REWARDS")}
       />
     ),
     DECKMANAGER: <DeckManagerScenario onBack={() => navigateTo("MAINMENU")} />,

@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Trophy, Home } from "lucide-react";
+import { Package, Home } from "lucide-react";
 import { DuelRating } from "../../components/results/DuelRating";
 
 interface BattleResultProps {
@@ -77,10 +77,10 @@ export const BattleResultContainer: React.FC<BattleResultProps> = ({
               {isVictory && (
                 <button
                   onClick={onSeeRewards}
-                  className="group flex items-center justify-between bg-blue-600 hover:bg-blue-500 text-white font-black px-8 py-4 rounded-xl transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(37,99,235,0.4)]"
+                  className="group flex items-center justify-between bg-yellow-500 hover:bg-yellow-400 text-black font-black px-8 py-4 rounded-xl transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(234,179,8,0.4)]"
                 >
-                  VER RECOMPENSAS
-                  <Trophy className="group-hover:rotate-12 transition-transform" />
+                  ABRIR PACOTE
+                  <Package className="group-hover:rotate-12 transition-transform" />
                 </button>
               )}
 

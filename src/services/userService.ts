@@ -5,6 +5,7 @@ export interface UserProfile {
   name: string;
   level: number;
   points: number;
+  coins: number;
   active: boolean;
   profile: {
     imageUrl: string;
