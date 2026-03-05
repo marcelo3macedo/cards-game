@@ -5,15 +5,26 @@ import { useBattleStore } from "../../../store/BattleStore";
 import { BattleEvent } from "../../../core/domain/BattleStore";
 
 export const FusionAnimation: React.FC = () => {
-  const { fusionAnimData, clearFusionAnimData, setFocusArea, setVisible } = useHandStore();
+  const {
+    fusionAnimData,
+    clearFusionAnimData,
+    pendingBattleState,
+    clearPendingBattleState,
+    setIsHidden,
+  } = useHandStore();
   const { setEvent } = useBattleStore();
 
   const handleAnimationEnd = useCallback(() => {
     clearFusionAnimData();
-    setEvent(BattleEvent.FUSION_PLACING);
-    setFocusArea("board");
-    setVisible(false);
-  }, [clearFusionAnimData, setEvent, setFocusArea, setVisible]);
+
+    if (pendingBattleState) {
+      useBattleStore.getState().setBattle(pendingBattleState);
+      clearPendingBattleState();
+    }
+
+    setIsHidden(true);
+    setEvent(BattleEvent.INITIAL);
+  }, [fusionAnimData, pendingBattleState]);
 
   if (!fusionAnimData) return null;
 

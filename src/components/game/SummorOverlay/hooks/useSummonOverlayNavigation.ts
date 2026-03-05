@@ -6,6 +6,7 @@ import { useBattleStore } from "../../../../store/BattleStore";
 import { BattleEvent } from "../../../../core/domain/BattleStore";
 import { useHandStore } from "../../../../store/HandStore";
 import { battleService } from "../../../../services/battleService";
+import { mapServerCardToEntity } from "../../../../utils/cardUtils";
 import { withContextLogging } from "../../../../utils/loggingUtils";
 
 export const useSummonOverlayNavigation = () => {
@@ -13,7 +14,7 @@ export const useSummonOverlayNavigation = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { selectedCard, setSelectedCard, selectedFieldIndex, fusionCardIndices, clearFusionCardIndices } = useBattleEventStore();
   const { player, event, setEvent } = useBattleStore();
-  const { setVisible, setIsHidden } = useHandStore();
+  const { setVisible, setIsHidden, fusionMaterialCards, setFusionAnimData, setPendingBattleState } = useHandStore();
 
   const options: { mode: Mode; label: string; subLabel: string; isVertical: boolean }[] = [
     { mode: "attack", label: "Invocar", subLabel: "Modo Ataque", isVertical: true },
@@ -25,21 +26,50 @@ export const useSummonOverlayNavigation = () => {
   const onSummon = async (mode: string) => {
     try {
       if (fusionCardIndices.length > 0) {
+        // ── Fusion path ──
         const response = await battleService.summonFusion(fusionCardIndices, mode, selectedFieldIndex);
-        useBattleStore.getState().setBattle(response.state);
+
+        const resultEntity = response.wasSuccess
+          ? mapServerCardToEntity(response.resultCard)
+          : null;
+
+        // Store state to be applied after animation
+        setPendingBattleState(response.state);
         clearFusionCardIndices();
+        setSelectedCard(null);
+
+        // Hide the SummonOverlay before animation starts
+        setEvent(BattleEvent.INITIAL);
+
+        // Trigger fusion animation (FusionAnimation will apply pendingBattleState on complete)
+        setFusionAnimData({
+          materialCards: fusionMaterialCards,
+          resultCard: resultEntity,
+        });
       } else {
-        const handIndex = player?.hand.findIndex((c:any) => Number(c.id) === Number(selectedCard.id));
-        if (handIndex === -1) return;
+        // ── Normal summon path ──
+        const handIndex = player?.hand?.findIndex(
+          (c: any) => Number(c.id) === Number(selectedCard?.id)
+        ) ?? -1;
+
+        if (handIndex === -1) {
+          console.warn("Card not found in hand, cancelling summon.");
+          setEvent(BattleEvent.INITIAL);
+          setVisible(true);
+          return;
+        }
+
         const response = await battleService.summonCard(handIndex, mode, selectedFieldIndex);
         useBattleStore.getState().setBattle(response.state);
-      }
 
-      setSelectedCard(null);
-      setIsHidden(true);
-      setEvent(BattleEvent.INITIAL);
+        setSelectedCard(null);
+        setIsHidden(true);
+        setEvent(BattleEvent.INITIAL);
+      }
     } catch (error: any) {
-      console.error(error.message);
+      console.error("Summon error:", error?.message ?? error);
+      setEvent(BattleEvent.INITIAL);
+      setSelectedCard(null);
     }
   };
 
@@ -76,7 +106,6 @@ export const useSummonOverlayNavigation = () => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeIndex, onSummon, onCancel]);
-
 
   return {
     activeIndex,

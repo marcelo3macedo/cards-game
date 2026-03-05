@@ -217,7 +217,7 @@ export const battleService = {
     return await response.json();
   },
 
-  summonFusion: async (handIndices: number[], position: string, selectedFieldIndex: number): Promise<BattleResponse> => {
+  summonFusion: async (handIndices: number[], position: string, selectedFieldIndex: number): Promise<BattleResponse & { wasSuccess: boolean; resultCard: any }> => {
     const API_URL = import.meta.env.VITE_API_URL;
     const token = authService.getSessionToken();
 

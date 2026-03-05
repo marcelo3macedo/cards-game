@@ -6,13 +6,12 @@ import { useBattleStore } from "../../../../store/BattleStore";
 import { useHandStore } from "../../../../store/HandStore";
 import { BattleEvent } from "../../../../core/domain/BattleStore";
 import { mapServerCardToEntity } from "../../../../utils/cardUtils";
-import { battleService } from "../../../../services/battleService";
 
 export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigationProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { setSelectedCard, setSelectedOrigin, setSelectedFieldArea, setViewCard, viewCard, setFusionCardIndices, clearFusionCardIndices } = useBattleEventStore();
   const { setEvent } = useBattleStore();
-  const { focusArea, isFusionMode, fusionCardIndices, setFusionMode, toggleFusionCard, clearFusion, setFusionAnimData } = useHandStore();
+  const { focusArea, setFocusArea, setVisible, isFusionMode, fusionCardIndices, setFusionMode, toggleFusionCard, clearFusion, setFusionMaterialCards } = useHandStore();
 
   const cancelFusion = () => {
     clearFusion();
@@ -20,43 +19,26 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
     setEvent(BattleEvent.INITIAL);
   };
 
-  const confirmFusion = async () => {
+  const confirmFusion = () => {
     if (fusionCardIndices.length === 0) return;
 
-    const lastIdx = fusionCardIndices[fusionCardIndices.length - 1];
-    const fallbackCard = cards[lastIdx];
-
-    // Map material cards to entities for the animation
-    const materialCards = fusionCardIndices
+    // Map material cards to entities — stored for the animation (used later in onSummon)
+    const materialEntities = fusionCardIndices
       .map((i) => mapServerCardToEntity(cards[i]))
       .filter(Boolean);
+    setFusionMaterialCards(materialEntities);
 
-    let fusionCard: any = null;
+    // Store indices so SummonOverlay can call summonFusion
+    setFusionCardIndices(fusionCardIndices);
 
-    try {
-      const result = await battleService.checkFusion(fusionCardIndices);
-      fusionCard = result.fusionCard ?? null;
-    } catch {
-      fusionCard = null;
-    }
-
-    // Prepare game state (selectedCard + indices) for after the animation
-    if (fusionCard) {
-      setSelectedCard(fusionCard);
-      setFusionCardIndices(fusionCardIndices);
-    } else {
-      setSelectedCard(fallbackCard);
-      clearFusionCardIndices();
-    }
-
+    clearFusion();
     setSelectedOrigin("hand");
     setSelectedFieldArea("MONSTER");
-    clearFusion();
+    // Advance directly to field selection — API + animation happen after user picks position
+    setEvent(BattleEvent.FUSION_PLACING);
+    setFocusArea("board");
+    setVisible(false);
     onSelect();
-
-    // Show fusion animation — the animation component will advance to FUSION_PLACING when done
-    const resultEntity = fusionCard ? mapServerCardToEntity(fusionCard) : null;
-    setFusionAnimData({ materialCards, resultCard: resultEntity });
   };
 
   useEffect(() => {
