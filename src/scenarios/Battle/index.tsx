@@ -13,6 +13,7 @@ import { ViewOverlay } from "../../components/game/ViewOverlay";
 import { BattleAnimation } from "../../components/game/Battle/BattleAnimation";
 import { MagicOverlay } from "../../components/game/MagicOverlay";
 import { EffectCardOverlay } from "../../components/game/EffectCardOverlay";
+import { FusionAnimation } from "../../components/game/FusionAnimation";
 
 export default function BattleScenario({ onBack, onEnd }: any) {
   const { currentTurnOwner, isOpponentPlaying, handleAbandon, handleEndTurn } = useBattleEvents({ onBack, onEnd });
@@ -46,6 +47,7 @@ export default function BattleScenario({ onBack, onEnd }: any) {
         <MagicOverlay />
         <ViewOverlay />
         <BattleAnimation />
+        <FusionAnimation />
         <EffectCardOverlay />
       </div>
       <div className="board">

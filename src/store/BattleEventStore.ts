@@ -11,6 +11,7 @@ interface BattleEventState {
   viewCard: any;
   battleData: any;
   isSelectingTarget: boolean;
+  fusionCardIndices: number[];
   setSelectedCard: (selectedCard: any) => void;
   setSelectedOrigin: (selectedOrigin: any) => void;
   setSelectedFieldIndex: (selectedFieldIndex: number) => void;
@@ -22,6 +23,8 @@ interface BattleEventState {
   setBattleData: (battleData: any) => void;
   clearBattleData: () => void;
   setIsSelectingTarget: (isSelectingTarget: boolean) => void;
+  setFusionCardIndices: (indices: number[]) => void;
+  clearFusionCardIndices: () => void;
 }
 
 export const useBattleEventStore = create<BattleEventState>()(
@@ -36,6 +39,7 @@ export const useBattleEventStore = create<BattleEventState>()(
       viewCard: null,
       battleData: null,
       isSelectingTarget: false,
+      fusionCardIndices: [],
 
       setSelectedCard: (selectedCard) => set({ selectedCard }),
       setSelectedOrigin: (selectedOrigin) => set({ selectedOrigin }),
@@ -48,6 +52,8 @@ export const useBattleEventStore = create<BattleEventState>()(
       setBattleData: (battleData) => set({ battleData }),
       clearBattleData: () => set({ battleData: null }),
       setIsSelectingTarget: (isSelectingTarget) => set({ isSelectingTarget }),
+      setFusionCardIndices: (fusionCardIndices) => set({ fusionCardIndices }),
+      clearFusionCardIndices: () => set({ fusionCardIndices: [] }),
     }),
     {
       name: "battle-event-storage",

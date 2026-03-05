@@ -196,6 +196,49 @@ export const battleService = {
     return await response.json();
   },
 
+  checkFusion: async (handIndices: number[]): Promise<{ fusionCard: any | null }> => {
+    const API_URL = import.meta.env.VITE_API_URL;
+    const token = authService.getSessionToken();
+
+    const response = await fetch(`${API_URL}/battle-engine/check-fusion`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": `${token}`,
+      },
+      body: JSON.stringify({ handIndices }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) authService.logout();
+      return { fusionCard: null };
+    }
+
+    return await response.json();
+  },
+
+  summonFusion: async (handIndices: number[], position: string, selectedFieldIndex: number): Promise<BattleResponse> => {
+    const API_URL = import.meta.env.VITE_API_URL;
+    const token = authService.getSessionToken();
+
+    const response = await fetch(`${API_URL}/battle-engine/summon-fusion`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": `${token}`,
+      },
+      body: JSON.stringify({ handIndices, position, selectedFieldIndex }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) authService.logout();
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Erro ao realizar fusão");
+    }
+
+    return await response.json();
+  },
+
   activateCard: async (cardIndex: number, origin: string): Promise<BattleState | ActivationResponse> => {
     const API_URL = import.meta.env.VITE_API_URL;
     const token = authService.getSessionToken();

@@ -36,7 +36,9 @@ export const BattleEvent = {
   ACTIVATING_EFFECT: "activating-effect",
   ACTIVE_EFFECT: "active-effect",
   SELECTING_TARGET: "selecting-target",
-  SELECTING_MODE: "selecting-mode"
+  SELECTING_MODE: "selecting-mode",
+  FUSION_SELECTING: "fusion-selecting",
+  FUSION_PLACING: "fusion-placing",
 } as const;
 
 export type BattleEvent = typeof BattleEvent[keyof typeof BattleEvent];

@@ -1,11 +1,19 @@
 import { create } from "zustand";
 import { BaseCard, MonsterCard } from "../core/domain/Card";
 
+export interface FusionAnimData {
+  materialCards: BaseCard[];
+  resultCard: BaseCard | null;
+}
+
 interface HandState {
   cards: BaseCard[];
   isVisible: boolean;
   isHidden: boolean;
   focusArea: "hand" | "board";
+  isFusionMode: boolean;
+  fusionCardIndices: number[];
+  fusionAnimData: FusionAnimData | null;
   setCards: (cards: BaseCard[]) => void;
   addCard: (card: MonsterCard) => void;
   removeCard: (cardId: string) => void;
@@ -13,6 +21,11 @@ interface HandState {
   setIsHidden: (isHidden: boolean) => void;
   toggleVisible: () => void;
   setFocusArea: (area: "hand" | "board") => void;
+  setFusionMode: (mode: boolean) => void;
+  toggleFusionCard: (index: number) => void;
+  clearFusion: () => void;
+  setFusionAnimData: (data: FusionAnimData) => void;
+  clearFusionAnimData: () => void;
 }
 
 export const useHandStore = create<HandState>((set) => ({
@@ -20,6 +33,9 @@ export const useHandStore = create<HandState>((set) => ({
   isVisible: true,
   isHidden: false,
   focusArea: "hand",
+  isFusionMode: false,
+  fusionCardIndices: [],
+  fusionAnimData: null,
   setCards: (cards) => set({ cards }),
   addCard: (card) => set((state) => ({ cards: [...state.cards, card] })),
   removeCard: (cardId) => set((state) => ({ cards: state.cards.filter((c) => c.id !== cardId) })),
@@ -27,4 +43,14 @@ export const useHandStore = create<HandState>((set) => ({
   setIsHidden: (isHidden) => set({ isHidden }),
   toggleVisible: () => set((state) => ({ isVisible: !state.isVisible })),
   setFocusArea: (focusArea) => set({ focusArea }),
+  setFusionMode: (isFusionMode) => set({ isFusionMode }),
+  toggleFusionCard: (index) =>
+    set((state) => ({
+      fusionCardIndices: state.fusionCardIndices.includes(index)
+        ? state.fusionCardIndices.filter((i) => i !== index)
+        : [...state.fusionCardIndices, index],
+    })),
+  clearFusion: () => set({ isFusionMode: false, fusionCardIndices: [] }),
+  setFusionAnimData: (fusionAnimData) => set({ fusionAnimData }),
+  clearFusionAnimData: () => set({ fusionAnimData: null }),
 }));

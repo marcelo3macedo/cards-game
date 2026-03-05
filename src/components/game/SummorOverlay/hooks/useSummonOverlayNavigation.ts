@@ -11,7 +11,7 @@ import { withContextLogging } from "../../../../utils/loggingUtils";
 export const useSummonOverlayNavigation = () => {
   const log = withContextLogging('useSummonOverlayNavigation');
   const [activeIndex, setActiveIndex] = useState(0);
-  const { selectedCard, setSelectedCard, selectedFieldIndex } = useBattleEventStore();
+  const { selectedCard, setSelectedCard, selectedFieldIndex, fusionCardIndices, clearFusionCardIndices } = useBattleEventStore();
   const { player, event, setEvent } = useBattleStore();
   const { setVisible, setIsHidden } = useHandStore();
 
@@ -24,11 +24,16 @@ export const useSummonOverlayNavigation = () => {
 
   const onSummon = async (mode: string) => {
     try {
-      const handIndex = player?.hand.findIndex((c:any) => Number(c.id) === Number(selectedCard.id));
-      if (handIndex === -1) return;
-
-      const response = await battleService.summonCard(handIndex, mode, selectedFieldIndex);
-      useBattleStore.getState().setBattle(response.state);
+      if (fusionCardIndices.length > 0) {
+        const response = await battleService.summonFusion(fusionCardIndices, mode, selectedFieldIndex);
+        useBattleStore.getState().setBattle(response.state);
+        clearFusionCardIndices();
+      } else {
+        const handIndex = player?.hand.findIndex((c:any) => Number(c.id) === Number(selectedCard.id));
+        if (handIndex === -1) return;
+        const response = await battleService.summonCard(handIndex, mode, selectedFieldIndex);
+        useBattleStore.getState().setBattle(response.state);
+      }
 
       setSelectedCard(null);
       setIsHidden(true);
@@ -40,6 +45,7 @@ export const useSummonOverlayNavigation = () => {
 
   const onCancel = () => {
     setSelectedCard(null);
+    clearFusionCardIndices();
     setEvent(BattleEvent.INITIAL);
     setVisible(true);
   };
