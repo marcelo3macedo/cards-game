@@ -27,7 +27,7 @@ export default function StoreScenario({ onBack, onPackageOpened }: StoreScenario
   return (
     <div className="h-screen w-screen bg-zinc-950 flex flex-col overflow-hidden text-white">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 bg-black/40 border-b border-white/5 backdrop-blur-md shrink-0">
+      <div className="flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 bg-black/40 border-b border-white/5 backdrop-blur-md shrink-0">
         <button
           onClick={onBack}
           className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm font-bold uppercase tracking-widest"
@@ -37,16 +37,16 @@ export default function StoreScenario({ onBack, onPackageOpened }: StoreScenario
         <h1 className="text-xl font-black italic uppercase tracking-tighter text-yellow-400">
           Loja
         </h1>
-        <div className="flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 px-4 py-2 rounded-full">
+        <div className="flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full">
           <Coins size={16} className="text-yellow-500" />
-          <span className="text-yellow-400 font-black text-lg">{user?.coins ?? 0}</span>
-          <span className="text-yellow-600 text-xs font-bold uppercase">moedas</span>
+          <span className="text-yellow-400 font-black text-base sm:text-lg">{user?.coins ?? 0}</span>
+          <span className="hidden sm:inline text-yellow-600 text-xs font-bold uppercase">moedas</span>
         </div>
       </div>
 
       <div className="flex flex-1 min-h-0">
         {/* Seller panel */}
-        <div className="w-64 shrink-0 relative flex flex-col overflow-hidden border-r border-white/5">
+        <div className="hidden sm:flex sm:w-64 sm:shrink-0 relative flex-col overflow-hidden border-r border-white/5">
           <img
             src={seller}
             alt="Vendedor"
@@ -78,13 +78,13 @@ export default function StoreScenario({ onBack, onPackageOpened }: StoreScenario
         </div>
 
         {/* Packages panel */}
-        <div className="flex-1 p-8 overflow-y-auto custom-scrollbar">
+        <div className="flex-1 p-4 sm:p-8 overflow-y-auto custom-scrollbar">
           <div className="max-w-3xl mx-auto">
-            <div className="mb-8">
-              <h2 className="text-3xl font-black italic uppercase tracking-tighter">
+            <div className="mb-5 sm:mb-8">
+              <h2 className="text-xl sm:text-3xl font-black italic uppercase tracking-tighter">
                 Pacotes Disponíveis
               </h2>
-              <p className="text-zinc-500 text-sm mt-1">
+              <p className="text-zinc-500 text-xs sm:text-sm mt-1">
                 Compre pacotes para receber cartas aleatórias.
               </p>
             </div>
