@@ -1,5 +1,6 @@
 import { Save, Loader2, Package, BookOpen, AlertCircle, CheckCircle2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 import { useDeck } from "./hooks/useDeckManager";
 import { CollectionFilters } from "./components/CollectionFilters";
 import { CardLibraryItem } from "./components/CardLibraryItem";
@@ -58,6 +59,8 @@ export default function DeckManagerScenario({ onBack, onOpenPackage }: any) {
     addToDeck, removeFromDeck, saveDeck, openPackage,
   } = useDeck(onOpenPackage);
 
+  const [mobileView, setMobileView] = useState<"collection" | "deck">("collection");
+
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center bg-zinc-950 text-white gap-3">
@@ -86,13 +89,15 @@ export default function DeckManagerScenario({ onBack, onOpenPackage }: any) {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <DeckCapacity count={localDeck.length} />
+        <div className="flex items-center gap-2 sm:gap-4">
+          <div className="hidden sm:block">
+            <DeckCapacity count={localDeck.length} />
+          </div>
 
           <button
             onClick={saveDeck}
             disabled={!deckValid || saving}
-            className={`flex items-center gap-2 px-5 py-2 rounded-xl font-black italic text-sm transition-all
+            className={`flex items-center gap-2 px-2 sm:px-5 py-2 rounded-xl font-black italic text-sm transition-all
               ${deckValid && !saving
                 ? "bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/20 active:scale-95"
                 : "bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50"}`}
@@ -100,7 +105,7 @@ export default function DeckManagerScenario({ onBack, onOpenPackage }: any) {
             {saving
               ? <Loader2 size={15} className="animate-spin" />
               : deckValid ? <CheckCircle2 size={15} /> : <Save size={15} />}
-            {saving ? "SALVANDO" : "SALVAR"}
+            <span className="hidden sm:inline">{saving ? "SALVANDO" : "SALVAR"}</span>
           </button>
         </div>
       </header>
@@ -120,10 +125,30 @@ export default function DeckManagerScenario({ onBack, onOpenPackage }: any) {
       </AnimatePresence>
 
       {/* ── Body ── */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden flex-col sm:flex-row">
+
+        {/* ── Mobile tab switcher ── */}
+        <div className="sm:hidden flex border-b border-white/5 bg-zinc-900/40 flex-shrink-0">
+          <button
+            onClick={() => setMobileView("collection")}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-[11px] font-black uppercase tracking-widest border-b-2 transition-all ${
+              mobileView === "collection" ? "border-blue-500 text-blue-400" : "border-transparent text-zinc-500"
+            }`}
+          >
+            <BookOpen size={13} /> Coleção
+          </button>
+          <button
+            onClick={() => setMobileView("deck")}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-[11px] font-black uppercase tracking-widest border-b-2 transition-all ${
+              mobileView === "deck" ? "border-blue-500 text-blue-400" : "border-transparent text-zinc-500"
+            }`}
+          >
+            Deck <span className={`text-[10px] font-black ${deckValid ? "text-green-400" : "text-zinc-500"}`}>({localDeck.length})</span>
+          </button>
+        </div>
 
         {/* ── Left panel: Library + Packages ── */}
-        <section className="flex flex-col border-r border-white/5" style={{ width: "55%" }}>
+        <section className={`flex-col border-r border-white/5 sm:w-[55%] ${mobileView === "collection" ? "flex flex-1" : "hidden sm:flex"}`}>
 
           {/* Tabs */}
           <div className="flex border-b border-white/5 bg-zinc-900/30 flex-shrink-0">
@@ -229,7 +254,7 @@ export default function DeckManagerScenario({ onBack, onOpenPackage }: any) {
         </section>
 
         {/* ── Right panel: Current Deck ── */}
-        <section className="flex flex-col bg-black/30" style={{ width: "45%" }}>
+        <section className={`flex-col bg-black/30 sm:w-[45%] ${mobileView === "deck" ? "flex flex-1" : "hidden sm:flex"}`}>
           {/* Deck header with stats */}
           <div className="px-4 py-3 border-b border-white/5 bg-zinc-900/20 flex-shrink-0">
             <div className="flex items-center justify-between mb-2">

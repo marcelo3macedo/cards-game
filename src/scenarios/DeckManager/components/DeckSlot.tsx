@@ -62,7 +62,7 @@ export const DeckSlot = ({ card, onRemove, onZoom }: any) => {
       {/* Remove button */}
       <button
         onClick={(e) => { e.stopPropagation(); onRemove(card.instanceId); }}
-        className="p-1.5 text-zinc-700 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all opacity-0 group-hover:opacity-100 flex-shrink-0 mr-0.5"
+        className="p-1.5 text-zinc-500 sm:text-zinc-700 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all opacity-100 sm:opacity-0 sm:group-hover:opacity-100 flex-shrink-0 mr-0.5"
         title="Remover do Deck"
       >
         <Trash2 size={13} />

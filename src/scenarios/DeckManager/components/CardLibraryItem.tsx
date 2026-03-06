@@ -53,7 +53,7 @@ export const CardLibraryItem = ({ card, onAdd, onZoom, viewMode }: Props) => {
           {/* Add button overlay */}
           <button
             onClick={(e) => { e.stopPropagation(); onAdd(card); }}
-            className="absolute bottom-2 right-2 w-7 h-7 flex items-center justify-center bg-blue-600 hover:bg-blue-500 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-all active:scale-90"
+            className="absolute bottom-2 right-2 w-7 h-7 flex items-center justify-center bg-blue-600 hover:bg-blue-500 rounded-lg shadow-lg opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all active:scale-90"
           >
             <Plus size={14} />
           </button>
