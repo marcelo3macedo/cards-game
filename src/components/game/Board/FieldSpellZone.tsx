@@ -70,7 +70,7 @@ export function FieldSpellZone({
       onMouseEnter={() => onFocusCard(index)}
       onMouseLeave={() => setShowMenu(false)}
       className={`
-        w-24 h-32 border-2 mt-1 rounded-lg flex items-center justify-center relative transition-all duration-300
+        w-14 h-20 sm:w-24 sm:h-32 border-2 mt-0 sm:mt-1 rounded-lg flex items-center justify-center relative transition-all duration-300 overflow-hidden sm:overflow-visible
         ${card ? "border-solid shadow-lg" : "border-dashed cursor-default"}
         ${!card && isInteractable ? theme.interact : `${theme.border} ${theme.bg}`}
         ${isFocused && !isSelected && !isOpponent ? `ring-4 ${theme.ring} scale-105 z-20` : ""}
@@ -109,7 +109,7 @@ export function FieldSpellZone({
         <AnimatePresence mode="popLayout">
           <motion.div
             key={cardId}
-            className="transition-all duration-500 relative"
+            className="transition-all duration-500 relative scale-[0.55] sm:scale-100 origin-top-left"
             initial={{ scale: 0.1, opacity: 0, filter: "brightness(4)" }}
             animate={{ scale: 1, opacity: 1, filter: "brightness(1)" }}
             exit={{ scale: 0.4, opacity: 0 }}

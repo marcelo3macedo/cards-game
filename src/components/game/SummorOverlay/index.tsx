@@ -6,6 +6,7 @@ import { useSummonOverlayNavigation } from "./hooks/useSummonOverlayNavigation";
 import { BattleEvent } from "../../../core/domain/BattleStore";
 import { useBattleEventStore } from "../../../store/BattleEventStore";
 import { useHandStore } from "../../../store/HandStore";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 
 export const SummonOverlay: React.FC<SummonOverlayProps> = () => {
   const { options, activeIndex, card, eventType, onSummon, onCancel } = useSummonOverlayNavigation();
@@ -14,34 +15,35 @@ export const SummonOverlay: React.FC<SummonOverlayProps> = () => {
 
   const isFusion = fusionCardIndices.length > 0;
   const isVisible = eventType === BattleEvent.SELECTING_MODE && (!!card || isFusion);
+  const isMobile = useIsMobile();
 
   if (!isVisible) return <></>;
 
   return (
     <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300 backdrop-blur-md bg-black/80">
-      <div className="mb-10 shadow-[0_0_80px_rgba(0,0,0,0.6)] scale-110">
+      <div className="mb-4 sm:mb-10 shadow-[0_0_80px_rgba(0,0,0,0.6)] sm:scale-110">
         {isFusion ? (
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             {fusionMaterialCards.slice(0, 2).map((c, i) => (
               <div key={i} className="opacity-90">
-                <Card card={c} size="md" />
+                <Card card={c} size={isMobile ? "xs" : "md"} />
               </div>
             ))}
-            <div className="text-purple-400 text-4xl font-black">⬡</div>
+            <div className="text-purple-400 text-2xl sm:text-4xl font-black">⬡</div>
           </div>
         ) : (
-          <Card card={card!} size="lg" />
+          <Card card={card!} size={isMobile ? "sm" : "lg"} />
         )}
       </div>
 
       {isFusion && (
-        <div className="mb-6 text-purple-300 font-bold italic tracking-[0.2em] text-sm animate-pulse">
+        <div className="mb-3 sm:mb-6 text-purple-300 font-bold italic tracking-[0.2em] text-xs sm:text-sm animate-pulse">
           FUSÃO — Escolha o modo
         </div>
       )}
 
-      <div className="flex flex-col items-center gap-8 w-full max-w-2xl px-6">
-        <div className="grid grid-cols-4 gap-4 w-full">
+      <div className="flex flex-col items-center gap-4 sm:gap-8 w-full max-w-2xl px-3 sm:px-6">
+        <div className="grid grid-cols-4 gap-2 sm:gap-4 w-full">
           {options.map((opt, index) => (
             <div
               key={opt.mode}
@@ -54,9 +56,10 @@ export const SummonOverlay: React.FC<SummonOverlayProps> = () => {
 
         <button
           onClick={onCancel}
-          className="text-[10px] font-bold text-zinc-500 hover:text-red-400 uppercase tracking-[0.4em] transition-colors py-2"
+          style={{ touchAction: "manipulation" }}
+          className="text-[10px] font-bold text-zinc-500 hover:text-red-400 active:text-red-400 uppercase tracking-[0.4em] transition-colors py-3"
         >
-          [ ESC para Cancelar ]
+          [ Cancelar ]
         </button>
       </div>
     </div>

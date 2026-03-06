@@ -9,7 +9,7 @@ export function AbandonBattleModal({ onConfirm }: AbandonProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="absolute left-10 top-5 z-50">
+    <div className="absolute left-2 top-2 sm:left-10 sm:top-5 z-50">
       <button
         onClick={() => setIsOpen(true)}
         className="group flex items-center gap-2 bg-zinc-900/50 hover:bg-red-950/40 border border-zinc-800 hover:border-red-500/50 px-4 py-2 rounded-lg transition-all duration-300"

@@ -31,7 +31,7 @@ export const BattleAnimationOverlay: React.FC<BattleAnimationOverlayProps> = ({
         )}
       </AnimatePresence>
 
-      <div className="flex items-center gap-24 relative scale-110">
+      <div className="flex items-center gap-8 sm:gap-24 relative scale-50 sm:scale-110">
         <div className="relative">
           <div
             className={`

@@ -26,7 +26,7 @@ export const LifePoints = ({ target, color, align = "left" }: LifePointsProps) =
       </AnimatePresence>
 
       <div
-        className={`bg-black/80 border-2 p-4 rounded-xl backdrop-blur-xl min-w-[200px] transition-all duration-300
+        className={`bg-black/80 border-2 p-2 sm:p-4 rounded-xl backdrop-blur-xl min-w-[100px] sm:min-w-[200px] transition-all duration-300
         ${isRedTheme ? "border-red-600/50 shadow-[0_0_20px_rgba(220,38,38,0.2)]" : "border-blue-600/50 shadow-[0_0_20px_rgba(37,99,235,0.2)]"}`}
       >
         <p
@@ -37,7 +37,7 @@ export const LifePoints = ({ target, color, align = "left" }: LifePointsProps) =
 
         <div className="flex items-baseline gap-2">
           <span className="text-zinc-500 text-sm font-black">LP</span>
-          <motion.span className="text-5xl font-black italic text-white tabular-nums tracking-tighter">
+          <motion.span className="text-2xl sm:text-5xl font-black italic text-white tabular-nums tracking-tighter">
             {displayLP}
           </motion.span>
         </div>
