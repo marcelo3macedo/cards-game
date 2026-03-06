@@ -132,29 +132,49 @@ export default function TutorialScenario({ onBack }: { onBack: () => void }) {
       {/* Background Decor */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_#1e1b4b_0%,#09090b_100%)] opacity-50" />
 
-      <header className="h-20 border-b border-white/5 bg-black/40 backdrop-blur-xl flex items-center justify-between px-10 z-10">
-        <div className="flex items-center gap-4">
-          <div className="p-2 bg-blue-600 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]">
-            <BookOpen size={24} />
+      <header className="h-14 sm:h-20 border-b border-white/5 bg-black/40 backdrop-blur-xl flex items-center justify-between px-4 sm:px-10 z-10">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="p-1.5 sm:p-2 bg-blue-600 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+            <BookOpen size={20} />
           </div>
           <div>
-            <h1 className="text-xl font-black italic tracking-widest">GUIA DE DUELISTA</h1>
-            <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.3em]">
+            <h1 className="text-base sm:text-xl font-black italic tracking-widest">GUIA DE DUELISTA</h1>
+            <p className="hidden sm:block text-[10px] text-zinc-500 font-bold uppercase tracking-[0.3em]">
               Regras e Dicas do Jogo
             </p>
           </div>
         </div>
         <button
           onClick={onBack}
-          className="group flex items-center gap-2 px-6 py-2 bg-zinc-900 border border-white/10 rounded-full hover:bg-white hover:text-black transition-all font-bold text-xs"
+          className="group flex items-center gap-2 px-3 sm:px-6 py-2 bg-zinc-900 border border-white/10 rounded-full hover:bg-white hover:text-black transition-all font-bold text-xs"
         >
-          VOLTAR AO MENU <X size={16} />
+          <span className="hidden sm:inline">VOLTAR AO MENU</span>
+          <X size={16} />
         </button>
       </header>
 
-      <main className="flex-1 flex overflow-hidden z-10">
+      <main className="flex-1 flex flex-col sm:flex-row overflow-hidden z-10">
+
+        {/* Mobile topic tabs */}
+        <div className="sm:hidden flex overflow-x-auto gap-2 p-3 border-b border-white/5 bg-zinc-900/30 flex-shrink-0 scrollbar-none">
+          {topics.map((topic) => (
+            <button
+              key={topic.id}
+              onClick={() => setActiveTopic(topic.id)}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl whitespace-nowrap text-[11px] font-black uppercase italic transition-all flex-shrink-0 ${
+                activeTopic === topic.id
+                  ? "bg-white text-black shadow-md"
+                  : "bg-zinc-900/70 text-zinc-400"
+              }`}
+            >
+              <span className={activeTopic === topic.id ? "text-black" : topic.color}>{topic.icon}</span>
+              {topic.title}
+            </button>
+          ))}
+        </div>
+
         {/* Menu Lateral */}
-        <aside className="w-80 border-r border-white/5 p-6 flex flex-col gap-3">
+        <aside className="hidden sm:flex sm:w-80 border-r border-white/5 p-6 flex-col gap-3">
           {topics.map((topic) => (
             <button
               key={topic.id}
@@ -177,7 +197,7 @@ export default function TutorialScenario({ onBack }: { onBack: () => void }) {
         </aside>
 
         {/* Conteúdo Dinâmico */}
-        <section className="flex-1 p-12 overflow-y-auto custom-scrollbar flex items-center justify-center">
+        <section className="flex-1 p-4 sm:p-12 overflow-y-auto custom-scrollbar flex items-start sm:items-center justify-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTopic}
@@ -186,19 +206,17 @@ export default function TutorialScenario({ onBack }: { onBack: () => void }) {
               exit={{ opacity: 0, x: -20 }}
               className="max-w-2xl w-full"
             >
-              <div className="mb-8">
-                <span
-                  className={`text-xs font-black uppercase tracking-widest px-3 py-1 bg-white/5 rounded-full mb-4 inline-block`}
-                >
+              <div className="mb-5 sm:mb-8">
+                <span className="text-xs font-black uppercase tracking-widest px-3 py-1 bg-white/5 rounded-full mb-3 inline-block">
                   Tópico de Ajuda
                 </span>
-                <h2 className="text-5xl font-black italic uppercase text-white mb-2">
+                <h2 className="text-2xl sm:text-5xl font-black italic uppercase text-white mb-2">
                   {topics.find((t) => t.id === activeTopic)?.title}
                 </h2>
-                <div className="w-20 h-1.5 bg-blue-600 rounded-full" />
+                <div className="w-16 sm:w-20 h-1.5 bg-blue-600 rounded-full" />
               </div>
 
-              <div className="bg-zinc-900/30 border border-white/5 p-8 rounded-3xl backdrop-blur-sm">
+              <div className="bg-zinc-900/30 border border-white/5 p-4 sm:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-sm">
                 {topics.find((t) => t.id === activeTopic)?.content}
               </div>
             </motion.div>
@@ -207,7 +225,7 @@ export default function TutorialScenario({ onBack }: { onBack: () => void }) {
       </main>
 
       {/* Footer Dica Rápida */}
-      <footer className="h-12 bg-blue-600 flex items-center justify-center px-10">
+      <footer className="h-12 bg-blue-600 flex items-center justify-center px-4 sm:px-10">
         <div className="flex items-center gap-2 text-white font-bold text-[10px] uppercase tracking-widest">
           <Info size={14} />
           <span>
