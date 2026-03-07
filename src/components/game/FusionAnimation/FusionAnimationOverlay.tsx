@@ -73,21 +73,16 @@ export const FusionAnimationOverlay: React.FC<FusionAnimationOverlayProps> = ({
           </motion.div>
         )}
 
-        {/* ── REVEAL: failure ── */}
+        {/* ── REVEAL: failure — throw card1 out ── */}
         {phase === "reveal" && !isSuccess && (
           <motion.div
-            key="fail"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="flex flex-col items-center gap-4 z-[400]"
+            key="fail-throw"
+            initial={{ x: 80, opacity: 0.6, scale: 0.85, rotate: 0 }}
+            animate={{ x: -700, y: -250, opacity: 0, scale: 0.6, rotate: -40 }}
+            transition={{ duration: 0.7, ease: "easeIn" }}
+            className="z-[400]"
           >
-            <div className="text-red-400 font-black italic tracking-[0.3em] text-2xl">
-              FUSÃO FALHOU
-            </div>
-            <div className="text-zinc-400 text-sm tracking-wider">
-              As cartas não são compatíveis
-            </div>
+            <Card card={card1} size="lg" />
           </motion.div>
         )}
       </AnimatePresence>

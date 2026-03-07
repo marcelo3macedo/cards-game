@@ -112,7 +112,7 @@ export function FieldZone({
         <AnimatePresence mode="popLayout">
           <motion.div
             key={card.id}
-            className={`relative ${isDefense ? "rotate-90 scale-[0.45] sm:scale-75 origin-center sm:origin-top-left" : "scale-[0.55] sm:scale-90 origin-center sm:origin-top-left"}`}
+            className={`relative ${isDefense ? "rotate-90 scale-[0.45] sm:scale-75 origin-center" : "scale-[0.55] sm:scale-90 origin-center"}`}
             initial={{ scale: 0.1, opacity: 0, filter: "brightness(4)" }}
             animate={{
               scale: 1,

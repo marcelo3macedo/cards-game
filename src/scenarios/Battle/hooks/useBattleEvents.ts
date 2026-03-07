@@ -70,6 +70,7 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
             }
 
             setIsHidden(false);
+            await new Promise(resolve => setTimeout(resolve, 1000));
             await handleDrawCard();
         } catch (error: any) {
             setIsOpponentPlaying(false);
