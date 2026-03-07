@@ -11,7 +11,7 @@ export const BoardSide = ({
   });
 
   const monsterRow = (
-    <div className="flex justify-center gap-4 mt-8">
+    <div className="flex justify-center gap-[2px] sm:gap-4 mt-1 sm:mt-8">
       {normalizedField.map((cardData, i) => (
         <FieldZone
           key={`monster_${i}_${cardData?.card?.id}`}
@@ -28,7 +28,7 @@ export const BoardSide = ({
   );
 
   const spellRow = (
-    <div className="flex justify-center gap-4">
+    <div className="flex justify-center gap-[2px] sm:gap-4">
       {normalizedFieldSpells.map((cardData, i) => (
         <FieldSpellZone
           key={`magic_${i}_${cardData?.card?.id}`}
@@ -45,7 +45,7 @@ export const BoardSide = ({
   );
 
   return (
-    <div className={`flex flex-col gap-3 transition-all ${isOpponent ? "rotate-180 scale-95" : ""}`}>
+    <div className={`flex flex-col gap-1 sm:gap-3 transition-all ${isOpponent ? "rotate-180 scale-95" : ""}`}>
       {monsterRow}
       {spellRow}
     </div>

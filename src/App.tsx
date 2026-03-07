@@ -9,6 +9,8 @@ import { BattleResultScenario } from "./scenarios/Result";
 import { RewardsScenario } from "./scenarios/Result/Rewards";
 import TutorialScenario from "./scenarios/Help";
 import { useNavigation, type ScenarioType } from "./hooks/useNavigation";
+import { useBackgroundMusic } from "./hooks/useBackgroundMusic";
+import { MusicControl } from "./components/MusicControl";
 
 function App() {
   const {
@@ -16,6 +18,8 @@ function App() {
     navigateTo,
     handleStartGame,
   } = useNavigation();
+
+  const { volume, setVolume } = useBackgroundMusic(currentScenario);
 
   const scenarios: Record<ScenarioType, React.ReactNode> = {
     WELCOME: <WelcomeScenario onStart={handleStartGame} />,
@@ -60,6 +64,9 @@ function App() {
   return (
     <div className="game-container">
       {scenarios[currentScenario] || scenarios.WELCOME}
+      {currentScenario !== "BATTLE" && (
+        <MusicControl volume={volume} setVolume={setVolume} />
+      )}
     </div>
   );
 }

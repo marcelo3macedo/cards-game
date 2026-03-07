@@ -8,7 +8,7 @@ export function GameBoard() {
 
   return (
     <div
-      className={`grid grid-cols-[120px_1fr_120px] gap-8 items-center w-full max-w-7xl px-10 transition-all duration-500 ${isBlur ? "blur-xl scale-95 opacity-40" : ""}`}
+      className={`grid grid-cols-[36px_1fr_36px] sm:grid-cols-[120px_1fr_120px] gap-1 sm:gap-8 items-center w-full max-w-7xl px-0 sm:px-10 transition-all duration-500 ${isBlur ? "blur-xl scale-95 opacity-40" : ""}`}
     >
       <ActiveFieldIndicator field={activeField} />
 

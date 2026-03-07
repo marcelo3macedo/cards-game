@@ -16,8 +16,9 @@ export const ActionButton = ({
   <button
     onClick={() => onSummon(mode)}
     data-testid={`summon-card-${mode}`}
+    style={{ touchAction: "manipulation" }}
     className={`
-        group flex flex-col items-center gap-3 p-4 rounded-xl transition-all w-full
+        group flex flex-col items-center gap-1 sm:gap-3 p-2 sm:p-4 rounded-xl transition-all w-full
         ${
           isSelected
             ? "bg-blue-600/30 border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.3)] scale-105"

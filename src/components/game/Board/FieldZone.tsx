@@ -71,7 +71,7 @@ export function FieldZone({
       onMouseEnter={() => onFocusCard(index)}
       onMouseLeave={() => setShowMenu(false)}
       className={`
-        w-24 h-32 border-2 rounded-lg flex items-center justify-center relative transition-all duration-300
+        w-14 h-20 sm:w-24 sm:h-32 border-2 rounded-lg flex items-center justify-center relative transition-all duration-300 overflow-visible
         ${card ? "border-solid shadow-lg" : "border-dashed cursor-default"}
         ${!card && isInteractable ? themeColors.interact : `${themeColors.border} ${themeColors.bg}`}
         ${isFocused && !isSelected && !isOpponent ? `ring-4 ${themeColors.ring} scale-105 z-20` : ""}
@@ -112,7 +112,7 @@ export function FieldZone({
         <AnimatePresence mode="popLayout">
           <motion.div
             key={card.id}
-            className={`relative ${isDefense ? "rotate-90 scale-75" : "scale-90"}`}
+            className={`relative ${isDefense ? "rotate-90 scale-[0.45] sm:scale-75 origin-center" : "scale-[0.55] sm:scale-90 origin-center"}`}
             initial={{ scale: 0.1, opacity: 0, filter: "brightness(4)" }}
             animate={{
               scale: 1,

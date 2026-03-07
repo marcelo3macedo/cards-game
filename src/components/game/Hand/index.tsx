@@ -5,6 +5,7 @@ import { useHandNavigation } from "./hooks/useHandNavigation";
 import { MonsterCard } from "../../../core/domain/Card";
 import { mapServerCardToEntity } from "../../../utils/cardUtils";
 import { useHandStore } from "../../../store/HandStore";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 
 export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelect }) => {
   const { selectedIndex, setSelectedIndex, selectCardHandler } = useHandNavigation({
@@ -13,6 +14,8 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
     onSelect
   });
   const { isFusionMode, fusionCardIndices, toggleFusionCard } = useHandStore();
+  const isMobile = useIsMobile();
+  const cardSize = isMobile ? "xs" : "sm";
 
   if (!cards) return null;
 
@@ -30,7 +33,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
         </div>
       )}
 
-      <div className="flex -space-x-20 px-32 py-10 items-end">
+      <div className="flex -space-x-12 sm:-space-x-20 px-4 sm:px-32 py-4 sm:py-10 items-end">
         {cards.map((base, i) => {
           const isSelected = i === selectedIndex;
           const card = mapServerCardToEntity(base);
@@ -87,7 +90,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
               />
 
               <div className="shadow-2xl relative">
-                <Card card={card} size="sm" />
+                <Card card={card} size={cardSize} />
 
                 {isFusionSelected && isFusionCount !== null && (
                   <div className="absolute top-1 left-1 z-20 w-5 h-5 rounded-full bg-purple-500 border border-purple-300 flex items-center justify-center text-white text-[9px] font-bold pointer-events-none shadow-lg">
