@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import impactHitSrc from "../../../../assets/sounds/impact_hit.mp3";
 import type { BattleAnimationOverlayProps } from "../../../../core/domain/BattleAnimation";
 
 export type BattlePhase = "intro" | "confront" | "impact" | "resolve" | "damage";
@@ -31,7 +32,12 @@ export const useBattleSequence = ({
 
     const timers = [
       setTimeout(() => setPhase("confront"), 1000),
-      setTimeout(() => setPhase("impact"), 2500),
+      setTimeout(() => {
+        setPhase("impact");
+        const hit = new Audio(impactHitSrc);
+        hit.volume = 1.0;
+        hit.play().catch(() => {});
+      }, 2500),
       setTimeout(() => setPhase("resolve"), 3500),
       setTimeout(() => setPhase("damage"), 3500),
       setTimeout(() => {

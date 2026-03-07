@@ -1,3 +1,5 @@
+import { playClickSound } from "../../../utils/soundUtils";
+
 export function EndTurnAction({ handleEndTurn, currentTurnOwner, isOpponentPlaying }: any) {
     const isPlayerTurn = currentTurnOwner === 'player';
     const isDisabled = !isPlayerTurn || isOpponentPlaying;
@@ -12,7 +14,7 @@ export function EndTurnAction({ handleEndTurn, currentTurnOwner, isOpponentPlayi
         <div className="absolute right-1 sm:right-10 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 sm:gap-4">
             <button
                 data-testid="button-endturn"
-                onClick={handleEndTurn}
+                onClick={() => { playClickSound(); handleEndTurn(); }}
                 disabled={isDisabled}
                 className={`
                     group relative px-4 py-2 sm:px-8 sm:py-3 font-black italic text-sm sm:text-xl tracking-tighter transition-all duration-300

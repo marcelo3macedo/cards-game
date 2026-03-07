@@ -1,4 +1,5 @@
 import { getImageUrl } from "../../../utils/imageUtils";
+import { playClickSound } from "../../../utils/soundUtils";
 
 interface VillainCardProps {
   villain: any;
@@ -26,7 +27,7 @@ export function VillainCard({ villain, userLevel, onSelect }: VillainCardProps) 
 
   return (
     <div
-      onClick={() => onSelect(villain)}
+      onClick={() => { playClickSound(); onSelect(villain); }}
       className="group relative bg-zinc-900/50 border border-white/5 rounded-2xl p-6 cursor-pointer hover:border-blue-500/50 transition-all hover:translate-y-[-4px] h-full flex flex-col"
     >
       <div className="h-56 bg-zinc-800 rounded-xl mb-4 overflow-hidden relative">

@@ -1,13 +1,14 @@
 import exemploLendaria from "../../assets/images/exemplo_legendaria.jpg";
 import exemploMonstroRaro from "../../assets/images/exemplo_monstro_raro.jpg";
 import exemploMagica from "../../assets/images/exemplo_magica.jpg";
+import { playClickSound } from "../../utils/soundUtils";
 
 export default function WelcomeScenario({ onStart }: { onStart: () => void }) {
   return (
     <div
       className="relative flex flex-col items-center justify-center select-none overflow-hidden bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900 via-zinc-950 to-black"
       style={{ minHeight: "100dvh" }}
-      onClick={onStart}
+      onClick={() => { playClickSound(); onStart(); }}
     >
       <div className="absolute inset-0 pointer-events-none">
         <img
@@ -37,7 +38,7 @@ export default function WelcomeScenario({ onStart }: { onStart: () => void }) {
         </h1>
 
         <button
-          onClick={(e) => { e.stopPropagation(); onStart(); }}
+          onClick={(e) => { e.stopPropagation(); playClickSound(); onStart(); }}
           style={{ touchAction: "manipulation" }}
           className="group relative px-10 py-4 font-bold text-white transition-all duration-300 active:scale-95"
         >

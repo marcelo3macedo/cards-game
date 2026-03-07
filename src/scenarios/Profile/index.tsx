@@ -1,4 +1,5 @@
 import { useProfileRegistration } from "./hooks/useProfileRegistration";
+import { playClickSound } from "../../utils/soundUtils";
 
 export default function ProfileScenario({ onConfirm }: { onConfirm: (data: any) => void }) {
   const {
@@ -12,6 +13,7 @@ export default function ProfileScenario({ onConfirm }: { onConfirm: (data: any) 
   } = useProfileRegistration(onConfirm);
 
   const handleConfirm = async () => {
+    playClickSound();
     try {
       const newUser = await registerUser();
       onConfirm(newUser);
@@ -85,7 +87,7 @@ export default function ProfileScenario({ onConfirm }: { onConfirm: (data: any) 
                   <div
                     key={avatar.id}
                     style={{ touchAction: "manipulation" }}
-                    onClick={() => setSelectedAvatarId(avatar.id)}
+                    onClick={() => { playClickSound(); setSelectedAvatarId(avatar.id); }}
                     className={`
                       relative aspect-square rounded-xl cursor-pointer transition-all border-2 bg-zinc-800
                       ${selectedAvatarId === avatar.id

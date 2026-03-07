@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { UseHandNavigationProps } from "../../../../core/domain/Hand";
 import { ActionKey, getActionFromKey } from "../../../../utils/keyUtils";
 import { useBattleEventStore } from "../../../../store/BattleEventStore";
@@ -6,9 +6,18 @@ import { useBattleStore } from "../../../../store/BattleStore";
 import { useHandStore } from "../../../../store/HandStore";
 import { BattleEvent } from "../../../../core/domain/BattleStore";
 import { mapServerCardToEntity } from "../../../../utils/cardUtils";
+import uiSoundSrc from "../../../../assets/sounds/ui_sound.mp3";
 
 export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigationProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    if (!isMounted.current) { isMounted.current = true; return; }
+    const audio = new Audio(uiSoundSrc);
+    audio.volume = 1.0;
+    audio.play().catch(() => {});
+  }, [selectedIndex]);
   const { setSelectedCard, setSelectedOrigin, setSelectedFieldArea, setViewCard, viewCard, setFusionCardIndices, clearFusionCardIndices } = useBattleEventStore();
   const { setEvent } = useBattleStore();
   const { focusArea, setFocusArea, setVisible, isFusionMode, fusionCardIndices, setFusionMode, toggleFusionCard, clearFusion, setFusionMaterialCards } = useHandStore();

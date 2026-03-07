@@ -1,12 +1,14 @@
 import { useVillainStore } from "../../store/VillainStore";
 import { getImageUrl } from "../../utils/imageUtils";
 import { useStartBattle } from "./hooks/useStartBattle";
+import { playClickSound } from "../../utils/soundUtils";
 
 export default function MatchmakingScenario({ onBattleStarted, onBack }: any) {
   const selectedVillain = useVillainStore((state) => state.selectedVillain);
   const { startBattle, loading, error } = useStartBattle();
 
   const handleStart = async () => {
+    playClickSound();
     const initialState = await startBattle();
     if (initialState) {
       onBattleStarted(initialState);

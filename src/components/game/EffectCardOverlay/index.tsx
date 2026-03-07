@@ -4,6 +4,7 @@ import { Card } from "../Card";
 import { BattleEvent } from "../../../core/domain/BattleStore";
 import { useBattleStore } from "../../../store/BattleStore";
 import { useBattleEventStore } from "../../../store/BattleEventStore";
+import magicEffectSrc from "../../../assets/sounds/magic_effect.mp3";
 
 export const EffectCardOverlay: React.FC = () => {
   const { event, setEvent } = useBattleStore();
@@ -12,6 +13,10 @@ export const EffectCardOverlay: React.FC = () => {
 
   useEffect(() => {
     if (isVisible) {
+      const audio = new Audio(magicEffectSrc);
+      audio.volume = 1.0;
+      audio.play().catch(() => {});
+
       const timer = setTimeout(() => {
         setEvent(BattleEvent.INITIAL);
         setSelectedCard(null);
