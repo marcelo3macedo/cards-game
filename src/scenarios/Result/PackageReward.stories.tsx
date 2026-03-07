@@ -229,7 +229,7 @@ export const PackageOpening: StoryObj = {
   name: "4 — Abrindo o Pacote",
   decorators: [withVictoryResult],
   render: () => <RewardsScenario onBack={() => console.log("[story] continuar")} />,
-  play: async ({ canvas, userEvent }) => {
+  play: async ({ canvas, userEvent }: any) => {
     const btn = await canvas.findByRole("button", { name: /abrir pacote/i });
     await userEvent.click(btn);
   },

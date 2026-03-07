@@ -34,7 +34,7 @@ const material2 = new MonsterCard(
   2100,
   1600,
   6,
-  "ÉPICO",
+  "LEGENDARIO",
 );
 
 const resultCard = new MonsterCard(

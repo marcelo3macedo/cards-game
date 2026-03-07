@@ -195,7 +195,7 @@ const withStoreMock = (
       };
     }, []);
 
-    if (!ready) return null;
+    if (!ready) return <></>;
     return <Story />;
   };
 
@@ -355,7 +355,7 @@ export const ConfirmModalOpen: StoryObj = {
       onPackageOpened={() => console.log("[story] pacote aberto")}
     />
   ),
-  play: async ({ canvas, userEvent }) => {
+  play: async ({ canvas, userEvent }:any) => {
     const card = await canvas.findByText(/pacote iniciante/i);
     await userEvent.click(card);
   },
@@ -371,7 +371,7 @@ export const BuyError: StoryObj = {
       onPackageOpened={() => console.log("[story] pacote aberto")}
     />
   ),
-  play: async ({ canvas, userEvent }) => {
+  play: async ({ canvas, userEvent }:any) => {
     const card = await canvas.findByText(/pacote iniciante/i);
     await userEvent.click(card);
     const confirm = await canvas.findByRole("button", { name: /confirmar/i });

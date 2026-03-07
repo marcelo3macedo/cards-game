@@ -17,7 +17,6 @@ import { MagicOverlay } from "../../components/game/MagicOverlay";
 import { EffectCardOverlay } from "../../components/game/EffectCardOverlay";
 import { FusionAnimation } from "../../components/game/FusionAnimation";
 import { useVillainStore } from "../../store/VillainStore";
-import { getImageUrl } from "../../utils/imageUtils";
 
 export default function BattleScenario({ onBack, onEnd }: any) {
   const { currentTurnOwner, isOpponentPlaying, handleAbandon, handleEndTurn } = useBattleEvents({ onBack, onEnd });
