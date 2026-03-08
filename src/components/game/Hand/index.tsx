@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Card } from "../Card";
 import type { PlayerHandProps } from "../../../core/domain/PlayerHand";
 import { useHandNavigation } from "./hooks/useHandNavigation";
@@ -17,15 +17,38 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
   const isMobile = useIsMobile();
   const cardSize = isMobile ? "xs" : "sm";
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const touchStartX = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const el = cardRefs.current[selectedIndex];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
+  }, [selectedIndex, isMobile]);
+
   if (!cards) return null;
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = touchStartX.current - e.changedTouches[0].clientX;
+    const threshold = 40;
+    if (delta > threshold) {
+      setSelectedIndex((prev) => Math.min(prev + 1, cards.length - 1));
+    } else if (delta < -threshold) {
+      setSelectedIndex((prev) => Math.max(prev - 1, 0));
+    }
+    touchStartX.current = null;
+  };
+
   return (
-    <div
-      className={`
-        fixed bottom-0 left-0 w-full flex justify-center transition-all duration-500 z-40
-        opacity-100 translate-y-0"
-      `}
-    >
+    <div className="fixed bottom-0 left-0 w-full flex justify-center transition-all duration-500 z-40">
       {isFusionMode && (
         <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-purple-900/90 border border-purple-400/60 text-purple-200 text-xs font-bold px-4 py-1.5 rounded-full shadow-lg backdrop-blur-sm pointer-events-none animate-in fade-in duration-200">
           <span className="text-purple-400">⬡</span>
@@ -33,14 +56,23 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
         </div>
       )}
 
-      <div className="flex -space-x-12 sm:-space-x-20 px-4 sm:px-32 py-4 sm:py-10 items-end">
+      <div
+        ref={scrollContainerRef}
+        onTouchStart={isMobile ? handleTouchStart : undefined}
+        onTouchEnd={isMobile ? handleTouchEnd : undefined}
+        className={`
+          flex items-end py-3 sm:py-6
+          ${isMobile
+            ? "overflow-x-auto w-full gap-1.5 px-3 scroll-smooth"
+            : "gap-2 px-4 justify-center"
+          }
+        `}
+        style={{ scrollbarWidth: "none" }}
+      >
         {cards.map((base, i) => {
           const isSelected = i === selectedIndex;
           const card = mapServerCardToEntity(base);
           if (!card) return null;
-
-          const midIndex = (cards.length - 1) / 2;
-          const rotation = (i - midIndex) * 1;
 
           const isMonster = card instanceof MonsterCard;
           const isRestrictedMonster = isHidden && isMonster;
@@ -50,6 +82,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
           return (
             <div
               key={card.id || i}
+              ref={(el) => { cardRefs.current[i] = el; }}
               data-testid={`hand-card-${i}`}
               onClick={() => {
                 if (isFusionMode) {
@@ -66,10 +99,11 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
 
                 selectCardHandler({ card, isMagic: !isMonster });
               }}
-              onMouseEnter={() => setSelectedIndex(i)}
+              onMouseEnter={() => !isMobile && setSelectedIndex(i)}
               style={{
-                transform: `rotate(${rotation}deg) translateY(${isSelected ? -28 : 0}px) scale(${isSelected ? 1 : 1})`,
+                transform: `translateY(${isSelected ? -20 : 0}px)`,
                 zIndex: isSelected ? 100 : i,
+                flexShrink: 0,
               }}
               className={`
                 relative transition-all duration-300 ease-out

@@ -24,7 +24,9 @@ export function GameBoard() {
 
         <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-blue-500/40 to-transparent shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
 
-        <BoardSide />
+        <div className="mt-10 sm:mt-0">
+          <BoardSide />
+        </div>
       </div>
 
       <BoardGutter type="player" onDraw={onDraw} />

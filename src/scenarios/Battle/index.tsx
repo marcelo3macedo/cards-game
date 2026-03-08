@@ -12,6 +12,7 @@ import { UserLifePoints } from "./components/UserLifePoints";
 import { TargetSelectMessage } from "./components/TargetSelectMessage";
 import { GameBoard } from "../../components/game/Board";
 import { ViewOverlay } from "../../components/game/ViewOverlay";
+import { BattleTutorial } from "./components/Tutorial";
 import { BattleAnimation } from "../../components/game/Battle/BattleAnimation";
 import { MagicOverlay } from "../../components/game/MagicOverlay";
 import { EffectCardOverlay } from "../../components/game/EffectCardOverlay";
@@ -52,6 +53,7 @@ export default function BattleScenario({ onBack, onEnd }: any) {
         <InvokingCardMessage />
         <TargetSelectMessage />
       </div>
+      <BattleTutorial />
       <div className="effects">
         <SummonOverlay />
         <MagicOverlay />
@@ -60,7 +62,7 @@ export default function BattleScenario({ onBack, onEnd }: any) {
         <FusionAnimation />
         <EffectCardOverlay />
       </div>
-      <div className="board">
+      <div className="board -translate-y-6 sm:translate-y-0">
         <GameBoard />
       </div>
 
