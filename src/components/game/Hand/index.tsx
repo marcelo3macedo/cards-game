@@ -7,7 +7,7 @@ import { mapServerCardToEntity } from "../../../utils/cardUtils";
 import { useHandStore } from "../../../store/HandStore";
 import { useIsMobile } from "../../../hooks/useIsMobile";
 
-export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelect }) => {
+export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelect, canSummon = true }) => {
   const { selectedIndex, setSelectedIndex, selectCardHandler } = useHandNavigation({
     cards,
     isHidden,
@@ -56,6 +56,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
         </div>
       )}
 
+
       <div
         ref={scrollContainerRef}
         onTouchStart={isMobile ? handleTouchStart : undefined}
@@ -76,6 +77,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
 
           const isMonster = card instanceof MonsterCard;
           const isRestrictedMonster = isHidden && isMonster;
+          const showSummonLimit = !canSummon && isMonster && !isFusionMode;
           const isFusionSelected = isFusionMode && fusionCardIndices.includes(i);
           const isFusionCount = isFusionSelected ? fusionCardIndices.indexOf(i) + 1 : null;
 
@@ -125,6 +127,15 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
 
               <div className="shadow-2xl relative">
                 <Card card={card} size={cardSize} />
+
+                {showSummonLimit && isSelected && (
+                  <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/80 rounded px-2 py-1.5 text-center">
+                      <p className="text-zinc-300 text-[8px] font-bold leading-tight">Você já invocou</p>
+                      <p className="text-zinc-300 text-[8px] font-bold leading-tight">nessa rodada</p>
+                    </div>
+                  </div>
+                )}
 
                 {isFusionSelected && isFusionCount !== null && (
                   <div className="absolute top-1 left-1 z-20 w-5 h-5 rounded-full bg-purple-500 border border-purple-300 flex items-center justify-center text-white text-[9px] font-bold pointer-events-none shadow-lg">

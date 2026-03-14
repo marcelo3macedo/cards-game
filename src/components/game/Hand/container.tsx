@@ -25,6 +25,7 @@ export const PlayerHandContainer = () => {
           cards={player?.hand}
           onSelect={selectCardHandle}
           isHidden={isHidden || !player?.canSummon}
+          canSummon={player?.canSummon}
         />
       </motion.div>
     </div>

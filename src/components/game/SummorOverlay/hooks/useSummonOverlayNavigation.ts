@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { Mode } from "../../../../core/domain/Summon";
 import { ActionKey, getActionFromKey } from "../../../../utils/keyUtils";
 import { useBattleEventStore } from "../../../../store/BattleEventStore";
@@ -72,6 +72,15 @@ export const useSummonOverlayNavigation = () => {
       setSelectedCard(null);
     }
   };
+
+  // Auto-trigger attack mode for fusion — skip the SummonOverlay entirely
+  const onSummonRef = useRef(onSummon);
+  onSummonRef.current = onSummon;
+
+  useEffect(() => {
+    if (event !== BattleEvent.SELECTING_MODE || fusionCardIndices.length === 0) return;
+    onSummonRef.current("attack");
+  }, [event, fusionCardIndices.length]);
 
   const onCancel = () => {
     setSelectedCard(null);

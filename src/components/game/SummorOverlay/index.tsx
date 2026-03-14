@@ -14,7 +14,7 @@ export const SummonOverlay: React.FC<SummonOverlayProps> = () => {
   const { fusionMaterialCards } = useHandStore();
 
   const isFusion = fusionCardIndices.length > 0;
-  const isVisible = eventType === BattleEvent.SELECTING_MODE && (!!card || isFusion);
+  const isVisible = eventType === BattleEvent.SELECTING_MODE && !!card && !isFusion;
   const isMobile = useIsMobile();
 
   if (!isVisible) return <></>;

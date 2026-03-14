@@ -1,4 +1,5 @@
 import WelcomeScenario from "./scenarios/Welcome";
+import IntroScenario from "./scenarios/Intro";
 import MatchmakingScenario from "./scenarios/Matchmaking";
 import BattleScenario from "./scenarios/Battle";
 import ProfileScenario from "./scenarios/Profile";
@@ -23,6 +24,7 @@ function App() {
 
   const scenarios: Record<ScenarioType, React.ReactNode> = {
     WELCOME: <WelcomeScenario onStart={handleStartGame} />,
+    INTRO: <IntroScenario onFinish={() => navigateTo("PROFILE")} />,
     PROFILE: <ProfileScenario onConfirm={() => navigateTo("MAINMENU")} />,
     MAINMENU: (
       <MainMenuScenario
