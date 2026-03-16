@@ -36,6 +36,7 @@ export const BattleEvent = {
   ACTIVATING_EFFECT: "activating-effect",
   ACTIVE_EFFECT: "active-effect",
   SELECTING_TARGET: "selecting-target",
+  EQUIP_TARGETING: "equip-targeting",
   SELECTING_MODE: "selecting-mode",
   FUSION_SELECTING: "fusion-selecting",
   FUSION_PLACING: "fusion-placing",

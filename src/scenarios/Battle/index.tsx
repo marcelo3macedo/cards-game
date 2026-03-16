@@ -17,17 +17,19 @@ import { BattleAnimation } from "../../components/game/Battle/BattleAnimation";
 import { MagicOverlay } from "../../components/game/MagicOverlay";
 import { EffectCardOverlay } from "../../components/game/EffectCardOverlay";
 import { FusionAnimation } from "../../components/game/FusionAnimation";
+import { EquipAnimation } from "../../components/game/EquipAnimation";
 import { useVillainStore } from "../../store/VillainStore";
 
-export default function BattleScenario({ onBack, onEnd }: any) {
+export default function BattleScenario({ onBack, onEnd, skipIntro }: any) {
   const { currentTurnOwner, isOpponentPlaying, handleAbandon, handleEndTurn } = useBattleEvents({ onBack, onEnd });
   const selectedVillain = useVillainStore((s) => s.selectedVillain);
-  const [revealing, setRevealing] = useState(true);
+  const [revealing, setRevealing] = useState(!skipIntro);
 
   useEffect(() => {
+    if (skipIntro) return;
     const t = setTimeout(() => setRevealing(false), 3200);
     return () => clearTimeout(t);
-  }, []);
+  }, [skipIntro]);
 
   return (
     <div className="h-screen w-screen bg-zinc-950 flex flex-col items-center justify-center overflow-hidden text-white font-sans select-none relative bg-[radial-gradient(circle_at_center,_#1a1a2e_0%,#09090b_100%)]">
@@ -60,6 +62,7 @@ export default function BattleScenario({ onBack, onEnd }: any) {
         <ViewOverlay />
         <BattleAnimation />
         <FusionAnimation />
+        <EquipAnimation />
         <EffectCardOverlay />
       </div>
       <div className="board -translate-y-6 sm:translate-y-0">

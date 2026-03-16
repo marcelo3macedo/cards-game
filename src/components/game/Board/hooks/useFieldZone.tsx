@@ -2,6 +2,7 @@ import { useState } from "react";
 import { withContextLogging } from "../../../../utils/loggingUtils"
 import { useBattleStore } from "../../../../store/BattleStore";
 import { useBattleEventStore } from "../../../../store/BattleEventStore";
+import { useHandStore } from "../../../../store/HandStore";
 import { BattleEvent } from "../../../../core/domain/BattleStore";
 import { battleService } from "../../../../services/battleService";
 import { mapServerCardToEntity } from "../../../../utils/cardUtils";
@@ -41,6 +42,34 @@ export const useFieldZone = ({ position, isMonster, isInteractable }: any) => {
             });
 
             setEvent(BattleEvent.INITIAL);
+            return;
+        }
+
+        if (event === BattleEvent.EQUIP_TARGETING) {
+            try {
+                const { selectedCard } = useBattleEventStore.getState();
+                const monsterCard = player?.field[index]?.card;
+
+                const newState = await battleService.confirmSelection(index);
+
+                const magicEntity = mapServerCardToEntity(selectedCard);
+                const monsterEntity = mapServerCardToEntity(monsterCard);
+
+                if (magicEntity && monsterEntity) {
+                    const { setEquipAnimData, setPendingBattleState } = useHandStore.getState();
+                    const newMosterCard = newState.player?.field[index]?.card;
+                    setPendingBattleState(newState);
+                    setEquipAnimData({ magicCard: magicEntity, monsterCard: monsterEntity, newMosterCard });
+                } else {
+                    useBattleStore.getState().setBattle(newState);
+                    setEvent(BattleEvent.EQUIP_TARGETING);
+                }
+
+                useBattleEventStore.getState().setEquipTargetInfo(null);
+            } catch (error: any) {
+                console.error("Erro ao equipar:", error.message);
+                setEvent(BattleEvent.INITIAL);
+            }
             return;
         }
 

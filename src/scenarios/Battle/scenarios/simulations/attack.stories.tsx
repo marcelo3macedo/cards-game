@@ -4,6 +4,7 @@ import BattleScenario from '../..';
 import { useBattleStore } from '../../../../store/BattleStore';
 import { useHandStore } from '../../../../store/HandStore';
 import { useNavigationStore } from '../../../../store/NavigationStore';
+import { useUIStore } from '../../../../store/UIStore';
 import { BattleEvent } from '../../../../core/domain/BattleStore';
 
 import { startMockBattle as mockBattleModule } from '../../../../services/mockBattle';
@@ -127,6 +128,7 @@ const withBattleMock = (mockData: any, attackResponse?: any) => (Story: any) => 
                 setEvent(BattleEvent.INITIAL);
                 setVisible(true);
                 setIsHidden(true);
+                useUIStore.getState().setTutorialSeen();
                 setLoading(false);
             } catch (e) {
                 console.error("Erro no mock bootstrap:", e);
@@ -154,6 +156,7 @@ export default {
     title: 'Battle/AttackSimulation',
     component: BattleScenario,
     parameters: { layout: 'fullscreen' },
+    args: { skipIntro: true },
 } as Meta;
 
 export const AttackVsAttack_Wins: StoryObj = {
