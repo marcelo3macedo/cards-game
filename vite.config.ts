@@ -15,7 +15,8 @@ export default defineConfig({
     allowedHosts: [
       "marginally-present-salmon.ngrok-free.app",
       "card-game.professoraantenada.com.br",
-      "cardgame.alemdoscript.com.br"
+      "cardgame.alemdoscript.com.br",
+      "cardgame-qa.alemdoscript.com.br"
     ]
   },
   test: {
