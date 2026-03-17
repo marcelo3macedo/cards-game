@@ -9,7 +9,7 @@ import { mapServerCardToEntity } from "../../../../utils/cardUtils";
 
 export const useFieldZone = ({ position, isMonster, isInteractable }: any) => {
     const { event, setEvent, player, opponent } = useBattleStore();
-    const { setSelectedFieldIndex, setSelectedTargetIndex, setSelectedFieldArea, selectedAttackerIndex, setBattleData } = useBattleEventStore();
+    const { setSelectedFieldIndex, setSelectedTargetIndex, setSelectedFieldArea, selectedAttackerIndex, setBattleData, setSelectedCard } = useBattleEventStore();
     const log = withContextLogging('useFieldZone');
 
     const handleAttack = async ({ attackerIdx, targetIdx }: any) => {
@@ -64,7 +64,7 @@ export const useFieldZone = ({ position, isMonster, isInteractable }: any) => {
                     useBattleStore.getState().setBattle(newState);
                     setEvent(BattleEvent.EQUIP_TARGETING);
                 }
-
+                setSelectedCard(null);
                 useBattleEventStore.getState().setEquipTargetInfo(null);
             } catch (error: any) {
                 console.error("Erro ao equipar:", error.message);

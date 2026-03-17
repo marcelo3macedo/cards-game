@@ -25,7 +25,7 @@ export default function StoreScenario({ onBack, onPackageOpened }: StoreScenario
   } = useStore(onPackageOpened);
 
   return (
-    <div className="h-screen w-screen bg-zinc-950 flex flex-col overflow-hidden text-white">
+    <div className="select-none h-screen w-screen bg-zinc-950 flex flex-col overflow-hidden text-white">
       {/* Header */}
       <div className="flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 bg-black/40 border-b border-white/5 backdrop-blur-md shrink-0">
         <button

@@ -103,7 +103,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
               }}
               onMouseEnter={() => !isMobile && setSelectedIndex(i)}
               style={{
-                transform: `translateY(${isSelected ? -20 : 0}px)`,
+                transform: `translateY(${isSelected && !isMobile ? -20 : 0}px)`,
                 zIndex: isSelected ? 100 : i,
                 flexShrink: 0,
               }}
@@ -128,7 +128,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
               <div className="shadow-2xl relative">
                 <Card card={card} size={cardSize} />
 
-                {showSummonLimit && isSelected && (
+                {showSummonLimit && (
                   <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
                     <div className="bg-black/80 rounded px-2 py-1.5 text-center">
                       <p className="text-zinc-300 text-[8px] font-bold leading-tight">Você já invocou</p>

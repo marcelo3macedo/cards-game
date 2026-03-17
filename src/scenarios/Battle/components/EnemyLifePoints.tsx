@@ -5,7 +5,7 @@ export function EnemyLifePoints() {
     const { currentTurnOwner } = useBattleStore();
 
     return (
-        <div className="absolute right-1 top-2 sm:right-10 sm:top-5 flex flex-col gap-1 sm:gap-2">
+        <div className="absolute right-1 top-2 sm:right-10 sm:top-5 flex flex-col gap-1 sm:gap-2 z-50">
             <LifePoints
                 target="opponent"
                 color="red"

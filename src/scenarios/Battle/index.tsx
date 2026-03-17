@@ -32,7 +32,7 @@ export default function BattleScenario({ onBack, onEnd, skipIntro }: any) {
   }, [skipIntro]);
 
   return (
-    <div className="h-screen w-screen bg-zinc-950 flex flex-col items-center justify-center overflow-hidden text-white font-sans select-none relative bg-[radial-gradient(circle_at_center,_#1a1a2e_0%,#09090b_100%)]">
+    <div className="h-screen w-screen bg-zinc-950 flex flex-col items-center justify-center overflow-hidden text-white font-sans select-none relative bg-[radial-gradient(circle_at_center,_#1a1a2e_0%,#09090b_100%)] sm:pb-52">
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-[url('/grid-pattern.svg')] bg-center [mask-image:radial-gradient(white,transparent)]"></div>
 
       <div className="actions">
@@ -49,7 +49,7 @@ export default function BattleScenario({ onBack, onEnd, skipIntro }: any) {
       </div>
       <div className="hand-deck">
         <OpponentHandContainer />
-        <PlayerHandContainer />
+        <PlayerHandContainer isOpponentPlaying={isOpponentPlaying} />
       </div>
       <div className="messages">
         <InvokingCardMessage />
@@ -65,7 +65,7 @@ export default function BattleScenario({ onBack, onEnd, skipIntro }: any) {
         <EquipAnimation />
         <EffectCardOverlay />
       </div>
-      <div className="board -translate-y-6 sm:translate-y-0">
+      <div className="board mt-[-102px] sm:mt-0">
         <GameBoard />
       </div>
 

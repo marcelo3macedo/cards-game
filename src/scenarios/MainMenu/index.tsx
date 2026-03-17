@@ -63,6 +63,7 @@ export default function MainMenuScenario({
   onViewDeck,
   onViewTips,
   onViewStore,
+  onViewProfile,
 }: any) {
   const { user, villains, loading, handleLogout, setSelectedVillain } = useMainMenu();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -169,7 +170,7 @@ export default function MainMenuScenario({
 
   return (
     <div
-      className="w-screen bg-zinc-950 flex flex-col overflow-hidden text-white bg-[radial-gradient(circle_at_top_right,_#1e1b4b_0%,#09090b_100%)]"
+      className="select-none w-screen bg-zinc-950 flex flex-col overflow-hidden text-white bg-[radial-gradient(circle_at_top_right,_#1e1b4b_0%,#09090b_100%)]"
       style={{ height: "100dvh" }}
     >
       {storyModal && (
@@ -178,7 +179,12 @@ export default function MainMenuScenario({
 
       {/* Header */}
       <div className="px-4 sm:p-6 py-3 sm:py-4 bg-black/40 border-b border-white/5 backdrop-blur-md flex justify-between items-center shrink-0">
-        <div className="flex items-center gap-3 sm:gap-4">
+        <button
+          style={{ touchAction: "manipulation" }}
+          onClick={onViewProfile}
+          className="flex items-center gap-3 sm:gap-4 hover:opacity-80 active:opacity-60 transition-opacity rounded-xl"
+          aria-label="Ver perfil"
+        >
           <div className="relative">
             <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-blue-500 overflow-hidden bg-zinc-800">
               <img
@@ -191,7 +197,7 @@ export default function MainMenuScenario({
               LV {user?.level || 1}
             </div>
           </div>
-          <div>
+          <div className="text-left">
             <h2 className="text-base sm:text-xl font-black italic uppercase tracking-tighter text-blue-400">
               {user?.name || "Duelista Anônimo"}
             </h2>
@@ -199,19 +205,13 @@ export default function MainMenuScenario({
               {getRankName(user?.level || 0)}
             </p>
           </div>
-        </div>
+        </button>
 
         {/* Stats — visible only on desktop */}
         <div className="hidden sm:flex gap-8">
           <div className="text-center">
             <p className="text-[10px] text-zinc-500 uppercase font-bold">Moedas</p>
             <p className="text-xl font-black text-yellow-500">{user?.coins ?? 0}</p>
-          </div>
-          <div className="text-center">
-            <p className="text-[10px] text-zinc-500 uppercase font-bold">Status</p>
-            <p className={`text-sm font-black ${user?.active ? "text-green-500" : "text-red-500"}`}>
-              {user?.active ? "ONLINE" : "OFFLINE"}
-            </p>
           </div>
         </div>
 
@@ -262,14 +262,14 @@ export default function MainMenuScenario({
 
               <div className="flex gap-6 px-1 pb-4 mb-2 border-b border-white/5">
                 <div>
-                  <p className="text-[10px] text-zinc-500 uppercase font-bold">Moedas</p>
-                  <p className="text-lg font-black text-yellow-500">{user?.coins ?? 0}</p>
+                  <p className="text-[10px] text-zinc-500 uppercase font-bold">Level</p>
+                  <p className={`text-sm font-black ${user?.active ? "text-green-500" : "text-red-500"}`}>
+                    {user?.level || 1}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-[10px] text-zinc-500 uppercase font-bold">Status</p>
-                  <p className={`text-sm font-black ${user?.active ? "text-green-500" : "text-red-500"}`}>
-                    {user?.active ? "ONLINE" : "OFFLINE"}
-                  </p>
+                  <p className="text-[10px] text-zinc-500 uppercase font-bold">Moedas</p>
+                  <p className="text-lg font-black text-yellow-500">{user?.coins ?? 0}</p>
                 </div>
               </div>
 

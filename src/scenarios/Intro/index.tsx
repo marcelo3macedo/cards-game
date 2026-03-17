@@ -143,7 +143,7 @@ export default function IntroScenario({ onFinish }: IntroScenarioProps) {
                 className="text-white text-center leading-relaxed"
                 style={{
                   fontSize: "clamp(0.95rem, 2.2vw, 1.15rem)",
-                  fontFamily: "'Georgia', serif",
+                  fontFamily: "'EB Garamond', serif",
                   fontStyle: "italic",
                   textShadow:
                     "0 1px 12px rgba(0,0,0,1), 0 0 30px rgba(0,0,0,0.9), 1px 1px 2px rgba(0,0,0,1)",

@@ -11,7 +11,7 @@ export function EndTurnAction({ handleEndTurn, currentTurnOwner, isOpponentPlayi
             : 'TURNO RIVAL';
 
     return (
-        <div className="absolute right-1 z-9 sm:right-10 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 sm:gap-4">
+        <div className="absolute right-1 z-9 sm:right-10 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 sm:gap-4 mt-[-60px] sm:mt-0">
             <button
                 data-testid="button-endturn"
                 onClick={() => { playClickSound(); handleEndTurn(); }}

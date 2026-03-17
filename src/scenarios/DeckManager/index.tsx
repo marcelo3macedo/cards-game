@@ -71,7 +71,7 @@ export default function DeckManagerScenario({ onBack, onOpenPackage }: any) {
   }
 
   return (
-    <div className="h-screen w-screen bg-zinc-950 flex flex-col text-white overflow-hidden">
+    <div className="select-none h-screen w-screen bg-zinc-950 flex flex-col text-white overflow-hidden">
       {/* ── Header ── */}
       <header className="h-14 border-b border-white/5 bg-zinc-900/60 backdrop-blur-xl flex items-center justify-between px-5 z-10 flex-shrink-0">
         <div className="flex items-center gap-3">
