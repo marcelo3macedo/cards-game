@@ -40,7 +40,8 @@ export function useBoardNavigation({ isOpponent }: { isOpponent: boolean | undef
             setVisible(true);
           }
           break;
-        case ActionKey.Space: {
+        case ActionKey.Space:
+        case ActionKey.Enter: {
           if (
             (event === BattleEvent.SELECTING_POSITION || event === BattleEvent.FUSION_PLACING) &&
             selectedFieldArea === "MONSTER"

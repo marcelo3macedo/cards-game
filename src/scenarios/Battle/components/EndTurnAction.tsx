@@ -1,8 +1,22 @@
+import { useEffect } from "react";
 import { playClickSound } from "../../../utils/soundUtils";
+import { useHandStore } from "../../../store/HandStore";
 
 export function EndTurnAction({ handleEndTurn, currentTurnOwner, isOpponentPlaying }: any) {
     const isPlayerTurn = currentTurnOwner === 'player';
     const isDisabled = !isPlayerTurn || isOpponentPlaying;
+    const focusArea = useHandStore((s) => s.focusArea);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key !== "F8") return;
+            if (isDisabled) return;
+            playClickSound();
+            handleEndTurn();
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [isDisabled, focusArea, handleEndTurn]);
 
     const label = isOpponentPlaying
         ? 'OPONENTE JOGANDO'

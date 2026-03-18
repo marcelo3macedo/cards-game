@@ -6,6 +6,7 @@ import { useBattleStore } from "../../../../store/BattleStore";
 import { useHandStore } from "../../../../store/HandStore";
 import { BattleEvent } from "../../../../core/domain/BattleStore";
 import { mapServerCardToEntity } from "../../../../utils/cardUtils";
+import { MonsterCard } from "../../../../core/domain/Card";
 import uiSoundSrc from "../../../../assets/sounds/ui_sound.mp3";
 
 export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigationProps) => {
@@ -84,11 +85,25 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
         case ActionKey.Right:
           setSelectedIndex((prev) => (prev < cards.length - 1 ? prev + 1 : 0));
           break;
-        case ActionKey.Enter:
-          if (cards[selectedIndex]) {
-            setSelectedCard(cards[selectedIndex]);
-          }
+        case ActionKey.Enter: {
+          const raw = cards[selectedIndex];
+          if (!raw) break;
+          const card = mapServerCardToEntity(raw);
+          if (!card) break;
+          const isMonster = card instanceof MonsterCard;
+          const isRestrictedMonster = isHidden && isMonster;
+          if (isRestrictedMonster) break;
+          const isMagic = isHidden && !isMonster ? true : !isMonster;
+          const battleEvent = isMagic ? BattleEvent.SELECTING_EFFECT : BattleEvent.SELECTING_POSITION;
+          setSelectedCard(card);
+          setEvent(battleEvent);
+          setSelectedOrigin("hand");
+          setSelectedFieldArea(isMagic ? "MAGIC" : "MONSTER");
+          setFocusArea("board");
+          setVisible(false);
+          onSelect();
           break;
+        }
         case ActionKey.Info:
           if (!viewCard && cards[selectedIndex]) {
             setViewCard(mapServerCardToEntity(cards[selectedIndex]));
@@ -111,7 +126,6 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
 
   const selectCardHandler = ({ card, isMagic }: any) => {
     const event = isMagic ? BattleEvent.SELECTING_EFFECT : BattleEvent.SELECTING_POSITION;
-    console.log(isMagic);
     setSelectedCard(card);
     setEvent(event);
     setSelectedOrigin("hand");

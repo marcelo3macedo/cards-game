@@ -89,7 +89,15 @@ export const useSummonOverlayNavigation = () => {
     setVisible(true);
   };
 
+  const isOverlayVisible = event === BattleEvent.SELECTING_MODE;
+
   useEffect(() => {
+    if (isOverlayVisible) setActiveIndex(0);
+  }, [isOverlayVisible]);
+
+  useEffect(() => {
+    if (!isOverlayVisible) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       const action = getActionFromKey(e.key);
 
@@ -114,7 +122,7 @@ export const useSummonOverlayNavigation = () => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeIndex, onSummon, onCancel]);
+  }, [activeIndex, isOverlayVisible, onSummon, onCancel]);
 
   return {
     activeIndex,
