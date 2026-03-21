@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, Sword, Shield, Trophy, Zap, Info, ChevronRight, X, ArrowLeft } from "lucide-react";
+import { BookOpen, Sword, Shield, Trophy, Zap, Info, ChevronRight, ArrowLeft } from "lucide-react";
 import { ActionKey, getActionFromKey } from "../../utils/keyUtils";
 
 interface TutorialTopic {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useState } from "react";
 import img1 from "../../../assets/intro/1_spaceship.jpg";
 import img2 from "../../../assets/intro/2_crash.jpg";
 import img3 from "../../../assets/intro/3_fall.jpg";

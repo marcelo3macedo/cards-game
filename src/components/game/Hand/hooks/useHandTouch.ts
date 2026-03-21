@@ -17,7 +17,6 @@ export function useHandTouch({
   isMobile,
   selectedIndex,
   setSelectedIndex,
-  isFusionMode,
   toggleFusionCard,
   cardRefs,
 }: UseHandTouchProps) {
