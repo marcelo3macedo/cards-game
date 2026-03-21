@@ -1,7 +1,9 @@
+import { useEffect } from "react";
 import { useVillainStore } from "../../store/VillainStore";
 import { getImageUrl } from "../../utils/imageUtils";
 import { useStartBattle } from "./hooks/useStartBattle";
 import { playClickSound } from "../../utils/soundUtils";
+import { ActionKey, getActionFromKey } from "../../utils/keyUtils";
 
 export default function MatchmakingScenario({ onBattleStarted, onBack }: any) {
   const selectedVillain = useVillainStore((state) => state.selectedVillain);
@@ -14,6 +16,25 @@ export default function MatchmakingScenario({ onBattleStarted, onBack }: any) {
       onBattleStarted(initialState);
     }
   };
+
+  useEffect(() => {
+    const handle = (e: KeyboardEvent) => {
+      const action = getActionFromKey(e.key);
+      if (!action) return;
+
+      if (action === ActionKey.Enter && !loading) {
+        e.preventDefault();
+        handleStart();
+      }
+      else if (action === ActionKey.Escape) {
+        e.preventDefault();
+        onBack();
+      }
+    };
+
+    window.addEventListener("keydown", handle);
+    return () => window.removeEventListener("keydown", handle);
+  }, [loading, handleStart, onBack]);
 
   if (!selectedVillain) {
     return (
