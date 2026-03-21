@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { Card } from "../Card";
 import type { PlayerHandProps } from "../../../core/domain/PlayerHand";
 import { useHandNavigation } from "./hooks/useHandNavigation";
+import { useHandTouch } from "./hooks/useHandTouch";
 import { MonsterCard } from "../../../core/domain/Card";
 import { mapServerCardToEntity } from "../../../utils/cardUtils";
 import { useHandStore } from "../../../store/HandStore";
@@ -13,54 +14,41 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
     isHidden,
     onSelect
   });
-  const { isFusionMode, fusionCardIndices, toggleFusionCard } = useHandStore();
+  const { isFusionMode, fusionCardIndices, toggleFusionCard, focusArea } = useHandStore();
   const isMobile = useIsMobile();
   const cardSize = isMobile ? "xs" : "sm";
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const touchStartX = useRef<number | null>(null);
 
-  useEffect(() => {
-    if (!isMobile) return;
-    const el = cardRefs.current[selectedIndex];
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-    }
-  }, [selectedIndex, isMobile]);
+  const { handleTouchStart, handleContainerTouchStart, handleTouchEnd, handleTouchMove, longPressTriggered } = useHandTouch({
+    cards,
+    isMobile,
+    selectedIndex,
+    setSelectedIndex,
+    isFusionMode,
+    toggleFusionCard,
+    cardRefs,
+  });
 
   if (!cards) return null;
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const delta = touchStartX.current - e.changedTouches[0].clientX;
-    const threshold = 40;
-    if (delta > threshold) {
-      setSelectedIndex((prev) => Math.min(prev + 1, cards.length - 1));
-    } else if (delta < -threshold) {
-      setSelectedIndex((prev) => Math.max(prev - 1, 0));
-    }
-    touchStartX.current = null;
-  };
 
   return (
     <div className="fixed bottom-0 left-0 w-full flex justify-center transition-all duration-500 z-40">
       {isFusionMode && (
         <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-purple-900/90 border border-purple-400/60 text-purple-200 text-xs font-bold px-4 py-1.5 rounded-full shadow-lg backdrop-blur-sm pointer-events-none animate-in fade-in duration-200">
           <span className="text-purple-400">⬡</span>
-          MODO FUSÃO — Espaço: selecionar · Enter: confirmar · ESC: cancelar
+          {isMobile
+            ? "MODO FUSÃO — Segure carta: selecionar · Toque: cancelar"
+            : "MODO FUSÃO — Espaço: selecionar · Enter: confirmar · ESC: cancelar"}
         </div>
       )}
 
-
       <div
         ref={scrollContainerRef}
-        onTouchStart={isMobile ? handleTouchStart : undefined}
+        onTouchStart={isMobile ? handleContainerTouchStart : undefined}
         onTouchEnd={isMobile ? handleTouchEnd : undefined}
+        onTouchMove={isMobile ? handleTouchMove : undefined}
         className={`
           flex items-end py-3 sm:py-6
           ${isMobile
@@ -71,7 +59,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
         style={{ scrollbarWidth: "none" }}
       >
         {cards.map((base, i) => {
-          const isSelected = i === selectedIndex;
+          const isSelected = i === selectedIndex && focusArea === "hand";
           const card = mapServerCardToEntity(base);
           if (!card) return null;
 
@@ -87,6 +75,8 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
               ref={(el) => { cardRefs.current[i] = el; }}
               data-testid={`hand-card-${i}`}
               onClick={() => {
+                if (longPressTriggered.current) return;
+
                 if (isFusionMode) {
                   toggleFusionCard(i);
                   return;
@@ -101,6 +91,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
 
                 selectCardHandler({ card, isMagic: !isMonster });
               }}
+              onTouchStart={isMobile ? (e) => { e.stopPropagation(); handleTouchStart(e, i); } : undefined}
               onMouseEnter={() => !isMobile && setSelectedIndex(i)}
               style={{
                 transform: `translateY(${isSelected && !isMobile ? -20 : 0}px)`,
@@ -116,11 +107,11 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
                 className={`
                 absolute -inset-1 transition-all duration-300
                 ${isFusionSelected
-                  ? "ring-2 ring-purple-400 shadow-[0_0_16px_rgba(192,132,252,0.7)]"
+                  ? "ring-4 ring-purple-400 shadow-[0_0_16px_rgba(192,132,252,0.7)]"
                   : isSelected && !isRestrictedMonster
                     ? isFusionMode
-                      ? "ring-2 ring-purple-300/50 shadow-[0_0_8px_rgba(192,132,252,0.3)]"
-                      : "ring-2 ring-blue-300 shadow-[0_0_12px_rgba(147,197,253,0.45)]"
+                      ? "ring-4 ring-purple-300/50 shadow-[0_0_8px_rgba(192,132,252,0.3)]"
+                      : "ring-4 ring-blue-300 shadow-[0_0_12px_rgba(147,197,253,0.45)]"
                     : "ring-0"}
               `}
               />
@@ -146,7 +137,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({ cards, isHidden, onSelec
                 {isFusionMode && !isFusionSelected && isSelected && (
                   <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
                     <div className="bg-purple-900/60 rounded px-1.5 py-0.5 text-purple-200 text-[8px] font-bold tracking-wider">
-                      ESPAÇO
+                      {isMobile ? "SEGURE" : "ESPAÇO"}
                     </div>
                   </div>
                 )}

@@ -1,6 +1,7 @@
 import { useVillainStore } from "../../store/VillainStore";
 import { getImageUrl } from "../../utils/imageUtils";
 import { useStartBattle } from "./hooks/useStartBattle";
+import { useMatchmakingKeyboard } from "./hooks/useMatchmakingKeyboard";
 import { playClickSound } from "../../utils/soundUtils";
 
 export default function MatchmakingScenario({ onBattleStarted, onBack }: any) {
@@ -14,6 +15,8 @@ export default function MatchmakingScenario({ onBattleStarted, onBack }: any) {
       onBattleStarted(initialState);
     }
   };
+
+  const { focusedIndex } = useMatchmakingKeyboard({ loading, onStart: handleStart, onBack });
 
   if (!selectedVillain) {
     return (
@@ -72,7 +75,7 @@ export default function MatchmakingScenario({ onBattleStarted, onBack }: any) {
                 ${loading
                   ? "bg-zinc-700 cursor-not-allowed opacity-70"
                   : "bg-red-700 hover:bg-red-600 hover:scale-110 shadow-[0_0_20px_rgba(185,28,28,0.4)]"
-                } text-white`}
+                } text-white ${focusedIndex === 0 ? "ring-2 ring-yugi-gold scale-105" : ""}`}
             >
               {loading ? "GERANDO DUELO..." : "INICIAR BATALHA"}
             </button>
@@ -83,7 +86,7 @@ export default function MatchmakingScenario({ onBattleStarted, onBack }: any) {
       <button
         onClick={onBack}
         style={{ touchAction: "manipulation" }}
-        className="mt-8 sm:mt-12 text-zinc-500 hover:text-white active:text-white transition-colors flex items-center gap-2 py-2"
+        className={`mt-8 sm:mt-12 transition-colors flex items-center gap-2 py-2 ${focusedIndex === 1 ? "text-white ring-1 ring-zinc-500 px-4 rounded-full" : "text-zinc-500 hover:text-white active:text-white"}`}
       >
         <span>←</span> Desistir e Voltar
       </button>

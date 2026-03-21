@@ -1,8 +1,47 @@
+import { useEffect } from "react";
 import { playClickSound } from "../../../utils/soundUtils";
+import { useHandStore } from "../../../store/HandStore";
+import { ActionKey, getActionFromKey } from "../../../utils/keyUtils";
 
 export function EndTurnAction({ handleEndTurn, currentTurnOwner, isOpponentPlaying }: any) {
     const isPlayerTurn = currentTurnOwner === 'player';
     const isDisabled = !isPlayerTurn || isOpponentPlaying;
+    const focusArea = useHandStore((s) => s.focusArea);
+    const endTurnFocused = useHandStore((s) => s.endTurnFocused);
+    const setEndTurnFocused = useHandStore((s) => s.setEndTurnFocused);
+
+    // Reset focus when button becomes unavailable
+    useEffect(() => {
+        if (isDisabled) setEndTurnFocused(false);
+    }, [isDisabled]);
+
+    // F8 legacy shortcut
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key !== "F8") return;
+            if (isDisabled) return;
+            playClickSound();
+            handleEndTurn();
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [isDisabled, focusArea, handleEndTurn]);
+
+    // Enter when focused via joystick/keyboard navigation
+    useEffect(() => {
+        if (!endTurnFocused || isDisabled) return;
+        const handleKeyDown = (e: KeyboardEvent) => {
+            const action = getActionFromKey(e.key);
+            if (action === ActionKey.Enter) {
+                e.stopImmediatePropagation();
+                setEndTurnFocused(false);
+                playClickSound();
+                handleEndTurn();
+            }
+        };
+        window.addEventListener("keydown", handleKeyDown, true);
+        return () => window.removeEventListener("keydown", handleKeyDown, true);
+    }, [endTurnFocused, isDisabled, handleEndTurn]);
 
     const label = isOpponentPlaying
         ? 'OPONENTE JOGANDO'
@@ -21,6 +60,7 @@ export function EndTurnAction({ handleEndTurn, currentTurnOwner, isOpponentPlayi
                     ${isPlayerTurn && !isOpponentPlaying
                     ? 'bg-amber-500 hover:bg-amber-400 text-black cursor-pointer skew-x-[-12deg] hover:scale-110 shadow-[0_0_20px_rgba(245,158,11,0.4)]'
                     : 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50 skew-x-[-12deg]'}
+                    ${endTurnFocused && !isDisabled ? 'ring-2 ring-white scale-110' : ''}
                 `}
             >
                 <span className="absolute top-0 left-0 z-999 w-full h-full border-2 border-white/20 translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform"></span>

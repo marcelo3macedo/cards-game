@@ -7,9 +7,10 @@ import { BattleEvent } from "../../../../core/domain/BattleStore";
 import { battleService } from "../../../../services/battleService";
 import { mapServerCardToEntity } from "../../../../utils/cardUtils";
 
-export const useFieldZone = ({ position, isMonster, isInteractable }: any) => {
+export const useFieldZone = ({ index, position, isMonster, isInteractable, isOpponent }: any) => {
     const { event, setEvent, player, opponent } = useBattleStore();
-    const { setSelectedFieldIndex, setSelectedTargetIndex, setSelectedFieldArea, selectedAttackerIndex, setBattleData, setSelectedCard } = useBattleEventStore();
+    const { setSelectedFieldIndex, setSelectedTargetIndex, setSelectedFieldArea, selectedAttackerIndex, setBattleData, setSelectedCard, selectedFieldIndex, selectedCard } = useBattleEventStore();
+    const { setFocusArea } = useHandStore();
     const log = withContextLogging('useFieldZone');
 
     const handleAttack = async ({ attackerIdx, targetIdx }: any) => {
@@ -29,8 +30,28 @@ export const useFieldZone = ({ position, isMonster, isInteractable }: any) => {
         }
     };
 
-    const [showMenu, setShowMenu] = useState(false);
+    const [showMenu, setShowMenuState] = useState(false);
     const isFaceDown = (position === "face-down-attack" || position === "face-down-defense");
+
+    const fieldCard = !isOpponent ? player?.field?.[index]?.card : null;
+    const isKeyboardMenuOpen =
+      !isOpponent &&
+      event === BattleEvent.SELECTING_MODE &&
+      !selectedCard &&
+      selectedFieldIndex === index &&
+      !!fieldCard;
+
+    const setShowMenu = (val: boolean) => {
+      setShowMenuState(val);
+      if (!val) {
+        const currentEvent = useBattleStore.getState().event;
+        const currentSelectedCard = useBattleEventStore.getState().selectedCard;
+        if (currentEvent === BattleEvent.SELECTING_MODE && !currentSelectedCard) {
+          setEvent(BattleEvent.INITIAL);
+          setFocusArea("board");
+        }
+      }
+    };
 
     const onClick = async (index: number) => {
         if (event === BattleEvent.SELECTING_TARGET) {
@@ -73,9 +94,14 @@ export const useFieldZone = ({ position, isMonster, isInteractable }: any) => {
             return;
         }
 
-        setShowMenu(!showMenu);
-        setEvent(BattleEvent.SELECTING_MODE);
-        setSelectedFieldIndex(index);
+        const isMenuCurrentlyOpen = showMenu || isKeyboardMenuOpen;
+        if (isMenuCurrentlyOpen) {
+          setShowMenu(false); // closes + resets event via wrapper
+        } else {
+          setShowMenuState(true);
+          setEvent(BattleEvent.SELECTING_MODE);
+          setSelectedFieldIndex(index);
+        }
     }
 
     const onFocusCard = (index: number) => {
@@ -87,7 +113,7 @@ export const useFieldZone = ({ position, isMonster, isInteractable }: any) => {
     }
 
     return {
-        showMenu,
+        showMenu: showMenu || isKeyboardMenuOpen,
         setShowMenu,
         isFaceDown,
         onClick: log(onClick),

@@ -40,6 +40,9 @@ interface HandState {
   clearEquipAnimData: () => void;
   setPendingBattleState: (state: any) => void;
   clearPendingBattleState: () => void;
+  endTurnFocused: boolean;
+  setEndTurnFocused: (focused: boolean) => void;
+  reset: () => void;
 }
 
 export const useHandStore = create<HandState>((set) => ({
@@ -53,6 +56,7 @@ export const useHandStore = create<HandState>((set) => ({
   fusionAnimData: null,
   equipAnimData: null,
   pendingBattleState: null,
+  endTurnFocused: false,
   setCards: (cards) => set({ cards }),
   addCard: (card) => set((state) => ({ cards: [...state.cards, card] })),
   removeCard: (cardId) => set((state) => ({ cards: state.cards.filter((c) => c.id !== cardId) })),
@@ -75,4 +79,18 @@ export const useHandStore = create<HandState>((set) => ({
   clearEquipAnimData: () => set({ equipAnimData: null }),
   setPendingBattleState: (pendingBattleState) => set({ pendingBattleState }),
   clearPendingBattleState: () => set({ pendingBattleState: null }),
+  setEndTurnFocused: (endTurnFocused) => set({ endTurnFocused }),
+  reset: () => set({
+    cards: [],
+    isVisible: true,
+    isHidden: false,
+    focusArea: "hand",
+    isFusionMode: false,
+    fusionCardIndices: [],
+    fusionMaterialCards: [],
+    fusionAnimData: null,
+    equipAnimData: null,
+    pendingBattleState: null,
+    endTurnFocused: false,
+  }),
 }));

@@ -18,7 +18,7 @@ export function FieldZone({
   const { card, position } = cardData || {};
   const {
     showMenu, setShowMenu, isFaceDown, onClick, onFocusCard
-  } = useFieldZone({ position, isMonster, isInteractable });
+  } = useFieldZone({ index, position, isMonster, isInteractable, isOpponent });
 
   const prevCardIdRef = useRef<string | undefined>(card?.id);
   const [showSummon, setShowSummon] = useState(false);
@@ -74,7 +74,7 @@ export function FieldZone({
         w-14 h-20 sm:w-24 sm:h-32 border-2 rounded-lg flex items-center justify-center relative transition-all duration-300 overflow-visible
         ${card ? "border-solid shadow-lg" : "border-dashed cursor-default"}
         ${!card && isInteractable ? themeColors.interact : `${themeColors.border} ${themeColors.bg}`}
-        ${isFocused && !isSelected && !isOpponent ? `ring-4 ${themeColors.ring} scale-105 z-20` : ""}
+        ${isFocused && !isSelected ? `ring-4 ${themeColors.ring} scale-105 z-20` : ""}
         ${isSelected ? "border-yellow-400 border-4 shadow-[0_0_20px_rgba(250,204,21,0.4)] scale-105 z-30" : ""}
       `}
       data-testid={`field-zone-${isOpponent ? 'opponent' : 'player'}-${index}`}

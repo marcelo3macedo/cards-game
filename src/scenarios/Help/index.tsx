@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, Sword, Shield, Trophy, Zap, Info, ChevronRight, X } from "lucide-react";
+import { BookOpen, Sword, Shield, Trophy, Zap, Info, ChevronRight, X, ArrowLeft } from "lucide-react";
+import { ActionKey, getActionFromKey } from "../../utils/keyUtils";
 
 interface TutorialTopic {
   id: string;
@@ -12,6 +13,37 @@ interface TutorialTopic {
 
 export default function TutorialScenario({ onBack }: { onBack: () => void }) {
   const [activeTopic, setActiveTopic] = useState<string>("cartas");
+
+  const TOPIC_IDS = ["cartas", "modos", "batalha", "vitoria"];
+
+  useEffect(() => {
+    const handle = (e: KeyboardEvent) => {
+      const action = getActionFromKey(e.key);
+      if (!action) return;
+
+      if (action === ActionKey.Up || action === ActionKey.Down) {
+        e.preventDefault();
+
+        setActiveTopic((current) => {
+          const idx = TOPIC_IDS.indexOf(current);
+
+          const next =
+            action === ActionKey.Up
+              ? (idx - 1 + TOPIC_IDS.length) % TOPIC_IDS.length
+              : (idx + 1) % TOPIC_IDS.length;
+
+          return TOPIC_IDS[next];
+        });
+      }
+      else if (action === ActionKey.Escape) {
+        e.preventDefault();
+        onBack();
+      }
+    };
+
+    window.addEventListener("keydown", handle);
+    return () => window.removeEventListener("keydown", handle);
+  }, [onBack]);
 
   const topics: TutorialTopic[] = [
     {
@@ -133,6 +165,12 @@ export default function TutorialScenario({ onBack }: { onBack: () => void }) {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_#1e1b4b_0%,#09090b_100%)] opacity-50" />
 
       <header className="h-14 sm:h-20 border-b border-white/5 bg-black/40 backdrop-blur-xl flex items-center justify-between px-4 sm:px-10 z-10">
+        <button
+          onClick={onBack}
+          className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm font-bold uppercase tracking-widest"
+        >
+          <ArrowLeft size={16} /> Voltar
+        </button>
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="p-1.5 sm:p-2 bg-blue-600 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.4)]">
             <BookOpen size={20} />
@@ -144,13 +182,7 @@ export default function TutorialScenario({ onBack }: { onBack: () => void }) {
             </p>
           </div>
         </div>
-        <button
-          onClick={onBack}
-          className="group flex items-center gap-2 px-3 sm:px-6 py-2 bg-zinc-900 border border-white/10 rounded-full hover:bg-white hover:text-black transition-all font-bold text-xs"
-        >
-          <span className="hidden sm:inline">VOLTAR AO MENU</span>
-          <X size={16} />
-        </button>
+        <div></div>
       </header>
 
       <main className="flex-1 flex flex-col sm:flex-row overflow-hidden z-10">

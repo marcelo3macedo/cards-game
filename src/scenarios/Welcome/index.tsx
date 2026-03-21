@@ -1,14 +1,16 @@
 import exemploLendaria from "../../assets/images/exemplo_legendaria.jpg";
 import exemploMonstroRaro from "../../assets/images/exemplo_monstro_raro.jpg";
 import exemploMagica from "../../assets/images/exemplo_magica.jpg";
-import { playClickSound } from "../../utils/soundUtils";
+import { useWelcomeActions } from "./hooks/useWelcomeActions";
 
 export default function WelcomeScenario({ onStart }: { onStart: () => void }) {
+  const { handleInitAction } = useWelcomeActions({ onStart });
+
   return (
     <div
       className="relative flex flex-col items-center justify-center select-none overflow-hidden bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900 via-zinc-950 to-black"
       style={{ minHeight: "100dvh" }}
-      onClick={() => { playClickSound(); onStart(); }}
+      onClick={handleInitAction}
     >
       <div className="absolute inset-0 pointer-events-none">
         <img
@@ -38,7 +40,7 @@ export default function WelcomeScenario({ onStart }: { onStart: () => void }) {
         </h1>
 
         <button
-          onClick={(e) => { e.stopPropagation(); playClickSound(); onStart(); }}
+          onClick={handleInitAction}
           style={{ touchAction: "manipulation" }}
           className="group relative px-10 py-4 font-bold text-white transition-all duration-300 active:scale-95"
         >
@@ -51,7 +53,6 @@ export default function WelcomeScenario({ onStart }: { onStart: () => void }) {
         </p>
       </div>
 
-      {/* Bottom safe area spacer */}
       <div className="pb-safe" style={{ paddingBottom: "env(safe-area-inset-bottom)" }} />
     </div>
   );

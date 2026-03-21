@@ -13,7 +13,7 @@ const isBattleOver = (state: any) =>
 export const useBattleEvents = ({ onBack, onEnd }: any) => {
     const { clearBattle, currentTurnOwner, player, opponent, setEvent } = useBattleStore();
     const { setBattleData } = useBattleEventStore();
-    const { setVisible, setIsHidden } = useHandStore();
+    const { setVisible, setIsHidden, setFocusArea } = useHandStore();
 
     const [isOpponentPlaying, setIsOpponentPlaying] = useState(false);
 
@@ -70,6 +70,7 @@ export const useBattleEvents = ({ onBack, onEnd }: any) => {
             }
 
             setIsHidden(false);
+            setFocusArea("hand");
             await new Promise(resolve => setTimeout(resolve, 1000));
             await handleDrawCard();
         } catch (error: any) {

@@ -3,6 +3,7 @@ import { useUserStore } from '../../../store/UserStore';
 import { useVillainStore } from '../../../store/VillainStore';
 import { battleService } from '../../../services/battleService';
 import { useBattleStore } from '../../../store/BattleStore';
+import { useBattleEventStore } from '../../../store/BattleEventStore';
 import { BattleEvent } from '../../../core/domain/BattleStore';
 import { useHandStore } from '../../../store/HandStore';
 
@@ -12,9 +13,9 @@ export const useStartBattle = () => {
 
   const user = useUserStore((state) => state.user);
   const selectedVillain = useVillainStore((state) => state.selectedVillain);
-  const initBattle = useBattleStore((state) => state.initBattle);
-  const setEvent = useBattleStore((state) => state.setEvent);
-  const { setVisible, setIsHidden } = useHandStore();
+  const { clearBattle, initBattle, setEvent } = useBattleStore();
+  const { clearAll: clearBattleEventStore } = useBattleEventStore();
+  const { reset: resetHand, setVisible, setIsHidden } = useHandStore();
 
   const startBattle = async () => {
     if (!user?.id || !selectedVillain?.id) {
@@ -24,6 +25,11 @@ export const useStartBattle = () => {
 
     setLoading(true);
     setError(null);
+
+    // Reset all battle state from any previous battle
+    clearBattle();
+    clearBattleEventStore();
+    resetHand();
 
     try {
       const response = await battleService.startBattle(user.id, selectedVillain.id);

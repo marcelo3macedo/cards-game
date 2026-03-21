@@ -19,11 +19,27 @@ import { EffectCardOverlay } from "../../components/game/EffectCardOverlay";
 import { FusionAnimation } from "../../components/game/FusionAnimation";
 import { EquipAnimation } from "../../components/game/EquipAnimation";
 import { useVillainStore } from "../../store/VillainStore";
+import { useBattleStore } from "../../store/BattleStore";
+import { BattleEvent } from "../../core/domain/BattleStore";
 
 export default function BattleScenario({ onBack, onEnd, skipIntro }: any) {
   const { currentTurnOwner, isOpponentPlaying, handleAbandon, handleEndTurn } = useBattleEvents({ onBack, onEnd });
   const selectedVillain = useVillainStore((s) => s.selectedVillain);
+  const currentEvent = useBattleStore((s) => s.event);
   const [revealing, setRevealing] = useState(!skipIntro);
+  const [abandonOpen, setAbandonOpen] = useState(false);
+
+  // ESC abre o modal de abandono quando não há overlay ativo
+  useEffect(() => {
+    const handle = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && currentEvent === BattleEvent.INITIAL && !abandonOpen) {
+        e.preventDefault();
+        setAbandonOpen(true);
+      }
+    };
+    window.addEventListener("keydown", handle);
+    return () => window.removeEventListener("keydown", handle);
+  }, [currentEvent, abandonOpen]);
 
   useEffect(() => {
     if (skipIntro) return;
@@ -36,7 +52,12 @@ export default function BattleScenario({ onBack, onEnd, skipIntro }: any) {
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-[url('/grid-pattern.svg')] bg-center [mask-image:radial-gradient(white,transparent)]"></div>
 
       <div className="actions">
-        <AbandonBattleModal onConfirm={handleAbandon} />
+        <AbandonBattleModal
+          onConfirm={handleAbandon}
+          isOpen={abandonOpen}
+          onOpen={() => setAbandonOpen(true)}
+          onClose={() => setAbandonOpen(false)}
+        />
         <EndTurnAction
           handleEndTurn={handleEndTurn}
           currentTurnOwner={currentTurnOwner}
