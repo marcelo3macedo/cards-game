@@ -1,7 +1,8 @@
 import { Save, Loader2, Package, BookOpen, AlertCircle, CheckCircle2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDeck } from "./hooks/useDeckManager";
+import { useDeckKeyboard } from "./hooks/useDeckKeyboard";
 import { CollectionFilters } from "./components/CollectionFilters";
 import { CardLibraryItem } from "./components/CardLibraryItem";
 import { DeckSlot } from "./components/DeckSlot";
@@ -60,6 +61,32 @@ export default function DeckManagerScenario({ onBack, onOpenPackage }: any) {
   } = useDeck(onOpenPackage);
 
   const [mobileView, setMobileView] = useState<"collection" | "deck">("collection");
+
+  // ── Keyboard navigation ──────────────────────────────────────────────────
+  const colRef  = useRef<HTMLDivElement>(null);
+  const deckRef = useRef<HTMLDivElement>(null);
+
+  const { focusedPanel, focusedColIdx, focusedDeckIdx } = useDeckKeyboard({
+    viewingCard, setViewingCard,
+    activeTab, setActiveTab,
+    filteredCollection, packages, localDeck,
+    viewMode, openingPackage,
+    addToDeck, removeFromDeck, openPackage,
+    onBack,
+  });
+
+  // Scroll focused item into view
+  useEffect(() => {
+    if (focusedPanel === "collection" && colRef.current) {
+      colRef.current.querySelectorAll("[data-col-idx]")[focusedColIdx]
+        ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+    if (focusedPanel === "deck" && deckRef.current) {
+      deckRef.current.querySelectorAll("[data-deck-idx]")[focusedDeckIdx]
+        ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }, [focusedPanel, focusedColIdx, focusedDeckIdx]);
+  // ─────────────────────────────────────────────────────────────────────────
 
   if (loading) {
     return (
@@ -189,7 +216,7 @@ export default function DeckManagerScenario({ onBack, onOpenPackage }: any) {
                 viewMode={viewMode} setViewMode={setViewMode}
                 total={filteredCollection.length}
               />
-              <div className="flex-1 overflow-y-auto p-3 custom-scrollbar">
+              <div ref={colRef} className="flex-1 overflow-y-auto p-3 custom-scrollbar">
                 {filteredCollection.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-zinc-600 text-xs italic gap-2">
                     <BookOpen size={28} className="opacity-20" />
@@ -199,26 +226,26 @@ export default function DeckManagerScenario({ onBack, onOpenPackage }: any) {
                   </div>
                 ) : viewMode === "grid" ? (
                   <div className="grid grid-cols-3 gap-2">
-                    {filteredCollection.map(card => (
-                      <CardLibraryItem
+                    {filteredCollection.map((card, idx) => (
+                      <div
                         key={card.instanceId ?? card.id}
-                        card={card}
-                        onAdd={addToDeck}
-                        onZoom={setViewingCard}
-                        viewMode="grid"
-                      />
+                        data-col-idx={idx}
+                        className={focusedPanel === "collection" && focusedColIdx === idx ? "ring-2 ring-blue-400 rounded-xl" : ""}
+                      >
+                        <CardLibraryItem card={card} onAdd={addToDeck} onZoom={setViewingCard} viewMode="grid" />
+                      </div>
                     ))}
                   </div>
                 ) : (
                   <div className="space-y-1.5">
-                    {filteredCollection.map(card => (
-                      <CardLibraryItem
+                    {filteredCollection.map((card, idx) => (
+                      <div
                         key={card.instanceId ?? card.id}
-                        card={card}
-                        onAdd={addToDeck}
-                        onZoom={setViewingCard}
-                        viewMode="list"
-                      />
+                        data-col-idx={idx}
+                        className={focusedPanel === "collection" && focusedColIdx === idx ? "ring-2 ring-blue-400 rounded-xl" : ""}
+                      >
+                        <CardLibraryItem card={card} onAdd={addToDeck} onZoom={setViewingCard} viewMode="list" />
+                      </div>
                     ))}
                   </div>
                 )}
@@ -239,13 +266,14 @@ export default function DeckManagerScenario({ onBack, onOpenPackage }: any) {
                 </div>
               ) : (
                 <AnimatePresence>
-                  {packages.map(pkg => (
-                    <PackageItem
+                  {packages.map((pkg, idx) => (
+                    <div
                       key={pkg.id}
-                      pkg={pkg}
-                      onOpen={openPackage}
-                      opening={openingPackage}
-                    />
+                      data-col-idx={idx}
+                      className={focusedPanel === "collection" && focusedColIdx === idx ? "ring-2 ring-yellow-400/70 rounded-xl" : ""}
+                    >
+                      <PackageItem pkg={pkg} onOpen={openPackage} opening={openingPackage} />
+                    </div>
                   ))}
                 </AnimatePresence>
               )}
@@ -281,7 +309,7 @@ export default function DeckManagerScenario({ onBack, onOpenPackage }: any) {
           </div>
 
           {/* Deck list */}
-          <div className="flex-1 overflow-y-auto p-2.5 space-y-1 custom-scrollbar">
+          <div ref={deckRef} className="flex-1 overflow-y-auto p-2.5 space-y-1 custom-scrollbar">
             {localDeck.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-zinc-600 gap-2">
                 <BookOpen size={28} className="opacity-20" />
@@ -289,19 +317,17 @@ export default function DeckManagerScenario({ onBack, onOpenPackage }: any) {
               </div>
             ) : (
               <AnimatePresence initial={false}>
-                {localDeck.map(card => (
+                {localDeck.map((card, idx) => (
                   <motion.div
                     key={card.instanceId}
+                    data-deck-idx={idx}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}
                     transition={{ duration: 0.15 }}
+                    className={focusedPanel === "deck" && focusedDeckIdx === idx ? "ring-2 ring-red-400/70 rounded-xl" : ""}
                   >
-                    <DeckSlot
-                      card={card}
-                      onRemove={removeFromDeck}
-                      onZoom={setViewingCard}
-                    />
+                    <DeckSlot card={card} onRemove={removeFromDeck} onZoom={setViewingCard} />
                   </motion.div>
                 ))}
               </AnimatePresence>
