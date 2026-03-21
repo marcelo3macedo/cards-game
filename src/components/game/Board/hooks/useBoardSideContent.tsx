@@ -4,6 +4,7 @@ import { getBoardSideAttributes } from "../../../../utils/boardUtils";
 import { useBattleEventStore } from "../../../../store/BattleEventStore";
 import { useHandStore } from "../../../../store/HandStore";
 import { useBoardNavigation } from "./useBoardNavigation";
+import { BattleEvent } from "../../../../core/domain/BattleStore";
 
 export const useBoardSideContent = ({
     isOpponent
@@ -25,7 +26,8 @@ export const useBoardSideContent = ({
     const normalizedField = Array.from({ length: 5 }, (_, i) => rawField[i] ?? null);
     const normalizedFieldSpells = Array.from({ length: 5 }, (_, i) => rawFieldSpells[i] ?? null);
 
-    const boardKeyboardFocused = !isOpponent && focusArea === "board";
+    const isSelectingTarget = event === BattleEvent.SELECTING_TARGET;
+    const boardKeyboardFocused = !isOpponent && focusArea === "board" && !isSelectingTarget;
     const effectiveAttributes = {
         ...attributes,
         isFocused: attributes.isFocused || boardKeyboardFocused,

@@ -14,7 +14,7 @@ export const useSummonOverlayNavigation = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { selectedCard, setSelectedCard, selectedFieldIndex, fusionCardIndices, clearFusionCardIndices } = useBattleEventStore();
   const { player, event, setEvent } = useBattleStore();
-  const { setVisible, setIsHidden, fusionMaterialCards, setFusionAnimData, setPendingBattleState } = useHandStore();
+  const { setVisible, setIsHidden, fusionMaterialCards, setFusionAnimData, setPendingBattleState, setFocusArea } = useHandStore();
 
   const options: { mode: Mode; label: string; subLabel: string; isVertical: boolean }[] = [
     { mode: "attack", label: "Invocar", subLabel: "Modo Ataque", isVertical: true },
@@ -87,6 +87,7 @@ export const useSummonOverlayNavigation = () => {
     clearFusionCardIndices();
     setEvent(BattleEvent.INITIAL);
     setVisible(true);
+    setFocusArea("hand");
   };
 
   const isOverlayVisible = event === BattleEvent.SELECTING_MODE;

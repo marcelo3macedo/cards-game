@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Coins, X } from "lucide-react";
 import { useStore } from "./hooks/useStore";
@@ -23,6 +24,51 @@ export default function StoreScenario({ onBack, onPackageOpened }: StoreScenario
     setConfirmPackage,
     handleBuy,
   } = useStore(onPackageOpened);
+
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  const pkgGridRef = useRef<HTMLDivElement>(null);
+
+  // Rola o card focado para a área visível
+  useEffect(() => {
+    if (!pkgGridRef.current) return;
+    const items = pkgGridRef.current.querySelectorAll("[data-pkg-idx]");
+    items[focusedIndex]?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [focusedIndex]);
+
+  useEffect(() => {
+    const handle = (e: KeyboardEvent) => {
+      // Modal de confirmação aberto
+      if (confirmPackage) {
+        if (e.key === "Enter" && !buying) { e.preventDefault(); handleBuy(confirmPackage); }
+        else if (e.key === "Escape")      { e.preventDefault(); setConfirmPackage(null); }
+        return;
+      }
+
+      const len = storePackages.length;
+      if (len === 0) {
+        if (e.key === "Escape") { e.preventDefault(); onBack(); }
+        return;
+      }
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault(); setFocusedIndex(i => Math.max(0, i - 1));
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault(); setFocusedIndex(i => Math.min(len - 1, i + 1));
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        const pkg = storePackages[focusedIndex];
+        if (!pkg) return;
+        const isLocked  = (user?.level ?? 0) < pkg.requiredLevel;
+        const canAfford = (user?.coins ?? 0) >= pkg.price;
+        if (!isLocked && canAfford) setConfirmPackage(pkg);
+      } else if (e.key === "Escape") {
+        e.preventDefault(); onBack();
+      }
+    };
+
+    window.addEventListener("keydown", handle);
+    return () => window.removeEventListener("keydown", handle);
+  }, [confirmPackage, storePackages, focusedIndex, buying, user, handleBuy, setConfirmPackage, onBack]);
 
   return (
     <div className="select-none h-screen w-screen bg-zinc-950 flex flex-col overflow-hidden text-white">
@@ -102,15 +148,20 @@ export default function StoreScenario({ onBack, onPackageOpened }: StoreScenario
             ) : storePackages.length === 0 ? (
               <p className="text-zinc-600 text-center py-20">Nenhum pacote disponível no momento.</p>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {storePackages.map((pkg) => (
-                  <PackageCard
+              <div ref={pkgGridRef} className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {storePackages.map((pkg, idx) => (
+                  <div
                     key={pkg.id}
-                    pkg={pkg}
-                    userLevel={user?.level ?? 0}
-                    userCoins={user?.coins ?? 0}
-                    onClick={() => setConfirmPackage(pkg)}
-                  />
+                    data-pkg-idx={idx}
+                    className={idx === focusedIndex ? "ring-2 ring-yellow-400/70 rounded-2xl shadow-[0_0_18px_rgba(234,179,8,0.2)]" : ""}
+                  >
+                    <PackageCard
+                      pkg={pkg}
+                      userLevel={user?.level ?? 0}
+                      userCoins={user?.coins ?? 0}
+                      onClick={() => setConfirmPackage(pkg)}
+                    />
+                  </div>
                 ))}
               </div>
             )}
@@ -196,6 +247,9 @@ function ConfirmModal({
             {buying ? "Comprando..." : "Confirmar"}
           </button>
         </div>
+        <p className="text-center text-[10px] text-zinc-700 mt-4 tracking-widest uppercase">
+          Enter · confirmar &nbsp;·&nbsp; Esc · cancelar
+        </p>
       </motion.div>
     </motion.div>
   );

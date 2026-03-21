@@ -1,14 +1,12 @@
-import { useEffect, useState } from "react";
 import { useVillainStore } from "../../store/VillainStore";
 import { getImageUrl } from "../../utils/imageUtils";
 import { useStartBattle } from "./hooks/useStartBattle";
+import { useMatchmakingKeyboard } from "./hooks/useMatchmakingKeyboard";
 import { playClickSound } from "../../utils/soundUtils";
-import { ActionKey, getActionFromKey } from "../../utils/keyUtils";
 
 export default function MatchmakingScenario({ onBattleStarted, onBack }: any) {
   const selectedVillain = useVillainStore((state) => state.selectedVillain);
   const { startBattle, loading, error } = useStartBattle();
-  const [focusedIndex, setFocusedIndex] = useState(0);
 
   const handleStart = async () => {
     playClickSound();
@@ -18,27 +16,7 @@ export default function MatchmakingScenario({ onBattleStarted, onBack }: any) {
     }
   };
 
-  useEffect(() => {
-    const handle = (e: KeyboardEvent) => {
-      const action = getActionFromKey(e.key);
-      if (!action) return;
-
-      if (action === ActionKey.Up || action === ActionKey.Down) {
-        e.preventDefault();
-        setFocusedIndex((prev) => (prev === 0 ? 1 : 0));
-      } else if (action === ActionKey.Enter && !loading) {
-        e.preventDefault();
-        if (focusedIndex === 0) handleStart();
-        else onBack();
-      } else if (action === ActionKey.Escape) {
-        e.preventDefault();
-        onBack();
-      }
-    };
-
-    window.addEventListener("keydown", handle);
-    return () => window.removeEventListener("keydown", handle);
-  }, [loading, focusedIndex, handleStart, onBack]);
+  const { focusedIndex } = useMatchmakingKeyboard({ loading, onStart: handleStart, onBack });
 
   if (!selectedVillain) {
     return (

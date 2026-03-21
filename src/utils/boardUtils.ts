@@ -13,7 +13,7 @@ export function getBoardSideAttributes(event:string | null, isOpponent: boolean 
         return {
             isInteractable: !isOpponent ? true : false,
             isSelected: false,
-            isFocused: true,
+            isFocused: !isOpponent,
         }
     }
 
@@ -21,7 +21,7 @@ export function getBoardSideAttributes(event:string | null, isOpponent: boolean 
         return {
             isInteractable: isOpponent ? true : false,
             isSelected: false,
-            isFocused: false,
+            isFocused: !!isOpponent,
         }
     }
 
@@ -29,7 +29,7 @@ export function getBoardSideAttributes(event:string | null, isOpponent: boolean 
         return {
             isInteractable: !isOpponent ? true : false,
             isSelected: false,
-            isFocused: true,
+            isFocused: !isOpponent,
         }
     }
 

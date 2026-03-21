@@ -27,6 +27,7 @@ interface BattleEventState {
   setEquipTargetInfo: (info: { allowedElements: string[]; message: string } | null) => void;
   setFusionCardIndices: (indices: number[]) => void;
   clearFusionCardIndices: () => void;
+  clearAll: () => void;
 }
 
 export const useBattleEventStore = create<BattleEventState>()(
@@ -58,6 +59,19 @@ export const useBattleEventStore = create<BattleEventState>()(
       setEquipTargetInfo: (equipTargetInfo) => set({ equipTargetInfo }),
       setFusionCardIndices: (fusionCardIndices) => set({ fusionCardIndices }),
       clearFusionCardIndices: () => set({ fusionCardIndices: [] }),
+      clearAll: () => set({
+        selectedCard: null,
+        selectedFieldIndex: 0,
+        selectedAttackerIndex: 0,
+        selectedTargetIndex: 0,
+        selectedOrigin: "",
+        selectedFieldArea: "",
+        viewCard: null,
+        battleData: null,
+        isSelectingTarget: false,
+        equipTargetInfo: null,
+        fusionCardIndices: [],
+      }),
     }),
     {
       name: "battle-event-storage",

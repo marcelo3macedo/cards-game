@@ -61,6 +61,7 @@ export const useBattleStore = create<BattleStoreState>()(
           opponent: null,
           turn: 1,
           currentTurnOwner: "player",
+          environment: null,
           event: null,
           result: null
         }),

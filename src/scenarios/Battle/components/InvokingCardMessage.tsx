@@ -1,8 +1,8 @@
 import { BattleEvent } from "../../../core/domain/BattleStore";
-import { useBattleStore } from "../../../store/BattleStore";
+import { useInvokingMessage } from "./hooks/useInvokingMessage";
 
 export function InvokingCardMessage() {
-    const { event } = useBattleStore();
+    const { event } = useInvokingMessage();
     if (event !== BattleEvent.SELECTING_POSITION) return;
 
     return (

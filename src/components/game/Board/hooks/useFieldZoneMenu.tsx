@@ -7,7 +7,7 @@ import { withContextLogging } from "../../../../utils/loggingUtils"
 export const useFieldZoneMenu = ({ onEnd, card, mode, isMonster }: any) => {
     const log = withContextLogging('useFieldZoneMenu');
     const { setEvent } = useBattleStore();
-    const { setSelectedCard, setSelectedOrigin, setViewCard, setIsSelectingTarget, setSelectedAttackerIndex } = useBattleEventStore();
+    const { setSelectedCard, setSelectedOrigin, setViewCard, setIsSelectingTarget, setSelectedAttackerIndex, setSelectedFieldIndex, setSelectedFieldArea } = useBattleEventStore();
 
     const onChangeMode = async (index: number) => {
         if (isMonster) {
@@ -44,6 +44,8 @@ export const useFieldZoneMenu = ({ onEnd, card, mode, isMonster }: any) => {
     const onInitiateAttack = (index: number) => {
         setSelectedAttackerIndex(index);
         setIsSelectingTarget(true);
+        setSelectedFieldIndex(0);
+        setSelectedFieldArea("MONSTER");
         setEvent(BattleEvent.SELECTING_TARGET);
     }
     const onView = () => { setViewCard(card); }

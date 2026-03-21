@@ -35,7 +35,7 @@ export const villainActionsHandlers: Record<string, (action: any, state: any, se
     },
     attack: async (action) => {
         const { setBattleData } = useBattleEventStore.getState();
-        const { attacker, target, position } = action.data;
+        const { attacker, target, position, playerHp, opponentHp } = action.data;
         if (!target) {
             setBattleData({
                 attacker: mapServerCardToEntity(attacker),
@@ -50,6 +50,10 @@ export const villainActionsHandlers: Record<string, (action: any, state: any, se
         }
 
         await new Promise(resolve => setTimeout(resolve, 5500));
+
+        if (playerHp !== undefined && opponentHp !== undefined) {
+            useBattleStore.getState().updateHP(playerHp, opponentHp);
+        }
     },
     changePosition: async (action) => {
         const { opponent, setOpponent } = useBattleStore.getState();

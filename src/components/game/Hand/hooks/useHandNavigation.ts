@@ -19,9 +19,9 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
     audio.volume = 1.0;
     audio.play().catch(() => {});
   }, [selectedIndex]);
-  const { setSelectedCard, setSelectedOrigin, setSelectedFieldArea, setViewCard, viewCard, setFusionCardIndices, clearFusionCardIndices } = useBattleEventStore();
-  const { setEvent } = useBattleStore();
-  const { focusArea, setFocusArea, setVisible, isFusionMode, fusionCardIndices, setFusionMode, toggleFusionCard, clearFusion, setFusionMaterialCards } = useHandStore();
+  const { setSelectedCard, setSelectedOrigin, setSelectedFieldArea, setViewCard, setSelectedFieldIndex, viewCard, setFusionCardIndices, clearFusionCardIndices } = useBattleEventStore();
+  const { player, setEvent } = useBattleStore();
+  const { focusArea, setFocusArea, setVisible, isFusionMode, fusionCardIndices, setFusionMode, toggleFusionCard, clearFusion, setFusionMaterialCards, endTurnFocused, setEndTurnFocused } = useHandStore();
 
   const cancelFusion = () => {
     clearFusion();
@@ -32,19 +32,16 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
   const confirmFusion = () => {
     if (fusionCardIndices.length === 0) return;
 
-    // Map material cards to entities — stored for the animation (used later in onSummon)
     const materialEntities = fusionCardIndices
       .map((i) => mapServerCardToEntity(cards[i]))
       .filter(Boolean);
     setFusionMaterialCards(materialEntities);
 
-    // Store indices so SummonOverlay can call summonFusion
     setFusionCardIndices(fusionCardIndices);
 
     clearFusion();
     setSelectedOrigin("hand");
     setSelectedFieldArea("MONSTER");
-    // Advance directly to field selection — API + animation happen after user picks position
     setEvent(BattleEvent.FUSION_PLACING);
     setFocusArea("board");
     setVisible(false);
@@ -53,9 +50,15 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (focusArea !== "hand" || isHidden || !cards || cards.length === 0) return;
-
       const action = getActionFromKey(e.key);
+
+      // When endTurn button is focused, only Left returns focus to hand
+      if (endTurnFocused && focusArea === "hand") {
+        if (action === ActionKey.Left) setEndTurnFocused(false);
+        return;
+      }
+
+      if (focusArea !== "hand" || isHidden || !cards || cards.length === 0) return;
 
       if (isFusionMode) {
         switch (action) {
@@ -83,7 +86,11 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
           setSelectedIndex((prev) => (prev > 0 ? prev - 1 : cards.length - 1));
           break;
         case ActionKey.Right:
-          setSelectedIndex((prev) => (prev < cards.length - 1 ? prev + 1 : 0));
+          if (selectedIndex < cards.length - 1) {
+            setSelectedIndex((prev) => prev + 1);
+          } else {
+            setEndTurnFocused(true);
+          }
           break;
         case ActionKey.Enter: {
           const raw = cards[selectedIndex];
@@ -102,6 +109,11 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
           setFocusArea("board");
           setVisible(false);
           onSelect();
+          const index =
+            player?.field?.findIndex(item => item === null) ?? -1;
+
+          const result = index >= 0 ? index : 0;
+          setSelectedFieldIndex(result);
           break;
         }
         case ActionKey.Info:
@@ -109,12 +121,14 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
             setViewCard(mapServerCardToEntity(cards[selectedIndex]));
           }
           break;
+        case ActionKey.Space:
         case ActionKey.Fusion:
           if (!isHidden) {
             clearFusion();
             clearFusionCardIndices();
             setFusionMode(true);
             setEvent(BattleEvent.FUSION_SELECTING);
+            toggleFusionCard(selectedIndex);
           }
           break;
       }
@@ -122,7 +136,7 @@ export const useHandNavigation = ({ cards, isHidden, onSelect }: UseHandNavigati
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [cards, selectedIndex, isHidden, focusArea, viewCard, isFusionMode, fusionCardIndices]);
+  }, [cards, selectedIndex, isHidden, focusArea, viewCard, isFusionMode, fusionCardIndices, endTurnFocused]);
 
   const selectCardHandler = ({ card, isMagic }: any) => {
     const event = isMagic ? BattleEvent.SELECTING_EFFECT : BattleEvent.SELECTING_POSITION;
