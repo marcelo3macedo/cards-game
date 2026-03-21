@@ -61,7 +61,7 @@ export function useProfileKeyboard({
           setFocusedAvatarIndex(0);
           if (filteredAvatars.length > 0) setSelectedAvatarId(filteredAvatars[0].id);
           setFocusedSection(2);
-        } else if (e.key === "Escape") {
+        } else if ((e.key === "Escape") || (e.key === "Backspace")) {
           e.preventDefault();
           setFocusedSection(0);
         }
@@ -83,7 +83,7 @@ export function useProfileKeyboard({
         else if (e.key === "ArrowUp") { e.preventDefault(); navigate(focusedAvatarIndex - cols); }
         else if (e.key === "ArrowDown") { e.preventDefault(); navigate(focusedAvatarIndex + cols); }
         else if (e.key === "Enter") { e.preventDefault(); if (!isLoading) handleConfirm(); }
-        else if (e.key === "Escape") { e.preventDefault(); setFocusedSection(1); }
+        else if (e.key === "Escape" || e.key === "Backspace") { e.preventDefault(); setFocusedSection(1); }
       }
     };
 
