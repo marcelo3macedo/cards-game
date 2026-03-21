@@ -1,3 +1,4 @@
+import { BattleEvent } from "../../../../core/domain/BattleStore";
 import { useBattleEventStore } from "../../../../store/BattleEventStore";
 import { useBattleStore } from "../../../../store/BattleStore";
 import { withContextLogging } from "../../../../utils/loggingUtils"
@@ -5,7 +6,7 @@ import { withContextLogging } from "../../../../utils/loggingUtils"
 export const useGameBoard = () => {
     const log = withContextLogging('useGameBoard');
     const { isSelectingTarget, setIsSelectingTarget } = useBattleEventStore();
-    const environment = useBattleStore((s) => s.environment);
+    const { environment, event } = useBattleStore();
 
     const isBlur = false;
     const activeField = environment?.activeField;
@@ -18,7 +19,7 @@ export const useGameBoard = () => {
     return {
         activeField,
         isBlur,
-        isSelectingTarget,
+        isSelectingTarget: isSelectingTarget && event !== BattleEvent.EQUIP_TARGETING,
 
         onDraw: log(onDraw),
         onSelectTarget: log(onSelectTarget),

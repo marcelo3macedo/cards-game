@@ -9,6 +9,7 @@ import StoreScenario from "./scenarios/Store";
 import { BattleResultScenario } from "./scenarios/Result";
 import { RewardsScenario } from "./scenarios/Result/Rewards";
 import TutorialScenario from "./scenarios/Help";
+import UserProfileScenario from "./scenarios/UserProfile";
 import { useNavigation, type ScenarioType } from "./hooks/useNavigation";
 import { useBackgroundMusic } from "./hooks/useBackgroundMusic";
 import { MusicControl } from "./components/MusicControl";
@@ -32,6 +33,7 @@ function App() {
         onSelectOpponent={() => navigateTo("MATCHMAKING")}
         onViewTips={() => navigateTo("TUTORIAL")}
         onViewStore={() => navigateTo("STORE")}
+        onViewProfile={() => navigateTo("USER_PROFILE")}
       />
     ),
     MATCHMAKING: (
@@ -61,6 +63,7 @@ function App() {
     ),
     DECKMANAGER: <DeckManagerScenario onBack={() => navigateTo("MAINMENU")} onOpenPackage={() => navigateTo("REWARDS")} />,
     TUTORIAL: <TutorialScenario onBack={() => navigateTo("MAINMENU")} />,
+    USER_PROFILE: <UserProfileScenario onBack={() => navigateTo("MAINMENU")} />,
   };
 
   return (

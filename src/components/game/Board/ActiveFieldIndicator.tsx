@@ -24,7 +24,7 @@ export function ActiveFieldIndicator({ field }: ActiveFieldIndicatorProps) {
       </span>
 
       <div className={`
-        flex items-center gap-2 sm:gap-4 px-2 py-1.5 sm:px-6 sm:py-4 mt-4 sm:mt-12 rounded-l-xl sm:rounded-l-3xl border-l border-y transition-all duration-700
+        flex items-center gap-2 sm:gap-4 px-2 py-1.5 sm:px-6 sm:py-4 mt-4 sm:mt-42 rounded-l-xl sm:rounded-l-3xl border-l border-y transition-all duration-700
         bg-zinc-950/90 ${theme.border} ${theme.shadow}
         ${isActive ? "translate-x-0" : "translate-x-4 opacity-80"}
         backdrop-blur-xl

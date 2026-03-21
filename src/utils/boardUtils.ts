@@ -25,6 +25,14 @@ export function getBoardSideAttributes(event:string | null, isOpponent: boolean 
         }
     }
 
+    if (event === BattleEvent.EQUIP_TARGETING) {
+        return {
+            isInteractable: !isOpponent ? true : false,
+            isSelected: false,
+            isFocused: true,
+        }
+    }
+
     return {
         isInteractable: false,
         isSelected: false,

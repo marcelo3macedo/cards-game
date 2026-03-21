@@ -2,24 +2,36 @@ import { useEffect } from "react";
 import { useBattleStore } from "../../../../store/BattleStore";
 import { useBattleEventStore } from "../../../../store/BattleEventStore";
 import { BattleEvent } from "../../../../core/domain/BattleStore";
+import type { ActivationResponse, BattleState } from "../../../../services/battleService";
 import { Sword, Shield } from "lucide-react";
 import { battleService } from "../../../../services/battleService";
 
 export const useMagicOverlay = () => {
   const { event, setEvent, player, setBattle } = useBattleStore();
-  const { selectedCard, setSelectedCard, selectedOrigin } = useBattleEventStore();
+  const { selectedCard, setSelectedCard, selectedOrigin, setEquipTargetInfo, setSelectedFieldArea } = useBattleEventStore();
 
   const handleActivate = async () => {
     if (!selectedCard) return;
-
-    setEvent(BattleEvent.ACTIVE_EFFECT);
 
     const cardIndex = selectedOrigin === "hand"
       ? player?.hand.findIndex((x:any) => x.id == selectedCard.id)
       : player?.spells.findIndex((x:any) => x.id == selectedCard.id);
 
-    const state = await battleService.activateCard(cardIndex, selectedOrigin);
-    setBattle(state);
+    const response = await battleService.activateCard(cardIndex, selectedOrigin);
+    const activation = response as ActivationResponse;
+
+    if (activation.status === "WAITING_SELECTION" && (response as any).waitingSelection?.targetType === "field") {
+      setEquipTargetInfo({
+        allowedElements: (response as any).waitingSelection.allowedElements || [],
+        message: (response as any).waitingSelection.message || "Escolha um monstro para equipar.",
+      });
+      setEvent(BattleEvent.EQUIP_TARGETING);
+      setSelectedFieldArea("MONSTER")
+      return;
+    }
+
+    setEvent(BattleEvent.ACTIVE_EFFECT);
+    setBattle(response as BattleState);
   };
 
   const handleSetOnField = () => {

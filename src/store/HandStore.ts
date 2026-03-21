@@ -6,6 +6,12 @@ export interface FusionAnimData {
   resultCard: BaseCard | null;
 }
 
+export interface EquipAnimData {
+  magicCard: BaseCard;
+  monsterCard: BaseCard;
+  newMosterCard: BaseCard;
+}
+
 interface HandState {
   cards: BaseCard[];
   isVisible: boolean;
@@ -15,6 +21,7 @@ interface HandState {
   fusionCardIndices: number[];
   fusionMaterialCards: BaseCard[];
   fusionAnimData: FusionAnimData | null;
+  equipAnimData: EquipAnimData | null;
   pendingBattleState: any | null;
   setCards: (cards: BaseCard[]) => void;
   addCard: (card: MonsterCard) => void;
@@ -29,6 +36,8 @@ interface HandState {
   setFusionMaterialCards: (cards: BaseCard[]) => void;
   setFusionAnimData: (data: FusionAnimData) => void;
   clearFusionAnimData: () => void;
+  setEquipAnimData: (data: EquipAnimData) => void;
+  clearEquipAnimData: () => void;
   setPendingBattleState: (state: any) => void;
   clearPendingBattleState: () => void;
 }
@@ -42,6 +51,7 @@ export const useHandStore = create<HandState>((set) => ({
   fusionCardIndices: [],
   fusionMaterialCards: [],
   fusionAnimData: null,
+  equipAnimData: null,
   pendingBattleState: null,
   setCards: (cards) => set({ cards }),
   addCard: (card) => set((state) => ({ cards: [...state.cards, card] })),
@@ -61,6 +71,8 @@ export const useHandStore = create<HandState>((set) => ({
   setFusionMaterialCards: (fusionMaterialCards) => set({ fusionMaterialCards }),
   setFusionAnimData: (fusionAnimData) => set({ fusionAnimData }),
   clearFusionAnimData: () => set({ fusionAnimData: null }),
+  setEquipAnimData: (equipAnimData) => set({ equipAnimData }),
+  clearEquipAnimData: () => set({ equipAnimData: null }),
   setPendingBattleState: (pendingBattleState) => set({ pendingBattleState }),
   clearPendingBattleState: () => set({ pendingBattleState: null }),
 }));

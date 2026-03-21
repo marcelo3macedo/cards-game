@@ -26,7 +26,7 @@ export default function MatchmakingScenario({ onBattleStarted, onBack }: any) {
 
   return (
     <div
-      className="px-4 sm:p-8 flex flex-col items-center justify-center bg-black text-white"
+      className="select-none px-4 sm:p-8 flex flex-col items-center justify-center bg-black text-white"
       style={{ minHeight: "100dvh" }}
     >
       <h2 className="text-xl sm:text-3xl font-bold mb-6 sm:mb-10 border-b-2 border-yugi-gold pb-2 uppercase tracking-widest text-center">
@@ -36,7 +36,7 @@ export default function MatchmakingScenario({ onBattleStarted, onBack }: any) {
       <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-12 max-w-5xl w-full bg-zinc-900/50 p-5 sm:p-10 rounded-xl border border-zinc-800">
         <div className="relative group shrink-0">
           <div className="absolute -inset-1 bg-gradient-to-r from-red-600 to-yugi-gold rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-          <div className="relative w-44 h-56 sm:w-64 sm:h-80 bg-zinc-800 rounded-lg overflow-hidden border-2 border-zinc-700">
+          <div className="relative w-44 h-36 sm:w-64 sm:h-80 bg-zinc-800 rounded-lg overflow-hidden border-2 border-zinc-700">
             <img
               src={getImageUrl(selectedVillain.profilePictureUrl)}
               alt={selectedVillain.name}
@@ -53,7 +53,7 @@ export default function MatchmakingScenario({ onBattleStarted, onBack }: any) {
             <h3 className="text-3xl sm:text-5xl font-black text-white italic">{selectedVillain.name}</h3>
           </div>
 
-          <p className="text-zinc-400 text-sm sm:text-lg leading-relaxed italic">
+          <p className="text-zinc-400 text-xs sm:text-lg leading-relaxed italic">
             "{selectedVillain.description}"
           </p>
 

@@ -16,7 +16,7 @@ export const Card: React.FC<CardProps> = ({ card: initialCard, size = "lg", isFa
   const sizeClasses = {
     lg: "w-72 h-120 p-3",
     md: "w-60 h-96 p-2.5",
-    sm: "w-44 h-64 p-1.5",
+    sm: "w-40 h-58 p-1.5",
     xs: "w-24 h-36 p-1 border-2",
   };
   const isExtraSmall = size === "xs";

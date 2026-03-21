@@ -128,7 +128,7 @@ export default function TutorialScenario({ onBack }: { onBack: () => void }) {
   ];
 
   return (
-    <div className="h-screen w-screen bg-zinc-950 flex flex-col text-white overflow-hidden font-sans relative">
+    <div className="select-none h-screen w-screen bg-zinc-950 flex flex-col text-white overflow-hidden font-sans relative">
       {/* Background Decor */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_#1e1b4b_0%,#09090b_100%)] opacity-50" />
 

@@ -1,5 +1,17 @@
 import { authService } from "./authService";
 
+export interface BattleHistoryEntry {
+  id: number;
+  date: string;
+  status: "victory" | "lose";
+  stars: number;
+  villain: {
+    id: number;
+    name: string;
+    imageUrl: string;
+  } | null;
+}
+
 export interface UserProfile {
   id: number;
   name: string;
@@ -29,6 +41,25 @@ export const userService = {
     if (!response.ok) {
       if (response.status === 401) authService.logout();
       throw new Error("Sessão inválida ou erro no servidor");
+    }
+
+    return response.json();
+  },
+
+  getHistory: async (): Promise<BattleHistoryEntry[]> => {
+    const API_URL = import.meta.env.VITE_API_URL;
+    const token = authService.getSessionToken();
+
+    const response = await fetch(`${API_URL}/users/me/history`, {
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": `${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) authService.logout();
+      throw new Error("Erro ao carregar histórico");
     }
 
     return response.json();

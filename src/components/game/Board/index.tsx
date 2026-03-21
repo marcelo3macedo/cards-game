@@ -8,13 +8,13 @@ export function GameBoard() {
 
   return (
     <div
-      className={`grid grid-cols-[36px_1fr_36px] sm:grid-cols-[120px_1fr_120px] gap-1 sm:gap-8 items-center w-full max-w-7xl px-0 sm:px-10 transition-all duration-500 ${isBlur ? "blur-xl scale-95 opacity-40" : ""}`}
+      className={`grid grid-cols-[36px_1fr_36px] sm:grid-cols-[80px_1fr_80px] gap-1 sm:gap-4 items-center w-full max-w-7xl px-0 sm:px-4 transition-all duration-500 ${isBlur ? "blur-xl scale-95 opacity-40" : ""}`}
     >
       <ActiveFieldIndicator field={activeField} />
 
       <BoardGutter type="opponent" onDraw={onDraw} />
 
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-10 sm:gap-6">
         <div
           className={`transition-all duration-300 rounded-xl ${isSelectingTarget ? "ring-4 ring-red-500/20 p-4 bg-red-500/5" : "grayscale-[0.3]"}`}
           onClick={() => isSelectingTarget && onSelectTarget(undefined)}

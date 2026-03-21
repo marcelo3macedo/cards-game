@@ -239,6 +239,28 @@ export const battleService = {
     return await response.json();
   },
 
+  confirmSelection: async (fieldIndex: number): Promise<BattleState> => {
+    const API_URL = import.meta.env.VITE_API_URL;
+    const token = authService.getSessionToken();
+
+    const response = await fetch(`${API_URL}/battle-engine/confirm-selection`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": `${token}`,
+      },
+      body: JSON.stringify({ fieldIndex }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) authService.logout();
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Erro ao confirmar seleção");
+    }
+
+    return await response.json();
+  },
+
   activateCard: async (cardIndex: number, origin: string): Promise<BattleState | ActivationResponse> => {
     const API_URL = import.meta.env.VITE_API_URL;
     const token = authService.getSessionToken();
