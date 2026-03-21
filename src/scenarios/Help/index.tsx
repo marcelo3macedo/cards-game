@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, Sword, Shield, Trophy, Zap, Info, ChevronRight, X, ArrowLeft } from "lucide-react";
+import { ActionKey, getActionFromKey } from "../../utils/keyUtils";
 
 interface TutorialTopic {
   id: string;
@@ -12,6 +13,37 @@ interface TutorialTopic {
 
 export default function TutorialScenario({ onBack }: { onBack: () => void }) {
   const [activeTopic, setActiveTopic] = useState<string>("cartas");
+
+  const TOPIC_IDS = ["cartas", "modos", "batalha", "vitoria"];
+
+  useEffect(() => {
+    const handle = (e: KeyboardEvent) => {
+      const action = getActionFromKey(e.key);
+      if (!action) return;
+
+      if (action === ActionKey.Up || action === ActionKey.Down) {
+        e.preventDefault();
+
+        setActiveTopic((current) => {
+          const idx = TOPIC_IDS.indexOf(current);
+
+          const next =
+            action === ActionKey.Up
+              ? (idx - 1 + TOPIC_IDS.length) % TOPIC_IDS.length
+              : (idx + 1) % TOPIC_IDS.length;
+
+          return TOPIC_IDS[next];
+        });
+      }
+      else if (action === ActionKey.Escape) {
+        e.preventDefault();
+        onBack();
+      }
+    };
+
+    window.addEventListener("keydown", handle);
+    return () => window.removeEventListener("keydown", handle);
+  }, [onBack]);
 
   const topics: TutorialTopic[] = [
     {
