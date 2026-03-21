@@ -1,6 +1,14 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
+export interface Chapter {
+  id: number;
+  name: string;
+  description: string | null;
+  unlockVillainId: number | null;
+  isUnlocked: boolean;
+}
+
 export interface Villain {
   id: number;
   name: string;
@@ -9,6 +17,8 @@ export interface Villain {
   description: string;
   happyQuote: string;
   angerQuote: string;
+  chapterId: number | null;
+  chapter: Chapter | null;
 }
 
 interface VillainState {

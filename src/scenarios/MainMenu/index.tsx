@@ -1,9 +1,62 @@
-import { useState } from "react";
-import type { Villain } from "../../store/VillainStore";
+import { useState, useMemo, useEffect } from "react";
+import type { Villain, Chapter } from "../../store/VillainStore";
 import { getImageUrl } from "../../utils/imageUtils";
 import { getRankName } from "../../utils/rankUtils";
 import { VillainCard } from "./components/VillainCard";
 import { useMainMenu } from "./hooks/useMainMenu";
+
+const STORY_SEEN_KEY = "chapters-story-seen";
+
+function getSeenChapterIds(): number[] {
+  try {
+    return JSON.parse(localStorage.getItem(STORY_SEEN_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function markChapterAsSeen(id: number) {
+  const seen = getSeenChapterIds();
+  if (!seen.includes(id)) {
+    localStorage.setItem(STORY_SEEN_KEY, JSON.stringify([...seen, id]));
+  }
+}
+
+function ChapterStoryModal({ chapter, onClose }: { chapter: Chapter; onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+      <div className="relative w-full max-w-lg bg-zinc-900 border border-white/10 rounded-2xl overflow-hidden">
+        {/* Header */}
+        <div className="px-6 pt-6 pb-4 border-b border-white/5">
+          <p className="text-[10px] text-blue-500 font-black uppercase tracking-[0.3em] mb-1">
+            Capítulo {chapter.id}
+          </p>
+          <h2 className="text-xl sm:text-2xl font-black uppercase italic tracking-tight">
+            {chapter.name}
+          </h2>
+        </div>
+
+        {/* Story */}
+        <div className="px-6 py-5 max-h-[50vh] overflow-y-auto custom-scrollbar">
+          <p className="text-zinc-300 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+            {chapter.description}
+          </p>
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 pb-6 pt-4 border-t border-white/5 flex justify-end">
+          <button
+            style={{ touchAction: "manipulation" }}
+            onClick={onClose}
+            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-black uppercase tracking-widest rounded-lg transition-colors"
+          >
+            Começar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function MainMenuScenario({
   onSelectOpponent,
@@ -13,10 +66,47 @@ export default function MainMenuScenario({
 }: any) {
   const { user, villains, loading, handleLogout, setSelectedVillain } = useMainMenu();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [storyModal, setStoryModal] = useState<Chapter | null>(null);
 
   const handleChooseOpponent = (villain: Villain) => {
     setSelectedVillain(villain);
     onSelectOpponent();
+  };
+
+  const chapters = useMemo(() => {
+    const map = new Map<number | null, { chapter: Chapter | null; villains: Villain[] }>();
+    for (const villain of villains) {
+      const key = villain.chapterId ?? null;
+      if (!map.has(key)) map.set(key, { chapter: villain.chapter, villains: [] });
+      map.get(key)!.villains.push(villain);
+    }
+    return [...map.values()].sort(
+      (a, b) => (a.chapter?.id ?? 9999) - (b.chapter?.id ?? 9999)
+    );
+  }, [villains]);
+
+  const unlockedChapters = useMemo(
+    () => chapters.filter(({ chapter }) => !chapter || chapter.isUnlocked),
+    [chapters]
+  );
+
+  // Mostra o modal automaticamente para capítulos novos (ainda não vistos)
+  useEffect(() => {
+    if (unlockedChapters.length === 0) return;
+    const seen = getSeenChapterIds();
+    const newChapter = unlockedChapters.find(
+      ({ chapter }) => chapter?.description && !seen.includes(chapter.id)
+    );
+    if (newChapter?.chapter) {
+      setStoryModal(newChapter.chapter);
+    }
+  }, [unlockedChapters]);
+
+  const handleCloseStory = () => {
+    if (storyModal) {
+      markChapterAsSeen(storyModal.id);
+      setStoryModal(null);
+    }
   };
 
   if (loading) {
@@ -82,6 +172,10 @@ export default function MainMenuScenario({
       className="w-screen bg-zinc-950 flex flex-col overflow-hidden text-white bg-[radial-gradient(circle_at_top_right,_#1e1b4b_0%,#09090b_100%)]"
       style={{ height: "100dvh" }}
     >
+      {storyModal && (
+        <ChapterStoryModal chapter={storyModal} onClose={handleCloseStory} />
+      )}
+
       {/* Header */}
       <div className="px-4 sm:p-6 py-3 sm:py-4 bg-black/40 border-b border-white/5 backdrop-blur-md flex justify-between items-center shrink-0">
         <div className="flex items-center gap-3 sm:gap-4">
@@ -110,8 +204,8 @@ export default function MainMenuScenario({
         {/* Stats — visible only on desktop */}
         <div className="hidden sm:flex gap-8">
           <div className="text-center">
-            <p className="text-[10px] text-zinc-500 uppercase font-bold">Pontos</p>
-            <p className="text-xl font-black text-yellow-500">{user?.points || 0}</p>
+            <p className="text-[10px] text-zinc-500 uppercase font-bold">Moedas</p>
+            <p className="text-xl font-black text-yellow-500">{user?.coins ?? 0}</p>
           </div>
           <div className="text-center">
             <p className="text-[10px] text-zinc-500 uppercase font-bold">Status</p>
@@ -143,12 +237,10 @@ export default function MainMenuScenario({
         {/* Mobile drawer overlay */}
         {menuOpen && (
           <div className="sm:hidden fixed inset-0 z-50 flex">
-            {/* Backdrop */}
             <div
               className="absolute inset-0 bg-black/70 backdrop-blur-sm"
               onClick={() => setMenuOpen(false)}
             />
-            {/* Drawer */}
             <nav className="relative z-10 w-72 max-w-[85vw] h-full bg-zinc-900 border-r border-white/10 p-6 flex flex-col gap-3"
               style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
             >
@@ -168,11 +260,10 @@ export default function MainMenuScenario({
                 </button>
               </div>
 
-              {/* Stats inside drawer on mobile */}
               <div className="flex gap-6 px-1 pb-4 mb-2 border-b border-white/5">
                 <div>
-                  <p className="text-[10px] text-zinc-500 uppercase font-bold">Pontos</p>
-                  <p className="text-lg font-black text-yellow-500">{user?.points || 0}</p>
+                  <p className="text-[10px] text-zinc-500 uppercase font-bold">Moedas</p>
+                  <p className="text-lg font-black text-yellow-500">{user?.coins ?? 0}</p>
                 </div>
                 <div>
                   <p className="text-[10px] text-zinc-500 uppercase font-bold">Status</p>
@@ -198,14 +289,40 @@ export default function MainMenuScenario({
               </p>
             </header>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {villains.map((villain) => (
-                <VillainCard
-                  key={villain.id}
-                  villain={villain}
-                  userLevel={user?.level || 0}
-                  onSelect={handleChooseOpponent}
-                />
+            <div className="flex flex-col gap-10 sm:gap-14">
+              {unlockedChapters.map(({ chapter, villains: chapterVillains }) => (
+                <section key={chapter?.id ?? "uncategorized"}>
+                  <div className="mb-4 sm:mb-6 pb-3 border-b border-white/10">
+                    <p className="text-[10px] text-blue-500 font-black uppercase tracking-[0.3em] mb-1">
+                      {chapter ? `Capítulo ${chapter.id}` : "Sem Capítulo"}
+                    </p>
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <h2 className="text-lg sm:text-2xl font-black uppercase italic tracking-tight">
+                        {chapter?.name ?? "Oponentes"}
+                      </h2>
+                      {chapter?.description && (
+                        <button
+                          style={{ touchAction: "manipulation" }}
+                          onClick={() => setStoryModal(chapter)}
+                          className="text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-blue-400 border border-white/10 hover:border-blue-500/50 px-3 py-1 rounded-full transition-colors"
+                        >
+                          Ver história
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    {chapterVillains.map((villain) => (
+                      <VillainCard
+                        key={villain.id}
+                        villain={villain}
+                        userLevel={user?.level || 0}
+                        onSelect={handleChooseOpponent}
+                      />
+                    ))}
+                  </div>
+                </section>
               ))}
             </div>
           </div>

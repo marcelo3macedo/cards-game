@@ -4,6 +4,7 @@ import { userService } from "../../../services/userService";
 import { authService } from "../../../services/authService";
 import { useVillainStore } from "../../../store/VillainStore";
 import { villainService } from "../../../services/villainService";
+import { useNavigationStore } from "../../../store/NavigationStore";
 
 export function useMainMenu() {
   const { user, loading, setUser, setLoading } = useUserStore();
@@ -37,7 +38,9 @@ export function useMainMenu() {
   const handleLogout = () => {
     authService.logout();
     useUserStore.getState().clearUser();
-    window.location.href = "/login";
+    useVillainStore.getState().clearVillains();
+    sessionStorage.removeItem("navigation");
+    useNavigationStore.getState().navigateTo("WELCOME");
   };
 
   return {
