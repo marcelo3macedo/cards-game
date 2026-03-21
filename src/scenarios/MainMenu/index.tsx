@@ -4,6 +4,7 @@ import { getImageUrl } from "../../utils/imageUtils";
 import { getRankName } from "../../utils/rankUtils";
 import { VillainCard } from "./components/VillainCard";
 import { useMainMenu } from "./hooks/useMainMenu";
+import { useMainMenuKeyboard } from "./hooks/useMainMenuKeyboard";
 
 const STORY_SEEN_KEY = "chapters-story-seen";
 
@@ -110,6 +111,23 @@ export default function MainMenuScenario({
     }
   };
 
+  // Lista plana de vilões desbloqueados e acessíveis pelo nível do usuário
+  const allVillains = useMemo(
+    () => unlockedChapters.flatMap(({ villains: cv }) =>
+      cv.filter(v => (user?.level || 0) >= v.level)
+    ),
+    [unlockedChapters, user?.level]
+  );
+
+  const { focusedArea, setFocusedArea, focusedNavIndex, setFocusedNavIndex, focusedVillainIndex, mainRef } =
+    useMainMenuKeyboard({
+      allVillains,
+      handleChooseOpponent,
+      navActions: [null, onViewDeck, onViewStore, onViewTips, handleLogout],
+      storyModal,
+      menuOpen,
+    });
+
   if (loading) {
     return (
       <div className="h-screen w-screen bg-zinc-950 flex items-center justify-center text-blue-500 font-black italic">
@@ -118,53 +136,53 @@ export default function MainMenuScenario({
     );
   }
 
+  const NAV_ITEMS = [
+    { label: "Duelar",           onClick: () => { setFocusedArea("villains"); setMenuOpen(false); } },
+    { label: "Meu Baralho (Deck)", onClick: () => { onViewDeck(); setMenuOpen(false); } },
+    { label: "Loja",             onClick: () => { onViewStore(); setMenuOpen(false); } },
+    { label: "Dicas & Regras",   onClick: () => { onViewTips(); setMenuOpen(false); } },
+    { label: "Sair do Jogo",     onClick: handleLogout },
+  ];
+
+  const navFocused = (idx: number) => focusedArea === "nav" && focusedNavIndex === idx;
+
   const navItems = (
     <>
       <label className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em] mb-2">
         Menu Principal
       </label>
 
-      <button
-        style={{ touchAction: "manipulation" }}
-        onClick={() => setMenuOpen(false)}
-        className="w-full py-4 px-6 bg-blue-600/10 border-r-4 border-blue-500 text-blue-400 font-bold text-left hover:bg-blue-600/20 transition-all uppercase tracking-widest text-xs"
-      >
-        Duelar
-      </button>
+      {NAV_ITEMS.map((item, idx) => {
+        const isLast = idx === NAV_ITEMS.length - 1;
+        const isFocused = navFocused(idx);
 
-      <button
-        style={{ touchAction: "manipulation" }}
-        onClick={() => { onViewDeck(); setMenuOpen(false); }}
-        className="w-full py-4 px-6 text-zinc-500 font-bold text-left hover:text-white hover:bg-white/5 transition-all uppercase tracking-widest text-xs"
-      >
-        Meu Baralho (Deck)
-      </button>
-
-      <button
-        style={{ touchAction: "manipulation" }}
-        onClick={() => { onViewStore(); setMenuOpen(false); }}
-        className="w-full py-4 px-6 text-zinc-500 font-bold text-left hover:text-white hover:bg-white/5 transition-all uppercase tracking-widest text-xs"
-      >
-        Loja
-      </button>
-
-      <button
-        style={{ touchAction: "manipulation" }}
-        onClick={() => { onViewTips(); setMenuOpen(false); }}
-        className="w-full py-4 px-6 text-zinc-500 font-bold text-left hover:text-white hover:bg-white/5 transition-all uppercase tracking-widest text-xs"
-      >
-        Dicas & Regras
-      </button>
-
-      <div className="mt-auto">
-        <button
-          style={{ touchAction: "manipulation" }}
-          onClick={handleLogout}
-          className="w-full py-3 text-zinc-700 hover:text-red-400 text-[10px] font-black uppercase tracking-widest transition-colors"
-        >
-          Sair do Jogo
-        </button>
-      </div>
+        return (
+          <button
+            key={item.label}
+            style={{ touchAction: "manipulation" }}
+            onClick={() => {
+              setFocusedNavIndex(idx);
+              setFocusedArea("nav");
+              item.onClick();
+            }}
+            className={`
+              w-full py-4 px-6 font-bold text-left transition-all uppercase tracking-widest text-xs
+              ${isLast ? "mt-auto" : ""}
+              ${
+                isFocused
+                  ? "bg-blue-600/20 border-r-4 border-blue-400 text-blue-300"
+                  : isLast
+                    ? "text-zinc-700 hover:text-red-400 hover:bg-white/5"
+                    : idx === 0
+                      ? "bg-blue-600/10 border-r-4 border-blue-500 text-blue-400 hover:bg-blue-600/20"
+                      : "text-zinc-500 hover:text-white hover:bg-white/5"
+              }
+            `}
+          >
+            {item.label}
+          </button>
+        );
+      })}
     </>
   );
 
@@ -278,7 +296,7 @@ export default function MainMenuScenario({
           </div>
         )}
 
-        <main className="flex-1 p-4 sm:p-10 overflow-y-auto custom-scrollbar bg-black/10">
+        <main ref={mainRef} className="flex-1 p-4 sm:p-10 overflow-y-auto custom-scrollbar bg-black/10">
           <div className="max-w-4xl mx-auto">
             <header className="mb-6 sm:mb-10">
               <h1 className="text-2xl sm:text-4xl font-black italic uppercase tracking-tighter">
@@ -313,14 +331,23 @@ export default function MainMenuScenario({
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                    {chapterVillains.map((villain) => (
-                      <VillainCard
-                        key={villain.id}
-                        villain={villain}
-                        userLevel={user?.level || 0}
-                        onSelect={handleChooseOpponent}
-                      />
-                    ))}
+                    {chapterVillains.map((villain) => {
+                      const globalIdx = allVillains.indexOf(villain);
+                      const isFocused = focusedArea === "villains" && focusedVillainIndex === globalIdx;
+                      return (
+                        <div
+                          key={villain.id}
+                          data-villain-idx={globalIdx}
+                          className={isFocused ? "ring-2 ring-blue-400 rounded-2xl shadow-[0_0_18px_rgba(59,130,246,0.35)]" : ""}
+                        >
+                          <VillainCard
+                            villain={villain}
+                            userLevel={user?.level || 0}
+                            onSelect={handleChooseOpponent}
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                 </section>
               ))}

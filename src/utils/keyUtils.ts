@@ -1,3 +1,5 @@
+// utils/keyboard.ts
+
 export const ActionKey = {
   Up: "up",
   Down: "down",
@@ -7,32 +9,41 @@ export const ActionKey = {
   Enter: "enter",
   Info: "info",
   F1: "f1",
-  Escape: "Escape",
+  Escape: "escape",
   Fusion: "fusion",
 } as const;
 
 export type ActionKey = (typeof ActionKey)[keyof typeof ActionKey];
 
 const KEY_TO_ACTION: Record<string, ActionKey> = {
-  "w": ActionKey.Up,
-  "ArrowUp": ActionKey.Up,
-  "s": ActionKey.Down,
-  "ArrowDown": ActionKey.Down,
-  "a": ActionKey.Left,
-  "ArrowLeft": ActionKey.Left,
-  "d": ActionKey.Right,
-  "ArrowRight": ActionKey.Right,
+  // movimento
+  arrowup: ActionKey.Up,
+  w: ActionKey.Up,
+
+  arrowdown: ActionKey.Down,
+  s: ActionKey.Down,
+
+  arrowleft: ActionKey.Left,
+  a: ActionKey.Left,
+
+  arrowright: ActionKey.Right,
+  d: ActionKey.Right,
+
+  // ações
   " ": ActionKey.Space,
-  "Enter": ActionKey.Enter,
-  "i": ActionKey.Info,
-  "F1": ActionKey.F1,
-  "Escape": ActionKey.Escape,
-  "f": ActionKey.Fusion,
+  space: ActionKey.Space,
+
+  enter: ActionKey.Enter,
+
+  i: ActionKey.Info,
+  f1: ActionKey.F1,
+
+  escape: ActionKey.Escape,
+  backspace: ActionKey.Escape,
+
+  f: ActionKey.Fusion,
 };
 
-
-const getActionFromKey = (key: string) => KEY_TO_ACTION[key] || null;
-
-export {
-    getActionFromKey
-}
+export const getActionFromKey = (key: string): ActionKey | null => {
+  return KEY_TO_ACTION[key.toLowerCase()] ?? null;
+};
